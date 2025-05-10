@@ -34,7 +34,7 @@ read_file_iotable_producer_price_medium <- function(file) {
         "output_sector_name_3"
       )
     ) |>
-    wrap_step(mutate)(
+    as_step(mutate)(
       across(
         starts_with(c("input", "output")),
         \(x)
