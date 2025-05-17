@@ -95,7 +95,7 @@ print_steps|function|5c7889545d1862aa
 autolayer.econ_io_table|function|8c07bc19213c6a28
 print.adverbial_function_partial|function|1ad2f595a3c050c5
 autoplot.econ_io_table|function|fbacbb7ff8b6ddc6
-read_file_iotable_producer_price_medium|function|87371e74d6b4bd62
+read_file_iotable_producer_price_medium|function|8cd582a5f837e667
 io_table_regional|function|b1975a56a0860dd9
 io_table_multiregional|function|c4cfd5ddf0823746
 io_input_coef|function|a136300eb5c58bb4
@@ -107,5 +107,5 @@ io_production_induce|function|da9a34f6354e03e1
 io_tidy_skyline|function|6eaa53b1fd8e916d
 io_self_sufficiency_rate|function|1a58f56456f0232d
 tidy.econ_io_table|function|d57dc69a20e838e0
-file_iotable_producer_price_medium_change|stem|145e9d8e7fffd034|b70fd7e40e7356ef|2c530c1562a7fbd1|-24523992||t20225.2016760182s|s58b|58|rds|local|vector|||0.03||
-iotable_producer_price_medium_raw|stem|5e0d1c6f4da97564|4b26680f9d09ccb2|b7a80e20cad98f1c|1729576940||t20225.2016836483s|s24756b|24756|rds|local|vector|||0.62||
+file_iotable_producer_price_medium_change|stem|145e9d8e7fffd034|b70fd7e40e7356ef|2c530c1562a7fbd1|-24523992||t20225.2408479118s|s58b|58|rds|local|vector|||0.04||
+iotable_producer_price_medium_raw|stem|5e0d1c6f4da97564|4b26680f9d09ccb2|cb3ceaaf9e60dacb|1729576940||t20225.2408554048s|s24756b|24756|rds|local|vector|||0.61||
