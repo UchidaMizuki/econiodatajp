@@ -6,6 +6,8 @@ io_table_read_sector_types_noncompetitive|function|fefd4d82b075cfa1|||||||||||||
 io_table_read_sector_types_competitive|function|2a8f6726107d100c|||||||||||||||
 .onLoad|function|fc7da20ef45d4996|||||||||||||||
 next_step|function|337452590a160b56|||||||||||||||
+iotable_producer_price_medium_raw|stem|dfbf24e4ca048858|4b26680f9d09ccb2|6688d9f0bb7f7e47|1729576940||t20218.6267574225s|s31578b|31578|rds|local|vector|||1.72||
+target_iotable_producer_price|object|74c8a50ef38caf13
 io_sector_type|function|507d50344d7a22b5
 tbl_format_setup.io_table_competitive_import|function|7989bb1f357b7e92
 io_autolayer_skyline_segment|function|e69809df83a27e26
@@ -48,7 +50,6 @@ big_mark|function|080d751c8c8a1830
 format_args|function|48af05039c1497c5
 io_sector_name|function|2dcbe8813b380bf9
 vec_cast.econ_io_sector|function|e7dc5b68cebbcab4
-target_iotable_producer_price|object|74c8a50ef38caf13
 $<-.adverbial_function_partial|function|344cc632f4037930
 $.adverbial_function_partial|function|abec1ee86044204a
 $.adverbial_function_compose|function|abec1ee86044204a
@@ -57,7 +58,7 @@ obj_sum.adverbial_function_step_by_step|function|dd209daefb1abaaf
 print.adverbial_function_step_by_step|function|d822b4c6cf9f157f
 type_sum.adverbial_function_compose|function|0e4f6dccdbde890f
 tbl_format_setup.io_table_multiregional|function|12a6cdd5e04f76e7
-io_check_total|function|20cabcdeb2fc5c07
+io_check_total|function|6366d693c4b579a5
 io_table_to_blocks|function|ab9c0b928030420e
 [[.adverbial_function_partial|function|917f3ce0816a9d79
 names.adverbial_function_partial|function|9744866ffcf8c96e
@@ -96,8 +97,8 @@ autolayer.econ_io_table|function|8c07bc19213c6a28
 print.adverbial_function_partial|function|1ad2f595a3c050c5
 autoplot.econ_io_table|function|fbacbb7ff8b6ddc6
 read_file_iotable_producer_price_medium|function|558041090f5f2188
-io_table_regional|function|a30e7eb287303080
-io_table_multiregional|function|53f78461cd2a9a3e
+io_table_regional|function|123f8e484af8b1d7
+io_table_multiregional|function|c889e0e2e2a0eab5
 io_input_coef|function|a136300eb5c58bb4
 io_table_to_noncompetitive_import|function|d522fc371ce7a18d
 io_table_to_competitive_import|function|15f7ed313dff5385
@@ -107,5 +108,4 @@ io_production_induce|function|da9a34f6354e03e1
 io_tidy_skyline|function|6eaa53b1fd8e916d
 io_self_sufficiency_rate|function|1a58f56456f0232d
 tidy.econ_io_table|function|d57dc69a20e838e0
-file_iotable_producer_price_medium_change|stem|145e9d8e7fffd034|b70fd7e40e7356ef|2c530c1562a7fbd1|-24523992||t20218.6267371465s|s58b|58|rds|local|vector|||0.05||
-iotable_producer_price_medium_raw|stem|dfbf24e4ca048858|4b26680f9d09ccb2|6688d9f0bb7f7e47|1729576940||t20218.6267574225s|s31578b|31578|rds|local|vector|||1.72||
+file_iotable_producer_price_medium_change|stem|145e9d8e7fffd034|b70fd7e40e7356ef|2c530c1562a7fbd1|-24523992||t20225.1169126559s|s58b|58|rds|local|vector|||0.04||
