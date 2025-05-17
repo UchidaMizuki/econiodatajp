@@ -2,6 +2,7 @@
 
 target_iotable_producer_price <- tar_plan(
   tar_change(
+    # https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt.html
     file_iotable_producer_price_medium,
     download_file(
       url = "https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx",
@@ -46,6 +47,29 @@ read_file_iotable_producer_price_medium <- function(file) {
     io_table_read_sector_names(
       input_sector_name_glue = "{input_sector_code}_{input_sector_name}",
       output_sector_name_glue = "{output_sector_code}_{output_sector_name_1}{output_sector_name_2}{output_sector_name_3}"
+    ) |>
+    as_step(mutate)(
+      across(
+        input_sector_name,
+        \(x)
+          case_match(
+            x,
+            "54_電子計算機・同付属装置" ~ "54_電子計算機・同附属装置",
+            "85_インターネット付随サービス" ~ "85_インターネット附随サービス",
+            .default = x
+          )
+      ),
+      across(
+        output_sector_name,
+        \(x)
+          case_match(
+            x,
+            "16_衣服・その他の繊維製品" ~ "16_衣服・その他の繊維既製品",
+            "26_化学最終製品(医薬品を除く。)" ~
+              "26_化学最終製品（医薬品を除く。）",
+            .default = x
+          )
+      )
     ) |>
     io_table_read_sector_types(
       competitive_import = TRUE,
