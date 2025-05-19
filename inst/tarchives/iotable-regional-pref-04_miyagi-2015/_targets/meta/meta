@@ -100,4 +100,5 @@ io_production_induce|function|da9a34f6354e03e1
 io_tidy_skyline|function|6eaa53b1fd8e916d
 io_self_sufficiency_rate|function|1a58f56456f0232d
 tidy.econ_io_table|function|d57dc69a20e838e0
-file_iotable_producer_price_medium_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-24523992||t20226.6191324107s|s56b|56|rds|local|vector|||0.08||
+file_iotable_producer_price_medium_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-24523992||t20227.5899030538s|s56b|56|rds|local|vector|||0.07||
+iotable_producer_price_medium_raw|stem|275b96ab9aa53c07|4b26680f9d09ccb2|3e1edacfd8a971d8|1729576940||t20227.5899147783s|s26924b|26924|rds|local|vector|||0.98||
