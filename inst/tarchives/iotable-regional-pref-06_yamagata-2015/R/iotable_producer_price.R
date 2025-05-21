@@ -51,7 +51,7 @@ read_file_iotable_producer_price_medium <- function(file) {
       total_pattern = "県内生産額"
     ) |>
     io_table_read_data(
-      scale = 1e6
+      value_scale = 1e6
     ) |>
     end_step()
 }

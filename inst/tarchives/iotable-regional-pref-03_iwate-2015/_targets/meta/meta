@@ -1,6 +1,6 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-iotable_producer_price_small_raw|stem|6e0131ce947f6a72|ab5b63f208f29860|a0468d4cc49bbcde|-368959499||t20225.2430817332s|s85411b|85411|rds|local|vector|||0.9||
 io_check_axis|function|8e72cb2630e8c4d1
+file_iotable_producer_price_small|stem|5c3bee8b831910c1|26ab0bcae899316d|896b400eecfcb13f|-1256119223|_targets/user/iotable/producer_price/small.xlsx|t20226.0464238605s|s1511562b|1511562|file|local|vector|||0.54||
 io_sector_type|function|507d50344d7a22b5
 tbl_format_setup.io_table_competitive_import|function|7989bb1f357b7e92
 io_autolayer_skyline_segment|function|e69809df83a27e26
@@ -13,7 +13,7 @@ functions|function|23d2d9ceb0e420ea
 io_sector|function|1254004c5a6294f2
 tbl_format_setup.io_table_noncompetitive_import|function|bfbaa1fbaec751e7
 functions<-|function|2b6ddeb95d6f1fce
-io_table_read_sector_names|function|b2e097ddd79d2ed0
+io_table_read_sector_names|function|fb44ef50212dee0c
 arguments<-|function|99799fd2a1e3c54c
 type_sum.adverbial_function_partial|function|c60e79ef7ba08bd3
 vec_ptype_full.econ_io_sector|function|d2992fa593d16b67
@@ -31,7 +31,7 @@ cat_line_subtle|function|71be47dd67aa7c43
 io_endogenize_import|function|f5135abea47c7955
 tbl_format_setup.io_table_regional|function|f8251d15ceabb6c6
 io_autolayer_skyline_rect|function|a293cbeef2bff728
-io_table_read_headers|function|491da0fc82acc472
+io_table_read_headers|function|1c36a31946117f91
 download_file|function|8af76f2165fc3922
 end_step|function|d3dcf1b39aa9df66
 type_sum.adverbial_function_step_by_step|function|e4cbe6204252c73e
@@ -40,13 +40,13 @@ format_args|function|48af05039c1497c5
 io_sector_name|function|2dcbe8813b380bf9
 vec_cast.econ_io_sector|function|e7dc5b68cebbcab4
 $<-.adverbial_function_partial|function|344cc632f4037930
-io_table_read_sector_types|function|a2e3dcba670714f8
+io_table_read_sector_types|function|105c69c487008da0
 $.adverbial_function_partial|function|abec1ee86044204a
 $.adverbial_function_compose|function|abec1ee86044204a
 vec_ptype_abbr.econ_io_sector|function|d2992fa593d16b67
 obj_sum.adverbial_function_step_by_step|function|dd209daefb1abaaf
-io_table_read_data|function|05703ff2d957c13d
-io_table_read_cells|function|4787f9b281d16221
+io_table_read_data|function|e27f3432e8db67f5
+io_table_read_cells|function|64ed6083be5b1fde
 io_table_reader|function|ce7aa86c8f5c0d06
 print.adverbial_function_step_by_step|function|d822b4c6cf9f157f
 type_sum.adverbial_function_compose|function|0e4f6dccdbde890f
@@ -79,7 +79,7 @@ obj_sum.adverbial_function_compose|function|a3ad0fffcad61eb4
 obj_sum.adverbial_function_partial|function|a0c832a589285238
 print_args|function|641f679e0bd07ba2
 io_autoplot_skyline|function|5e277b4bc8ed8202
-read_file_iotable_producer_price_small|function|1034ac1a3a839b0a
+read_file_iotable_producer_price_small|function|414f45174687d927
 as_step|function|2e4cc58061f21748
 io_add_sector|function|1d917c4cbb4b93c7
 io_total_input|function|ed34d4ab0f2876f8
@@ -101,5 +101,5 @@ io_production_induce|function|da9a34f6354e03e1
 io_tidy_skyline|function|6eaa53b1fd8e916d
 io_self_sufficiency_rate|function|1a58f56456f0232d
 tidy.econ_io_table|function|d57dc69a20e838e0
-file_iotable_producer_price_small_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|1350999948||t20226.0464171712s|s56b|56|rds|local|vector|||0.06||
-file_iotable_producer_price_small|stem|5c3bee8b831910c1|26ab0bcae899316d|896b400eecfcb13f|-1256119223|_targets/user/iotable/producer_price/small.xlsx|t20226.0464238605s|s1511562b|1511562|file|local|vector|||0.54||
+file_iotable_producer_price_small_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|1350999948||t20229.6532275467s|s56b|56|rds|local|vector|||0.08||
+iotable_producer_price_small_raw|stem|b8c05d3702275fec|ab5b63f208f29860|2162851d2b293a00|-368959499||t20229.6532407179s|s85414b|85414|rds|local|vector|||1.1||
