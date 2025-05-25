@@ -6,11 +6,16 @@ Authors@R:
     person("Mizuki", "Uchida", , "uchidamizuki@vivaldi.net", role = c("aut", "cre"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    dibble,
+    dplyr,
+    econio,
+    fs,
     rlang,
     stringr,
-    tarchives
+    tarchives,
+    tibble
 RoxygenNote: 7.3.2
