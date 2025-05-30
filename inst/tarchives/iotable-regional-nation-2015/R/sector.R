@@ -18,17 +18,17 @@ target_sector <- tar_plan(
 
 read_file_sector <- function(file) {
   col_names <- c(
-    "output_sector_basic_code_1",
-    "output_sector_basic_code_2",
-    "input_sector_basic_code_1",
-    "input_sector_basic_code_2",
-    "sector_basic_name",
-    "sector_small_code",
-    "sector_small_name",
-    "sector_medium_code",
-    "sector_medium_name",
-    "sector_large_code",
-    "sector_large_name"
+    "output_sector_code_basic_1",
+    "output_sector_code_basic_2",
+    "input_sector_code_basic_1",
+    "input_sector_code_basic_2",
+    "sector_name_basic",
+    "sector_code_small",
+    "sector_name_small",
+    "sector_code_medium",
+    "sector_name_medium",
+    "sector_code_large",
+    "sector_name_large"
   )
   sector_industry <- readxl::read_excel(
     file,
@@ -67,7 +67,7 @@ read_file_sector <- function(file) {
         sector_type,
         \(x)
           case_match(
-            sector_basic_name,
+            sector_name_basic,
             "国内生産額" ~ "total",
             .default = x
           ) |>
@@ -75,65 +75,65 @@ read_file_sector <- function(file) {
       )
     ) |>
     mutate(
-      output_sector_basic_code = str_c(
-        output_sector_basic_code_1,
-        output_sector_basic_code_2
+      output_sector_code_basic = str_c(
+        output_sector_code_basic_1,
+        output_sector_code_basic_2
       ),
       .keep = "unused",
-      .before = output_sector_basic_code_1
+      .before = output_sector_code_basic_1
     ) |>
     mutate(
-      input_sector_basic_code = str_c(
-        input_sector_basic_code_1,
-        input_sector_basic_code_2
+      input_sector_code_basic = str_c(
+        input_sector_code_basic_1,
+        input_sector_code_basic_2
       ),
       .keep = "unused",
-      .before = input_sector_basic_code_1
+      .before = input_sector_code_basic_1
     ) |>
     mutate(
       across(
-        c(sector_small_name, sector_medium_name, sector_large_name),
+        c(sector_name_small, sector_name_medium, sector_name_large),
         \(x) str_remove_all(x, "^（続き）|（\\d／\\d）$")
       )
     ) |>
     fill(
-      sector_small_code,
-      sector_small_name,
-      sector_medium_code,
-      sector_medium_name,
-      sector_large_code,
-      sector_large_name
+      sector_code_small,
+      sector_name_small,
+      sector_code_medium,
+      sector_name_medium,
+      sector_code_large,
+      sector_name_large
     ) |>
     mutate(
-      output_sector_basic = str_c(
-        output_sector_basic_code,
-        sector_basic_name,
+      output_sector_name_basic = str_c(
+        output_sector_code_basic,
+        sector_name_basic,
         sep = "_"
       ),
-      .before = output_sector_basic_code
+      .before = output_sector_code_basic
     ) |>
     mutate(
-      input_sector_basic = str_c(
-        input_sector_basic_code,
-        sector_basic_name,
+      input_sector_name_basic = str_c(
+        input_sector_code_basic,
+        sector_name_basic,
         sep = "_"
       ),
-      .before = input_sector_basic_code
+      .before = input_sector_code_basic
     ) |>
     select(
-      !c(output_sector_basic_code, input_sector_basic_code, sector_basic_name)
+      !c(output_sector_code_basic, input_sector_code_basic, sector_name_basic)
     ) |>
     unite(
-      "sector_small",
-      c(sector_small_code, sector_small_name)
+      "sector_name_small",
+      c(sector_code_small, sector_name_small)
     ) |>
     unite(
-      "sector_medium",
-      c(sector_medium_code, sector_medium_name)
+      "sector_name_medium",
+      c(sector_code_medium, sector_name_medium)
     ) |>
     unite(
-      "sector_large",
-      c(sector_large_code, sector_large_name)
+      "sector_name_large",
+      c(sector_code_large, sector_name_large)
     )
 
   sector_template <- readxl::read_excel(
@@ -142,55 +142,55 @@ read_file_sector <- function(file) {
     skip = 4,
     n_max = 38,
     col_names = c(
-      "sector_large_code",
-      "sector_large_name",
+      "sector_code_large",
+      "sector_name_large",
       "sector_template_code",
-      "sector_template_name"
+      "sector_name_template"
     ),
     col_types = "text",
     .name_repair = "minimal"
   ) |>
     fill(
       sector_template_code,
-      sector_template_name
+      sector_name_template
     ) |>
     unite(
-      "sector_large",
-      c(sector_large_code, sector_large_name)
+      "sector_name_large",
+      c(sector_code_large, sector_name_large)
     ) |>
     unite(
-      "sector_template",
-      c(sector_template_code, sector_template_name)
+      "sector_name_template",
+      c(sector_template_code, sector_name_template)
     )
 
   sector <- sector |>
     left_join(
       sector_template,
-      by = join_by(sector_large)
+      by = join_by(sector_name_large)
     ) |>
     mutate(
       across(
-        sector_template,
+        sector_name_template,
         \(x)
           case_match(
             sector_type,
-            c("value_added", "final_demand", "total") ~ sector_large,
+            c("value_added", "final_demand", "total") ~ sector_name_large,
             .default = x
           )
       )
     )
 
   sector_input <- sector |>
-    drop_na(input_sector_basic) |>
-    select(!output_sector_basic) |>
+    drop_na(input_sector_name_basic) |>
+    select(!output_sector_name_basic) |>
     rename(
-      sector_basic = input_sector_basic
+      sector_name_basic = input_sector_name_basic
     )
   sector_output <- sector |>
-    drop_na(output_sector_basic) |>
-    select(!input_sector_basic) |>
+    drop_na(output_sector_name_basic) |>
+    select(!input_sector_name_basic) |>
     rename(
-      sector_basic = output_sector_basic
+      sector_name_basic = output_sector_name_basic
     )
 
   list(

@@ -1,6 +1,5 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 file_sector|stem|7719c23c85a13dba|4a5ebb1e105bce86|f51717a45aeefe40|-113039177|_targets/user/sector.xlsx|t20236.5803669808s|s79002b|79002|file|local|vector|||0.81||
-sector|stem|03ece4c4ba44a2a4|08088905f2b0db15|af082f33551e88a6|-1691219169||t20236.6422843834s|s20545b|20545|rds|local|vector|||0.17||
 io_sector_type|function|507d50344d7a22b5
 tbl_format_setup.io_table_competitive_import|function|7989bb1f357b7e92
 io_autolayer_skyline_segment|function|e69809df83a27e26
@@ -47,7 +46,7 @@ $.adverbial_function_compose|function|abec1ee86044204a
 vec_ptype_abbr.econ_io_sector|function|d2992fa593d16b67
 obj_sum.adverbial_function_step_by_step|function|dd209daefb1abaaf
 io_table_read_data|function|9ce9152ebbcc2fa9
-read_file_sector|function|9942f4286caaadbe
+read_file_sector|function|9c47c76876022473
 io_table_read_cells|function|64ed6083be5b1fde
 print.adverbial_function_step_by_step|function|d822b4c6cf9f157f
 type_sum.adverbial_function_compose|function|0e4f6dccdbde890f
@@ -103,4 +102,5 @@ io_production_induce|function|da9a34f6354e03e1
 io_tidy_skyline|function|6eaa53b1fd8e916d
 io_self_sufficiency_rate|function|1a58f56456f0232d
 tidy.econ_io_table|function|d57dc69a20e838e0
-file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20236.6423729777s|s56b|56|rds|local|vector|||0.04||
+file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20238.6430384059s|s56b|56|rds|local|vector|||0.04||
+sector|stem|f7baed277e27832f|08088905f2b0db15|ca6a93feb81748fc|-1691219169||t20238.6430409522s|s20554b|20554|rds|local|vector|||0.15||
