@@ -11,8 +11,22 @@ target_sector <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  sector = read_file_sector(
+  sector_raw = read_file_sector(
     file = file_sector
+  ),
+  conversion_sector_input = get_conversion_sector(
+    sector_raw = sector_raw,
+    axis = "input"
+  ),
+  conversion_sector_output = get_conversion_sector(
+    sector_raw = sector_raw,
+    axis = "output"
+  ),
+  sector_input = get_sector(
+    conversion_sector = conversion_sector_input
+  ),
+  sector_output = get_sector(
+    conversion_sector = conversion_sector_output
   )
 )
 
@@ -93,7 +107,7 @@ read_file_sector <- function(file) {
     mutate(
       across(
         c(sector_name_small, sector_name_medium, sector_name_large),
-        \(x) str_remove_all(x, "^（続き）|（\\d／\\d）$")
+        \(x) str_remove_all(x, "\\s|^（続き）|（\\d／\\d）$")
       )
     ) |>
     fill(
@@ -161,6 +175,12 @@ read_file_sector <- function(file) {
     unite(
       "sector_name_template",
       c(sector_template_code, sector_name_template)
+    ) |>
+    mutate(
+      across(
+        c(sector_name_large, sector_name_template),
+        \(x) str_remove_all(x, "\\s")
+      )
     )
 
   sector <- sector |>
@@ -197,4 +217,51 @@ read_file_sector <- function(file) {
     input = sector_input,
     output = sector_output
   )
+}
+
+get_conversion_sector <- function(sector_raw, axis) {
+  sector <- sector_raw[[axis]]
+
+  sector_class <- as_factor(c("basic", "small", "medium", "large", "template"))
+
+  expand_grid(
+    sector_class_from = sector_class,
+    sector_class_to = sector_class
+  ) |>
+    mutate(
+      col_name_sector_class_from = str_c("sector_name_", sector_class_from),
+      col_name_sector_class_to = str_c("sector_name_", sector_class_to)
+    ) |>
+    mutate(
+      data = list(col_name_sector_class_from, col_name_sector_class_to) |>
+        pmap(\(col_name_sector_class_from, col_name_sector_class_to) {
+          tibble(
+            sector_type = sector$sector_type,
+            sector_name_from = sector[[col_name_sector_class_from]],
+            sector_name_to = sector[[col_name_sector_class_to]]
+          )
+        }),
+      .keep = "unused"
+    ) |>
+    unnest(data) |>
+    relocate(sector_type) |>
+    arrange(sector_type) |>
+    distinct()
+}
+
+get_sector <- function(conversion_sector) {
+  conversion_sector |>
+    select(
+      sector_type,
+      sector_class_from,
+      sector_name_from
+    ) |>
+    rename(
+      sector_class = sector_class_from,
+      sector_name = sector_name_from
+    ) |>
+    mutate(
+      across(sector_type, fct_drop)
+    ) |>
+    distinct()
 }

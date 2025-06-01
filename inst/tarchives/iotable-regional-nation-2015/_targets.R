@@ -15,7 +15,8 @@ tar_option_set(
     "stringr",
     "tidyr",
     "dplyr",
-    "purrr"
+    "purrr",
+    "forcats"
   ),
   imports = c(
     "econio",
