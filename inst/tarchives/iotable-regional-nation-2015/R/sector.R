@@ -51,7 +51,11 @@ read_file_sector <- function(file) {
     col_names = col_names,
     col_types = "text",
     .name_repair = "minimal"
-  )
+  ) |>
+    tibble::add_column(
+      sector_type = "industry",
+      .before = 1
+    )
   sector_final_demand <- readxl::read_excel(
     file,
     sheet = "最終需要部門・粗付加価値部門",
@@ -60,7 +64,16 @@ read_file_sector <- function(file) {
     col_names = col_names,
     col_types = "text",
     .name_repair = "minimal"
-  )
+  ) |>
+    mutate(
+      sector_type = case_when(
+        str_starts(sector_name_basic, "輸出") ~ "export",
+        str_starts(sector_name_basic, "（控除）") ~ "import",
+        sector_name_basic == "国内生産額" ~ "total",
+        .default = "final_demand"
+      ),
+      .before = 1
+    )
   sector_value_added <- readxl::read_excel(
     file,
     sheet = "最終需要部門・粗付加価値部門",
@@ -69,32 +82,20 @@ read_file_sector <- function(file) {
     col_names = col_names[-(1:2)],
     col_types = "text",
     .name_repair = "minimal"
-  )
-  sector <- bind_rows(
-    industry = sector_industry,
-    value_added = sector_value_added,
-    final_demand = sector_final_demand,
-    .id = "sector_type"
   ) |>
     mutate(
-      across(
-        sector_type,
-        \(x)
-          case_when(
-            str_starts(sector_name_basic, "輸出") ~ "export",
-            str_starts(sector_name_basic, "（控除）") ~ "import",
-            sector_name_basic == "国内生産額" ~ "total",
-            .default = x
-          ) |>
-            factor(c(
-              "industry",
-              "value_added",
-              "final_demand",
-              "export",
-              "import",
-              "total"
-            ))
+      sector_type = case_when(
+        sector_name_basic == "国内生産額" ~ "total",
+        .default = "value_added"
       ),
+      .before = 1
+    )
+  sector <- bind_rows(
+    sector_industry,
+    sector_value_added,
+    sector_final_demand,
+  ) |>
+    mutate(
       across(
         c(
           sector_name_basic,
@@ -229,12 +230,25 @@ read_file_sector <- function(file) {
     select(!output_sector_name_basic) |>
     rename(
       sector_name_basic = input_sector_name_basic
+    ) |>
+    mutate(
+      across(
+        sector_type,
+        \(x) factor(x, c("industry", "value_added", "total"))
+      )
     )
   sector_output <- sector |>
     drop_na(output_sector_name_basic) |>
     select(!input_sector_name_basic) |>
     rename(
       sector_name_basic = output_sector_name_basic
+    ) |>
+    mutate(
+      across(
+        sector_type,
+        \(x)
+          factor(x, c("industry", "final_demand", "export", "import", "total"))
+      )
     )
 
   list(
