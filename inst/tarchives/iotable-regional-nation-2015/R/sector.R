@@ -80,12 +80,35 @@ read_file_sector <- function(file) {
       across(
         sector_type,
         \(x)
-          case_match(
-            sector_name_basic,
-            "国内生産額" ~ "total",
+          case_when(
+            str_starts(sector_name_basic, "輸出") ~ "export",
+            str_starts(sector_name_basic, "（控除）") ~ "import",
+            sector_name_basic == "国内生産額" ~ "total",
             .default = x
           ) |>
-            factor(c("industry", "value_added", "final_demand", "total"))
+            factor(c(
+              "industry",
+              "value_added",
+              "final_demand",
+              "export",
+              "import",
+              "total"
+            ))
+      ),
+      across(
+        c(
+          sector_name_basic,
+          sector_name_small,
+          sector_name_medium,
+          sector_name_large
+        ),
+        \(x)
+          case_match(
+            sector_type,
+            c("value_added", "final_demand", "export", "import", "total") ~
+              str_replace(x, "国内", "域内"),
+            .default = x
+          )
       )
     ) |>
     mutate(
@@ -194,7 +217,8 @@ read_file_sector <- function(file) {
         \(x)
           case_match(
             sector_type,
-            c("value_added", "final_demand", "total") ~ sector_name_large,
+            c("value_added", "final_demand", "export", "import", "total") ~
+              sector_name_large,
             .default = x
           )
       )
