@@ -32,12 +32,6 @@ read_file_iotable_producer_price_small <- function(file) {
         "output_sector_name"
       )
     ) |>
-    # as_step(mutate)(
-    #   across(
-    #     output_sector_code,
-    #     \(x) x |> str_extract("^\\d+$") |> replace_na("")
-    #   )
-    # ) |>
     io_table_read_sector_names(
       input_sector_name_glue = "{input_sector_code}_{input_sector_name}",
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
