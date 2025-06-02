@@ -47,7 +47,7 @@ read_file_iotable_producer_price_small <- function(file) {
       industry_pattern = "^[0-6]\\d+_",
       value_added_pattern = "家計外消費支出|賃金・俸給|社会保険料|その他の給与及び手当|営業余剰|資本減耗引当|間接税|経常補助金",
       final_demand_pattern = "家計外消費支出|家計消費支出|対家計民間非営利団体消費支出|一般政府消費支出|県内総固定資本形成|在庫純増",
-      export_pattern = "_([移輸]出)$",
+      export_pattern = "_[移輸]出$",
       import_pattern = "_（控除）[移輸]入$",
       total_pattern = "県内生産額"
     ) |>
