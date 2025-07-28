@@ -1,4 +1,4 @@
-io_table_regional_japan_pref_pipeline <- function(region, year) {
+io_table_regional_pref_pipeline <- function(region, year) {
   data_region <- system.file("tarchives", package = "econiodatajp") |>
     fs::dir_ls(regexp = "iotable-regional-pref-\\d{2}_.*-\\d+$") |>
     fs::path_file() |>
@@ -28,8 +28,13 @@ io_table_regional_japan_pref_pipeline <- function(region, year) {
   stringr::str_glue("iotable-regional-pref-{region}-{year}")
 }
 
-io_table_regional_japan_pref <- function(region, year, data_type, sector_type) {
-  pipeline <- io_table_regional_japan_pref_pipeline(
+io_table_regional_pref <- function(
+  region,
+  year,
+  data_type,
+  sector_type
+) {
+  pipeline <- io_table_regional_pref_pipeline(
     region = region,
     year = year
   )
@@ -43,7 +48,7 @@ io_table_regional_japan_pref <- function(region, year, data_type, sector_type) {
   tarchives::tar_make_archive(
     package = "econiodatajp",
     pipeline = pipeline,
-    names = dplyr::all_of(name)
+    names = !!name
   )
   tarchives::tar_read_archive_raw(
     name,
