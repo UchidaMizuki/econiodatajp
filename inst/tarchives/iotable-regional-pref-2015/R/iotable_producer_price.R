@@ -1,0 +1,25 @@
+tar_source("R/iotable_producer_price")
+
+target_iotable_producer_price <- tar_plan(
+  target_iotable_producer_price_01_hokkaido,
+  target_iotable_producer_price_02_aomori,
+  target_iotable_producer_price_03_iwate,
+  target_iotable_producer_price_04_miyagi,
+  target_iotable_producer_price_05_akita,
+  target_iotable_producer_price_06_yamagata,
+  target_iotable_producer_price_07_fukushima,
+  target_iotable_producer_price_08_ibaraki,
+  target_iotable_producer_price_09_tochigi,
+  target_iotable_producer_price_10_gunma,
+  target_iotable_producer_price_11_saitama,
+  target_iotable_producer_price_12_chiba,
+  target_iotable_producer_price_13_tokyo,
+  target_iotable_producer_price_14_kanagawa,
+  target_iotable_producer_price_15_niigata,
+  target_iotable_producer_price_16_toyama,
+  target_iotable_producer_price_17_ishikawa,
+  target_iotable_producer_price_18_fukui,
+  target_iotable_producer_price_19_yamanashi,
+  target_iotable_producer_price_20_nagano,
+  target_iotable_producer_price_21_gifu,
+)
