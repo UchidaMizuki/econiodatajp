@@ -22,4 +22,5 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_19_yamanashi,
   target_iotable_producer_price_20_nagano,
   target_iotable_producer_price_21_gifu,
+  target_iotable_producer_price_22_shizuoka,
 )
