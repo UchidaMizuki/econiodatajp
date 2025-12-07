@@ -26,4 +26,5 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_23_aichi,
   target_iotable_producer_price_24_mie,
   target_iotable_producer_price_25_shiga,
+  target_iotable_producer_price_26_kyoto,
 )
