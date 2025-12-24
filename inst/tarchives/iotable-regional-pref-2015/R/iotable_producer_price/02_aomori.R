@@ -52,9 +52,9 @@ read_file_iotable_producer_price_medium_02_aomori <- function(file) {
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,
-      export_pattern = export_pattern,
+      export_pattern = "[輸移]出計$",
       export_total_pattern = export_total_pattern,
-      import_pattern = import_pattern,
+      import_pattern = "（控除）[輸移]入計$",
       import_total_pattern = import_total_pattern,
       total_pattern = total_pattern
     ) |>

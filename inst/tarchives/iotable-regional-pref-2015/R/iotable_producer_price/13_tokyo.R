@@ -25,14 +25,20 @@ read_file_iotable_producer_price_small_13_tokyo <- function(file) {
       input_sector_name_glue = "{input_sector_name}",
       output_sector_name_glue = "{output_sector_name}"
     ) |>
+    as_step(filter)(
+      !str_detect(input_sector_name, "財・サービス内生部門計（百万円）$"),
+      !str_detect(output_sector_name, "財・サービス内生部門計（百万円）$")
+    ) |>
     io_table_read_sector_types(
       competitive_import = TRUE,
-      industry_pattern = "^中間(投入|需要)／[ABKL]\\d+",
-      value_added_pattern = "家計外消費支出|賃金・俸給|社会保険料|その他の給与及び手当|営業余剰|資本減耗引当|間接税|経常補助金",
-      final_demand_pattern = "(?<!（控除）)都事業所家計外消費支出|都民家計消費支出|対家計民間非営利団体消費支出|一般政府消費支出|都内総固定資本形成|在庫純増",
+      industry_total_pattern = "／内生部門計（百万円）$",
+      value_added_total_pattern = value_added_total_pattern,
+      final_demand_total_pattern = final_demand_total_pattern,
       export_pattern = "(移出|他地域事業所家計外消費支出|他地域民支出|輸出|輸出（直接購入）)（百万円）$",
+      export_total_pattern = "移輸出計（百万円）$",
       import_pattern = "（控除）(移入|都事業所家計外消費支出|都民支出|輸入|輸入（直接購入）|関税|輸入品商品税)（百万円）$",
-      total_pattern = "生産額"
+      import_total_pattern = "（控除）移輸入計（百万円）$",
+      total_pattern = "生産額（百万円）$"
     ) |>
     as_step(separate_wider_delim)(
       c(input_sector_name, output_sector_name),

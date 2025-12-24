@@ -42,12 +42,12 @@ read_file_iotable_producer_price_medium_18_fukui <- function(file) {
     ) |>
     io_table_read_sector_types(
       competitive_import = TRUE,
-      industry_pattern = "^(0\\d+|10[0-3])_",
-      value_added_pattern = "家計外消費支出|雇用者所得|営業余剰|資本減耗引当|間接税|経常補助金",
-      final_demand_pattern = "家計外消費支出|民間消費支出|一般政府消費支出|県内総固定資本形成|在庫純増",
-      export_pattern = "移輸出",
-      import_pattern = "（控除）移輸入",
-      total_pattern = "県内生産額"
+      industry_total_pattern = industry_total_pattern,
+      value_added_total_pattern = value_added_total_pattern,
+      final_demand_total_pattern = final_demand_total_pattern,
+      export_pattern = "移輸出$",
+      import_pattern = "（控除）移輸入$",
+      total_pattern = total_pattern
     ) |>
     io_table_read_data(
       value_scale = 1e4

@@ -39,9 +39,9 @@ read_file_iotable_producer_price_small_03_iwate <- function(file) {
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,
       export_pattern = export_pattern,
-      export_total_pattern = "移輸出",
+      export_total_pattern = "移輸出$",
       import_pattern = import_pattern,
-      import_total_pattern = "（控除）移輸入",
+      import_total_pattern = "（控除）移輸入$",
       total_pattern = total_pattern
     ) |>
     io_table_read_data(

@@ -67,8 +67,8 @@ read_file_iotable_producer_price_medium_04_miyagi <- function(file) {
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,
-      export_pattern = "移輸出",
-      import_pattern = "\\(控除\\)移輸入",
+      export_pattern = "移輸出$",
+      import_pattern = "\\(控除\\)移輸入$",
       total_pattern = total_pattern
     ) |>
     io_table_read_data(
