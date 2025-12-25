@@ -36,4 +36,9 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_33_okayama,
   target_iotable_producer_price_34_hiroshima,
   target_iotable_producer_price_35_yamaguchi,
+  target_iotable_producer_price_36_tokushima,
+  target_iotable_producer_price_37_kagawa,
+  target_iotable_producer_price_38_ehime,
+  target_iotable_producer_price_39_kochi,
+  target_iotable_producer_price_40_fukuoka,
 )
