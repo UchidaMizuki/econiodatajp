@@ -1,31 +1,31 @@
-# https://opendata.pref.kagawa.lg.jp/dataset/360.html
-target_iotable_producer_price_37_kagawa <- tar_plan(
+# https://www.pref.kumamoto.jp/soshiki/20/50333.html
+target_iotable_producer_price_43_kumamoto <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_37_kagawa,
+    file_iotable_producer_price_medium_43_kumamoto,
     download_file(
-      url = "https://opendata.pref.kagawa.lg.jp/dataset/360/resource/4445/27_107%E9%83%A8%E9%96%80%E8%A1%A8%EF%BC%88%E7%94%9F%E7%94%A3%E8%80%85%E4%BE%A1%E6%A0%BC%E8%A9%95%E4%BE%A1%E8%A1%A8%EF%BC%89.xlsx",
-      destfile = "_targets/user/iotable/producer_price/medium/37_kagawa.xlsx"
+      url = "https://www.pref.kumamoto.jp/uploaded/attachment/282593.xlsx",
+      destfile = "_targets/user/iotable/producer_price/medium/43_kumamoto.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_37_kagawa = read_file_iotable_producer_price_medium_37_kagawa(
-    file = file_iotable_producer_price_medium_37_kagawa
+  iotable_producer_price_medium_raw_43_kumamoto = read_file_iotable_producer_price_medium_43_kumamoto(
+    file = file_iotable_producer_price_medium_43_kumamoto
   ),
 )
 
-read_file_iotable_producer_price_medium_37_kagawa <- function(file) {
+read_file_iotable_producer_price_medium_43_kumamoto <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
-      sheets = "取引基本表",
-      rows_exclude = 1
+      sheets = "生産者価格評価表（統合中分類）",
+      rows_exclude = 1:2,
+      cols_exclude = 1
     ) |>
     io_table_read_headers(
       input_names = c("input_sector_code", "input_sector_name"),
       output_names = c("output_sector_code", "output_sector_name")
     ) |>
     as_step(mutate)(
-      across(input_sector_code, \(x) str_replace(x, "\\r\\n", "・")),
       across(
         c(input_sector_name, output_sector_name),
         \(x) str_remove_all(x, "\\s")
@@ -42,8 +42,8 @@ read_file_iotable_producer_price_medium_37_kagawa <- function(file) {
       final_demand_total_pattern = final_demand_total_pattern,
       export_pattern = export_pattern,
       export_total_pattern = export_total_pattern,
-      import_pattern = str_c(import_pattern, "移輸入$", sep = "|"),
-      import_total_pattern = import_total_pattern,
+      import_pattern = import_pattern,
+      import_total_pattern = "（控除）輸移入$",
       total_pattern = total_pattern
     ) |>
     io_table_read_data(

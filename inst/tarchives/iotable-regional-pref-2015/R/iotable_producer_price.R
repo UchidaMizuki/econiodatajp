@@ -41,4 +41,9 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_38_ehime,
   target_iotable_producer_price_39_kochi,
   target_iotable_producer_price_40_fukuoka,
+  target_iotable_producer_price_41_saga,
+  target_iotable_producer_price_42_nagasaki,
+  target_iotable_producer_price_43_kumamoto,
+  target_iotable_producer_price_44_oita,
+  target_iotable_producer_price_45_miyazaki,
 )

@@ -1,23 +1,23 @@
-# https://opendata.pref.kagawa.lg.jp/dataset/360.html
-target_iotable_producer_price_37_kagawa <- tar_plan(
+# https://www.pref.oita.jp/site/toukei/sangyo.html
+target_iotable_producer_price_44_oita <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_37_kagawa,
+    file_iotable_producer_price_medium_44_oita,
     download_file(
-      url = "https://opendata.pref.kagawa.lg.jp/dataset/360/resource/4445/27_107%E9%83%A8%E9%96%80%E8%A1%A8%EF%BC%88%E7%94%9F%E7%94%A3%E8%80%85%E4%BE%A1%E6%A0%BC%E8%A9%95%E4%BE%A1%E8%A1%A8%EF%BC%89.xlsx",
-      destfile = "_targets/user/iotable/producer_price/medium/37_kagawa.xlsx"
+      url = "https://www.pref.oita.jp/uploaded/attachment/2072846.xlsx",
+      destfile = "_targets/user/iotable/producer_price/medium/44_oita.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_37_kagawa = read_file_iotable_producer_price_medium_37_kagawa(
-    file = file_iotable_producer_price_medium_37_kagawa
+  iotable_producer_price_medium_raw_44_oita = read_file_iotable_producer_price_medium_44_oita(
+    file = file_iotable_producer_price_medium_44_oita
   ),
 )
 
-read_file_iotable_producer_price_medium_37_kagawa <- function(file) {
+read_file_iotable_producer_price_medium_44_oita <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
-      sheets = "取引基本表",
+      sheets = "H27取引基本表（生産者価格評価表）（統合中分類104部門）",
       rows_exclude = 1
     ) |>
     io_table_read_headers(
@@ -25,7 +25,6 @@ read_file_iotable_producer_price_medium_37_kagawa <- function(file) {
       output_names = c("output_sector_code", "output_sector_name")
     ) |>
     as_step(mutate)(
-      across(input_sector_code, \(x) str_replace(x, "\\r\\n", "・")),
       across(
         c(input_sector_name, output_sector_name),
         \(x) str_remove_all(x, "\\s")
@@ -40,10 +39,8 @@ read_file_iotable_producer_price_medium_37_kagawa <- function(file) {
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,
-      export_pattern = export_pattern,
-      export_total_pattern = export_total_pattern,
-      import_pattern = str_c(import_pattern, "移輸入$", sep = "|"),
-      import_total_pattern = import_total_pattern,
+      export_pattern = "移輸出$",
+      import_pattern = "（控除）移輸入$",
       total_pattern = total_pattern
     ) |>
     io_table_read_data(
