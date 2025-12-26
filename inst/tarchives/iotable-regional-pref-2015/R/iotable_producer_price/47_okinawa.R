@@ -40,5 +40,6 @@ read_file_iotable_producer_price_basic_47_okinawa <- function(file) {
     io_table_read_data(
       value_scale = 1e6,
       check_axis = FALSE
-    )
+    ) |>
+    end_step()
 }

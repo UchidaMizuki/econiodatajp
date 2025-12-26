@@ -39,5 +39,6 @@ read_file_iotable_producer_price_medium_41_saga <- function(file) {
     ) |>
     io_table_read_data(
       value_scale = 1e3
-    )
+    ) |>
+    end_step()
 }

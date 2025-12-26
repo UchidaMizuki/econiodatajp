@@ -48,5 +48,6 @@ read_file_iotable_producer_price_medium_37_kagawa <- function(file) {
     ) |>
     io_table_read_data(
       value_scale = 1e6
-    )
+    ) |>
+    end_step()
 }

@@ -47,5 +47,6 @@ read_file_iotable_producer_price_medium_46_kagoshima <- function(file) {
     ) |>
     io_table_read_data(
       value_scale = 1e4
-    )
+    ) |>
+    end_step()
 }

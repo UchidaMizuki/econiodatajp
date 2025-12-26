@@ -44,5 +44,6 @@ read_file_iotable_producer_price_medium_35_yamaguchi <- function(file) {
     io_table_read_data(
       value_scale = 1e6,
       total_tolerance = 1e-3
-    )
+    ) |>
+    end_step()
 }

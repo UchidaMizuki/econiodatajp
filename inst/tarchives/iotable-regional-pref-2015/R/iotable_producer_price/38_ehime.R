@@ -41,5 +41,6 @@ read_file_iotable_producer_price_small_38_ehime <- function(file) {
     ) |>
     io_table_read_data(
       value_scale = 1e6
-    )
+    ) |>
+    end_step()
 }

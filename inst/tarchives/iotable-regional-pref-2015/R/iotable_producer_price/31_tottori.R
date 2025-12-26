@@ -41,5 +41,6 @@ read_file_iotable_producer_price_medium_31_tottori <- function(file) {
       value_scale = 1e6,
       # FIXME?: Tottori IO table has large rounding errors
       total_tolerance = 1e7
-    )
+    ) |>
+    end_step()
 }
