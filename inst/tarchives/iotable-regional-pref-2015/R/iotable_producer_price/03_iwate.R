@@ -1,3 +1,4 @@
+# https://www3.pref.iwate.jp/webdb/view/outside/s14Tokei/bnyaBtKekka.html/B03/B0303/I015
 target_iotable_producer_price_03_iwate <- tar_plan(
   tar_change(
     file_iotable_producer_price_small_03_iwate,

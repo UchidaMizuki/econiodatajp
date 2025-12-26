@@ -1,3 +1,4 @@
+# https://www.pref.tochigi.lg.jp/c04/pref/toukei/toukei/ioh2-.html
 target_iotable_producer_price_09_tochigi <- tar_plan(
   tar_change(
     file_iotable_producer_price_small_09_tochigi,

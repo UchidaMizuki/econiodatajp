@@ -1,3 +1,4 @@
+# https://www.pref.akita.lg.jp/pages/archive/53289
 target_iotable_producer_price_05_akita <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_05_akita,

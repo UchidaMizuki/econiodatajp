@@ -1,6 +1,6 @@
+# https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt.html
 target_iotable_producer_price_01_hokkaido <- tar_plan(
   tar_change(
-    # https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt.html
     file_iotable_producer_price_medium_01_hokkaido,
     download_file(
       url = "https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx",

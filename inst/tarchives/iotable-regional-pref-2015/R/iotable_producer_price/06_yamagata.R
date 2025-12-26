@@ -1,3 +1,4 @@
+# https://www.pref.yamagata.jp/020052/kensei/shoukai/toukeijouhou/sangyourenkanhyou-1/h17sangyorenkan.html
 target_iotable_producer_price_06_yamagata <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_06_yamagata,

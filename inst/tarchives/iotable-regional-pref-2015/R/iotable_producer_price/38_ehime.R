@@ -9,9 +9,9 @@ target_iotable_producer_price_38_ehime <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  # iotable_producer_price_small_raw_38_ehime = read_file_iotable_producer_price_small_38_ehime(
-  #   file = file_iotable_producer_price_small_38_ehime
-  # ),
+  iotable_producer_price_small_raw_38_ehime = read_file_iotable_producer_price_small_38_ehime(
+    file = file_iotable_producer_price_small_38_ehime
+  ),
 )
 
 read_file_iotable_producer_price_small_38_ehime <- function(file) {

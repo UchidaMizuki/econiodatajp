@@ -1,3 +1,4 @@
+# https://www.pref.fukushima.lg.jp/sec/11045b/sangyourenkan27.html
 target_iotable_producer_price_07_fukushima <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_07_fukushima,

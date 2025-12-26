@@ -1,3 +1,4 @@
+# https://opendata.pref.aomori.lg.jp/dataset/1597.html
 target_iotable_producer_price_02_aomori <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_02_aomori,

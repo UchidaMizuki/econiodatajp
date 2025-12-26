@@ -1,3 +1,4 @@
+# https://www.pref.miyagi.jp/soshiki/toukei/rennkann.html
 target_iotable_producer_price_04_miyagi <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_04_miyagi,

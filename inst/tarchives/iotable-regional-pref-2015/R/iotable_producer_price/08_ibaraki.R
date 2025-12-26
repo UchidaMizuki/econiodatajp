@@ -1,3 +1,4 @@
+# https://www.pref.ibaraki.jp/kikaku/tokei/fukyu/tokei/betsu/sangyo/io27/index.html
 target_iotable_producer_price_08_ibaraki <- tar_plan(
   tar_change(
     file_iotable_producer_price_small_08_ibaraki,
