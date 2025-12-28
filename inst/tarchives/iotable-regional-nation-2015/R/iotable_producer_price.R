@@ -49,12 +49,14 @@ read_file_iotable_producer_price <- function(file, check_axis) {
     ) |>
     io_table_read_sector_types(
       competitive_import = TRUE,
-      industry_pattern = "^[0-6]",
-      value_added_pattern = "^(7[1-9]|8|9[1-5])",
-      final_demand_pattern = "^7[1-6]",
-      export_pattern = "^80",
-      import_pattern = "^8[4-6]",
-      total_pattern = "^97"
+      industry_total_pattern = "内生部門計$",
+      value_added_total_pattern = "粗付加価値部門計$",
+      final_demand_total_pattern = "国内最終需要計$",
+      export_pattern = "輸出",
+      export_total_pattern = "輸出計$",
+      import_pattern = "（控除）(輸入|関税|輸入品商品税)",
+      import_total_pattern = "（控除）輸入計$",
+      total_pattern = "国内生産額$"
     ) |>
     io_table_read_data(
       value_scale = 1e6,
