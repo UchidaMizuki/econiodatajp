@@ -22,12 +22,33 @@ target_iotable_producer_price <- tar_plan(
   iotable_producer_price_basic = read_file_iotable_producer_price_basic(
     file = file_iotable_producer_price_basic
   ),
-  iotable_producer_price_small = read_file_iotable_producer_price_small(
-    file = file_iotable_producer_price_small
+  iotable_producer_price_small = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic,
+    conversion_sector_input = conversion_sector_input,
+    conversion_sector_output = conversion_sector_output,
+    sector_class = "small"
   ),
+  iotable_producer_price_medium = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic,
+    conversion_sector_input = conversion_sector_input,
+    conversion_sector_output = conversion_sector_output,
+    sector_class = "medium"
+  ),
+  iotable_producer_price_large = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic,
+    conversion_sector_input = conversion_sector_input,
+    conversion_sector_output = conversion_sector_output,
+    sector_class = "large"
+  ),
+  iotable_producer_price_template = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic,
+    conversion_sector_input = conversion_sector_input,
+    conversion_sector_output = conversion_sector_output,
+    sector_class = "template"
+  )
 )
 
-read_file_iotable_producer_price <- function(file, check_axis) {
+read_file_iotable_producer_price_basic <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = 1,
@@ -60,13 +81,57 @@ read_file_iotable_producer_price <- function(file, check_axis) {
     ) |>
     io_table_read_data(
       value_scale = 1e6,
-      check_axis = check_axis
+      check_axes = FALSE
     ) |>
     end_step()
 }
-read_file_iotable_producer_price_basic <- function(file) {
-  read_file_iotable_producer_price(file, check_axis = FALSE)
-}
-read_file_iotable_producer_price_small <- function(file) {
-  read_file_iotable_producer_price(file, check_axis = TRUE)
+
+convert_sector_iotable_producer_price_basic <- function(
+  iotable_producer_price_basic,
+  conversion_sector_input,
+  conversion_sector_output,
+  sector_class
+) {
+  input_sector_data <- conversion_sector_input |>
+    filter(
+      sector_type %in% c("industry", "value_added"),
+      sector_class_from == "basic",
+      sector_class_to == .env$sector_class
+    ) |>
+    select(sector_name_from, sector_name_to) |>
+    rename(from = sector_name_from, to = sector_name_to) |>
+    add_column(weight = 1)
+
+  output_sector_data <- conversion_sector_output |>
+    filter(
+      sector_type %in% c("industry", "final_demand", "export", "import"),
+      sector_class_from == "basic",
+      sector_class_to == .env$sector_class
+    ) |>
+    select(sector_name_from, sector_name_to) |>
+    rename(from = sector_name_from, to = sector_name_to) |>
+    add_column(weight = 1)
+
+  iotable_producer_price <- iotable_producer_price_basic |>
+    io_reclass(
+      input_sector_data = input_sector_data,
+      output_sector_data = output_sector_data,
+      check_axes = FALSE
+    )
+
+  dim_names <- dimnames(iotable_producer_price)
+  input <- dim_names$input
+  output <- dim_names$output
+  output <- bind_rows(
+    input |>
+      filter(io_sector_type(sector) == "industry"),
+    output |>
+      filter(io_sector_type(sector) != "industry")
+  )
+
+  iotable_producer_price |>
+    dibble::broadcast(dim_names = list(input = input, output = output)) |>
+    dibble::broadcast(dim_names = c("input", "output")) |>
+    replace_na(0) |>
+    io_check_axes()
 }

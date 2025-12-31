@@ -52,8 +52,11 @@ read_file_sector <- function(file) {
     col_types = "text",
     .name_repair = "minimal"
   ) |>
-    tibble::add_column(
-      sector_type = "industry",
+    mutate(
+      sector_type = case_when(
+        sector_name_basic == "内生部門計" ~ "industry_total",
+        .default = "industry"
+      ),
       .before = 1
     )
   sector_final_demand <- readxl::read_excel(
@@ -67,8 +70,17 @@ read_file_sector <- function(file) {
   ) |>
     mutate(
       sector_type = case_when(
+        sector_name_basic == "国内最終需要計" ~ "regional_final_demand_total",
+        sector_name_basic == "国内需要合計" ~ "regional_demand_total",
+        sector_name_basic == "輸出計" ~ "export_total",
         str_starts(sector_name_basic, "輸出") ~ "export",
+        sector_name_basic == "最終需要計" ~ "final_demand_total",
+        sector_name_basic == "需要合計" ~ "demand_total",
+        sector_name_basic == "（控除）輸入計" ~ "import_total",
         str_starts(sector_name_basic, "（控除）") ~ "import",
+        sector_name_basic == "最終需要部門計" ~ "final_demand_sector_total",
+        str_starts(sector_name_basic, "商業マージン") ~ "trade_margin",
+        str_starts(sector_name_basic, "貨物運賃") ~ "transport_margin",
         sector_name_basic == "国内生産額" ~ "total",
         .default = "final_demand"
       ),
@@ -85,6 +97,7 @@ read_file_sector <- function(file) {
   ) |>
     mutate(
       sector_type = case_when(
+        sector_name_basic == "粗付加価値部門計" ~ "value_added_total",
         sector_name_basic == "国内生産額" ~ "total",
         .default = "value_added"
       ),
@@ -95,23 +108,6 @@ read_file_sector <- function(file) {
     sector_value_added,
     sector_final_demand,
   ) |>
-    mutate(
-      across(
-        c(
-          sector_name_basic,
-          sector_name_small,
-          sector_name_medium,
-          sector_name_large
-        ),
-        \(x)
-          case_match(
-            sector_type,
-            c("value_added", "final_demand", "export", "import", "total") ~
-              str_replace(x, "国内", "域内"),
-            .default = x
-          )
-      )
-    ) |>
     mutate(
       output_sector_code_basic = str_c(
         output_sector_code_basic_1,
@@ -129,6 +125,10 @@ read_file_sector <- function(file) {
       .before = input_sector_code_basic_1
     ) |>
     mutate(
+      across(
+        c(input_sector_code_basic, output_sector_code_basic),
+        \(x) str_remove(x, "P$")
+      ),
       across(
         c(sector_name_small, sector_name_medium, sector_name_large),
         \(x) str_remove_all(x, "\\s|^（続き）|（\\d／\\d）$")
@@ -215,13 +215,13 @@ read_file_sector <- function(file) {
     mutate(
       across(
         sector_name_template,
-        \(x)
+        \(x) {
           case_match(
             sector_type,
-            c("value_added", "final_demand", "export", "import", "total") ~
-              sector_name_large,
-            .default = x
+            "industry" ~ x,
+            .default = sector_name_large,
           )
+        }
       )
     )
 
@@ -231,25 +231,14 @@ read_file_sector <- function(file) {
     rename(
       sector_name_basic = input_sector_name_basic
     ) |>
-    mutate(
-      across(
-        sector_type,
-        \(x) factor(x, c("industry", "value_added", "total"))
-      )
-    )
+    mutate(across(sector_type, as_factor))
   sector_output <- sector |>
     drop_na(output_sector_name_basic) |>
     select(!input_sector_name_basic) |>
     rename(
       sector_name_basic = output_sector_name_basic
     ) |>
-    mutate(
-      across(
-        sector_type,
-        \(x)
-          factor(x, c("industry", "final_demand", "export", "import", "total"))
-      )
-    )
+    mutate(across(sector_type, as_factor))
 
   list(
     input = sector_input,

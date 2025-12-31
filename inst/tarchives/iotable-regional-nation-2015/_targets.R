@@ -10,19 +10,18 @@ library(tarchives)
 
 tar_option_set(
   packages = c(
+    "dibble",
+    "econio",
     "econioread",
     "adverbial",
     "stringr",
+    "tibble",
     "tidyr",
     "dplyr",
     "purrr",
     "forcats"
   ),
-  imports = c(
-    "econio",
-    "econioread",
-    "adverbial"
-  )
+  imports = c("econio", "econioread")
 )
 
 tar_source_archive("econiodatajp")
