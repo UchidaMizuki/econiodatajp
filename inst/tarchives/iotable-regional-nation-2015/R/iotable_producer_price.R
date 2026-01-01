@@ -9,16 +9,6 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  tar_change(
-    # https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200603&tstat=000001130583&cycle=0&year=20150&month=0
-    file_iotable_producer_price_small,
-    download_file(
-      url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000031839446&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/small.xlsx"
-    ),
-    change = "0.1.0",
-    format = "file"
-  ),
   iotable_producer_price_basic = read_file_iotable_producer_price_basic(
     file = file_iotable_producer_price_basic
   ),
