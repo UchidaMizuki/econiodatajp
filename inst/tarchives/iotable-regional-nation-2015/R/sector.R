@@ -223,14 +223,20 @@ read_file_sector <- function(file) {
     rename(
       sector_name_basic = input_sector_name_basic
     ) |>
-    mutate(across(sector_type, as_factor))
+    mutate(
+      across(sector_type, as_factor),
+      across(starts_with("sector_name"), \(x) str_remove_all(x, "\\s"))
+    )
   sector_output <- sector |>
     drop_na(output_sector_name_basic) |>
     select(!input_sector_name_basic) |>
     rename(
       sector_name_basic = output_sector_name_basic
     ) |>
-    mutate(across(sector_type, as_factor))
+    mutate(
+      across(sector_type, as_factor),
+      across(starts_with("sector_name"), \(x) str_remove_all(x, "\\s"))
+    )
 
   list(
     input = sector_input,
