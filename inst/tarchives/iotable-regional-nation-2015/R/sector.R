@@ -1,5 +1,3 @@
-# sector ------------------------------------------------------------------
-
 target_sector <- tar_plan(
   tar_change(
     # https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200603&tstat=000001130583&cycle=0&year=20150&month=0
