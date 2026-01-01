@@ -42,14 +42,17 @@ read_file_sector <- function(file) {
     "sector_code_large",
     "sector_name_large"
   )
+
   sector_industry <- readxl::read_excel(
     file,
     sheet = "内生部門",
-    skip = 7,
     col_names = col_names,
-    col_types = "text",
-    .name_repair = "minimal"
+    col_types = "text"
   ) |>
+    filter(
+      str_detect(output_sector_code_basic_1, "^\\d{4}$") |
+        str_detect(input_sector_code_basic_1, "^\\d{4}$")
+    ) |>
     mutate(
       sector_type = case_when(
         sector_name_basic == "内生部門計" ~ "industry_total",
@@ -57,54 +60,46 @@ read_file_sector <- function(file) {
       ),
       .before = 1
     )
-  sector_final_demand <- readxl::read_excel(
+
+  sector_final_demand_value_added <- readxl::read_excel(
     file,
     sheet = "最終需要部門・粗付加価値部門",
-    skip = 4,
-    n_max = 42,
     col_names = col_names,
-    col_types = "text",
-    .name_repair = "minimal"
+    col_types = "text"
   ) |>
+    filter(
+      str_detect(output_sector_code_basic_1, "^\\d{4}") |
+        str_detect(input_sector_code_basic_1, "^\\d{4}")
+    ) |>
     mutate(
       sector_type = case_when(
-        sector_name_basic == "国内最終需要計" ~ "regional_final_demand_total",
-        sector_name_basic == "国内需要合計" ~ "regional_demand_total",
-        sector_name_basic == "輸出計" ~ "export_total",
-        str_starts(sector_name_basic, "輸出") ~ "export",
-        sector_name_basic == "最終需要計" ~ "final_demand_total",
-        sector_name_basic == "需要合計" ~ "demand_total",
-        sector_name_basic == "（控除）輸入計" ~ "import_total",
-        str_starts(sector_name_basic, "（控除）") ~ "import",
-        sector_name_basic == "最終需要部門計" ~ "final_demand_sector_total",
-        str_starts(sector_name_basic, "商業マージン") ~ "trade_margin",
-        str_starts(sector_name_basic, "貨物運賃") ~ "transport_margin",
-        sector_name_basic == "国内生産額" ~ "total",
-        .default = "final_demand"
+        !is.na(output_sector_code_basic_1) ~ case_when(
+          sector_name_basic == "国内最終需要計" ~ "regional_final_demand_total",
+          sector_name_basic == "国内需要合計" ~ "regional_demand_total",
+          sector_name_basic == "輸出計" ~ "export_total",
+          str_starts(sector_name_basic, "輸出") ~ "export",
+          sector_name_basic == "最終需要計" ~ "final_demand_total",
+          sector_name_basic == "需要合計" ~ "demand_total",
+          sector_name_basic == "（控除）輸入計" ~ "import_total",
+          str_starts(sector_name_basic, "（控除）") ~ "import",
+          sector_name_basic == "最終需要部門計" ~ "final_demand_sector_total",
+          str_starts(sector_name_basic, "商業マージン") ~ "trade_margin",
+          str_starts(sector_name_basic, "貨物運賃") ~ "transport_margin",
+          sector_name_basic == "国内生産額" ~ "total",
+          .default = "final_demand"
+        ),
+        !is.na(input_sector_code_basic_1) ~ case_when(
+          sector_name_basic == "粗付加価値部門計" ~ "value_added_total",
+          sector_name_basic == "国内生産額" ~ "total",
+          .default = "value_added"
+        ),
       ),
       .before = 1
     )
-  sector_value_added <- readxl::read_excel(
-    file,
-    sheet = "最終需要部門・粗付加価値部門",
-    skip = 52,
-    n_max = 13,
-    col_names = col_names[-(1:2)],
-    col_types = "text",
-    .name_repair = "minimal"
-  ) |>
-    mutate(
-      sector_type = case_when(
-        sector_name_basic == "粗付加価値部門計" ~ "value_added_total",
-        sector_name_basic == "国内生産額" ~ "total",
-        .default = "value_added"
-      ),
-      .before = 1
-    )
+
   sector <- bind_rows(
     sector_industry,
-    sector_value_added,
-    sector_final_demand,
+    sector_final_demand_value_added
   ) |>
     mutate(
       output_sector_code_basic = str_c(
@@ -175,8 +170,6 @@ read_file_sector <- function(file) {
   sector_template <- readxl::read_excel(
     file,
     sheet = "13部門分類",
-    skip = 4,
-    n_max = 38,
     col_names = c(
       "sector_code_large",
       "sector_name_large",
@@ -186,6 +179,7 @@ read_file_sector <- function(file) {
     col_types = "text",
     .name_repair = "minimal"
   ) |>
+    filter(str_detect(sector_code_large, "^\\d{2}$")) |>
     fill(
       sector_template_code,
       sector_name_template
