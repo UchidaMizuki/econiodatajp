@@ -28,6 +28,6 @@ tar_source_archive("econiodatajp")
 tar_source()
 
 tar_plan(
-  target_iotable_producer_price,
   target_sector,
+  target_iotable_producer_price,
 )

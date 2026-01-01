@@ -58,6 +58,7 @@ iotable_producer_price_basic|stem|8f2636e7b0c3ee5c|b2b01d788d8b6207|7b13f513914f
 iotable_producer_price_small|stem|671d740d8f0240ff|b667df51f3bbc7a2|0583fda451b8cba1|-1934091119||t20453.6904404608s|s93866b|93866|rds|local|vector|||0.203||
 iotable_producer_price_medium|stem|9f6185dc13c4bb71|d1346fc60d2206ca|0583fda451b8cba1|471092383||t20453.6909126939s|s46081b|46081|rds|local|vector|||0.156||
 iotable_producer_price_large|stem|9c78813d657b9c2b|5da373474cfbef56|0583fda451b8cba1|606821391||t20453.6912046968s|s11159b|11159|rds|local|vector|||0.141||
+iotable_producer_price_template|stem|6d4779507238c9d8|e16fafabebb66a50|0583fda451b8cba1|1957348513||t20453.6916234053s|s3010b|3010|rds|local|vector|||0.14||
 vec_ptype2.econ_io_sector|function|96667773177c8057
 io_sector_type|function|507d50344d7a22b5
 io_region|function|5d8ebff72f319410
@@ -124,7 +125,6 @@ io_production_induce|function|dce2cf71e9ec5c89
 io_tidy_skyline|function|23c40e936cdf42fa
 io_self_sufficiency_rate|function|dde3624b4696a44a
 tidy.econ_io_table|function|115cb6961225423e
-file_iotable_producer_price_small_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|1350999948||t20453.6916206532s|s56b|56|rds|local|vector|||0.063|package 'stringr' was built under R version 4.5.1. package 'tibble' was built under R version 4.5.1. package 'purrr' was built under R version 4.5.1. package 'forcats' was built under R version 4.5.1|
-file_iotable_producer_price_basic_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|920349037||t20453.6916210467s|s56b|56|rds|local|vector|||0||
-file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20453.6916214748s|s56b|56|rds|local|vector|||0||
-iotable_producer_price_template|stem|6d4779507238c9d8|e16fafabebb66a50|0583fda451b8cba1|1957348513||t20453.6916234053s|s3010b|3010|rds|local|vector|||0.14||
+file_iotable_producer_price_small_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|1350999948||t20454.1859080716s|s56b|56|rds|local|vector|||0.25|package 'stringr' was built under R version 4.5.2. package 'tibble' was built under R version 4.5.1. package 'tidyr' was built under R version 4.5.2. package 'purrr' was built under R version 4.5.2. package 'forcats' was built under R version 4.5.1|
+file_iotable_producer_price_basic_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|920349037||t20454.1859086991s|s56b|56|rds|local|vector|||0||
+file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20454.1859090593s|s56b|56|rds|local|vector|||0||
