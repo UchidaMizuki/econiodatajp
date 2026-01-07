@@ -12,6 +12,7 @@ iotable_producer_price_template|stem|6d4779507238c9d8|e16fafabebb66a50|0583fda45
 sector_raw|stem|aba98c6dba95386b|08088905f2b0db15|d95cef7a46b60eaa|-947823474||t20454.2888842518s|s20582b|20582|rds|local|vector|||0.156||
 file_import_producer_price_medium|stem|1285474772b4a0f4|2433c9849d2d68ad|ec54b2a4bad9a1bd|-519774223|_targets/user/import/producer_price/medium.xlsx|t20454.4087290172s|s73487b|73487|file|local|vector|||0.578||
 iotable_producer_price_basic|stem|8f2636e7b0c3ee5c|b2b01d788d8b6207|08b6839e9a689cce|-1043199770||t20459.61946877s|s286497b|286497|rds|local|vector|||3.938||
+import_producer_price_medium|stem|8a909e5adfdd1691|a20c94ac19b8af3e|efb1d643d3e9c2f5|600746981||t20460.6202134192s|s22582b|22582|rds|local|vector|||0.469||
 vec_ptype2.econ_io_sector|function|96667773177c8057
 io_sector_type|function|507d50344d7a22b5
 io_region|function|5d8ebff72f319410
@@ -55,7 +56,7 @@ vec_ptype2.econ_io_sector.econ_io_sector|function|03e914a877ee5e86
 io_reclass_axis_data|function|074063bdeaec917e
 io_check_axes|function|4caec257def99216
 io_autoplot_skyline|function|5e277b4bc8ed8202
-read_file_import_producer_price_medium|function|46d102041bdb9bbf
+read_file_import_producer_price_medium|function|1cafdea21e7570e0
 read_file_iotable_producer_price_basic|function|de1c164ff8e6a8be
 io_autolayer_skyline|function|a31b3a9272f94c8b
 io_import_coef|function|b8bc33181cddef81
@@ -72,6 +73,7 @@ io_output_coef|function|e1d3eb6c61d4454b
 io_input_coef|function|1cb4a6f5c25fab71
 io_table_multiregional|function|8716f99dcd92569b
 io_table_regional|function|00c2b7fbb80105de
+convert_sector_import_producer_price_medium|function|db33da4b757c5153
 convert_sector_iotable_producer_price_basic|function|1c05b4a041cc958e
 io_ghosh_inverse|function|86861f9c90cf23f3
 io_leontief_inverse|function|1e1c0977e8e7a621
@@ -79,7 +81,8 @@ io_production_induce|function|dce2cf71e9ec5c89
 io_tidy_skyline|function|23c40e936cdf42fa
 io_self_sufficiency_rate|function|dde3624b4696a44a
 tidy.econ_io_table|function|115cb6961225423e
-file_import_producer_price_medium_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-1249106704||t20460.476703443s|s56b|56|rds|local|vector|||0.078|package 'stringr' was built under R version 4.5.2. package 'tibble' was built under R version 4.5.1. package 'tidyr' was built under R version 4.5.2. package 'purrr' was built under R version 4.5.2. package 'forcats' was built under R version 4.5.1|
-file_iotable_producer_price_basic_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|920349037||t20460.4767041062s|s56b|56|rds|local|vector|||0||
-file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20460.4767044642s|s56b|56|rds|local|vector|||0||
-import_producer_price_medium|stem|683f217ef2adb654|a20c94ac19b8af3e|43f247492893b865|600746981||t20460.4767099655s|s22774b|22774|rds|local|vector|||0.469||
+file_import_producer_price_medium_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-1249106704||t20460.6208787457s|s56b|56|rds|local|vector|||0.062|package 'stringr' was built under R version 4.5.2. package 'tibble' was built under R version 4.5.1. package 'tidyr' was built under R version 4.5.2. package 'purrr' was built under R version 4.5.2. package 'forcats' was built under R version 4.5.1|
+file_iotable_producer_price_basic_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|920349037||t20460.6208791536s|s56b|56|rds|local|vector|||0||
+file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20460.6208795274s|s56b|56|rds|local|vector|||0||
+import_producer_price_large|stem|8533664a96622cff|2c9f622ccff72a13|b304ca9adfc11726|-1447366099||t20460.620881065s|s6293b|6293|rds|local|vector|||0.109||
+import_producer_price_template|stem|00c010abc21a7f73|cf4accb7ebc510e4|b304ca9adfc11726|-1482412154||t20460.6208824077s|s1672b|1672|rds|local|vector|||0.079||
