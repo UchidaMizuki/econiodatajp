@@ -23,7 +23,7 @@ target_import_producer_price <- tar_plan(
     conversion_sector_input = conversion_sector_input,
     conversion_sector_output = conversion_sector_output,
     sector_class = "template"
-  )
+  ),
 )
 
 read_file_import_producer_price_medium <- function(file) {

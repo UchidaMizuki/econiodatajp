@@ -25,7 +25,7 @@ target_sector <- tar_plan(
   ),
   sector_output = get_sector(
     conversion_sector = conversion_sector_output
-  )
+  ),
 )
 
 read_file_sector <- function(file) {
