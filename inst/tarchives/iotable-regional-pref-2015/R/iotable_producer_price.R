@@ -47,5 +47,5 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_44_oita,
   target_iotable_producer_price_45_miyazaki,
   target_iotable_producer_price_46_kagoshima,
-  target_iotable_producer_price_47_okinawa
+  target_iotable_producer_price_47_okinawa,
 )
