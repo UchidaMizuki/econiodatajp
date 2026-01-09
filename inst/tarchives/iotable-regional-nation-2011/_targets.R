@@ -30,4 +30,6 @@ tar_source()
 tar_plan(
   target_sector,
   target_iotable_producer_price,
+  target_import_producer_price,
+  target_iotable_producer_price_noncompetitive_import,
 )
