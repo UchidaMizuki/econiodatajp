@@ -15,6 +15,9 @@ file_import_producer_price_medium|stem|5646de37a35ad4d0|130b941668a46a9a|ec54b2a
 import_producer_price_medium|stem|51dad8f799f3f642|a20c94ac19b8af3e|5963e166b7ab9681|600746981||t20462.6366849334s|s22097b|22097|rds|local|vector|||0.468||
 import_producer_price_large|stem|c383783abf9bee8e|2c9f622ccff72a13|5f3635afaf6a265b|-1447366099||t20462.6366868762s|s6162b|6162|rds|local|vector|||0.078||
 import_producer_price_template|stem|01af358ba7ce898c|cf4accb7ebc510e4|5f3635afaf6a265b|-1482412154||t20462.63668815s|s1628b|1628|rds|local|vector|||0.078||
+iotable_producer_price_noncompetitive_import_medium|stem|bc43aa4d51a390fa|2a892969e1b70ba9|e6388a009354c6eb|-1732356864||t20462.6380292468s|s46021b|46021|rds|local|vector|||0.078||
+iotable_producer_price_noncompetitive_import_large|stem|1d49b529e294db4e|a1693c4f3a50c976|68cc213f9a047f6d|568623253||t20462.6380311154s|s11075b|11075|rds|local|vector|||0.063||
+iotable_producer_price_noncompetitive_import_template|stem|8417e19126a9b76b|0f164c287454ce7a|b3ff954fdaa57874|1083239385||t20462.6380319934s|s3050b|3050|rds|local|vector|||0.047||
 vec_ptype2.econ_io_sector|function|96667773177c8057
 io_sector_type|function|507d50344d7a22b5
 io_region|function|5d8ebff72f319410
@@ -84,9 +87,6 @@ io_production_induce|function|dce2cf71e9ec5c89
 io_tidy_skyline|function|23c40e936cdf42fa
 io_self_sufficiency_rate|function|dde3624b4696a44a
 tidy.econ_io_table|function|115cb6961225423e
-file_import_producer_price_medium_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-1249106704||t20462.6380270251s|s56b|56|rds|local|vector|||0.078|package 'stringr' was built under R version 4.5.2. package 'tibble' was built under R version 4.5.1. package 'tidyr' was built under R version 4.5.2. package 'forcats' was built under R version 4.5.1|
-file_iotable_producer_price_basic_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|920349037||t20462.6380274581s|s56b|56|rds|local|vector|||0||
-file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20462.6380278214s|s56b|56|rds|local|vector|||0||
-iotable_producer_price_noncompetitive_import_medium|stem|bc43aa4d51a390fa|2a892969e1b70ba9|e6388a009354c6eb|-1732356864||t20462.6380292468s|s46021b|46021|rds|local|vector|||0.078||
-iotable_producer_price_noncompetitive_import_large|stem|1d49b529e294db4e|a1693c4f3a50c976|68cc213f9a047f6d|568623253||t20462.6380311154s|s11075b|11075|rds|local|vector|||0.063||
-iotable_producer_price_noncompetitive_import_template|stem|8417e19126a9b76b|0f164c287454ce7a|b3ff954fdaa57874|1083239385||t20462.6380319934s|s3050b|3050|rds|local|vector|||0.047||
+file_import_producer_price_medium_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-1249106704||t20463.3848090114s|s56b|56|rds|local|vector|||0.062|package 'stringr' was built under R version 4.5.2. package 'tibble' was built under R version 4.5.1. package 'tidyr' was built under R version 4.5.2. package 'forcats' was built under R version 4.5.1|
+file_iotable_producer_price_basic_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|920349037||t20463.3848094055s|s56b|56|rds|local|vector|||0||
+file_sector_change|stem|eae7e8bb489ec9bf|b70fd7e40e7356ef|2c530c1562a7fbd1|-194657778||t20463.3848096287s|s56b|56|rds|local|vector|||0||
