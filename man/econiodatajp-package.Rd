@@ -11,5 +11,10 @@ More about what it does (maybe more than one line) Use four spaces when indentin
 \author{
 \strong{Maintainer}: Mizuki Uchida \email{uchidamizuki@vivaldi.net}
 
+Authors:
+\itemize{
+  \item Mizuki Uchida \email{uchidamizuki@vivaldi.net}
+}
+
 }
 \keyword{internal}
