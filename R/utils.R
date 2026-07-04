@@ -10,6 +10,23 @@ io_table_pipeline_multiregional_pref <- function(year) {
   stringr::str_glue("iotable-multiregional-pref-{year}")
 }
 
+# `language = NULL` defaults to `"en"` rather than `"ja"` even though
+# Japanese is the authoritative source, since English is the more broadly
+# useful default for callers who don't otherwise care; the `cli::cli_inform()`
+# note (skipped when `language` is passed explicitly) makes sure that default
+# doesn't happen silently.
+resolve_language <- function(language) {
+  if (is.null(language)) {
+    cli::cli_inform(c(
+      "i" = "Defaulting to {.code language = \"en\"}.",
+      "i" = "Pass {.code language = \"ja\"} for the original Japanese sector \\
+      names (the authoritative source)."
+    ))
+    language <- "en"
+  }
+  rlang::arg_match(language, c("ja", "en"))
+}
+
 check_archive_pipeline <- function(package, pipeline) {
   pipelines <- tarchives::tar_archive_pipelines(package = package)
   if (!pipeline %in% pipelines) {
@@ -26,15 +43,22 @@ check_archive_pipeline <- function(package, pipeline) {
 # pipeline doesn't require a signature change. `sector_class_choices` is
 # passed in by the caller because the set of available granularities differs
 # between nation (basic/small/medium/large/template) and multiregional pref
-# (large only) archives.
+# (large only) archives. `language` defaults to `"ja"` so existing callers
+# that don't pass it (pref, multiregional) are unaffected; each nation
+# tarchive precomputes an `_en`-suffixed companion archive for every
+# `iotable_{price_type}[_noncompetitive_import]_{sector_class}` target (see
+# `translate_iotable_sector()` in inst/tarchives/R/translate.R), so English
+# is just a different archive name, not a runtime transformation.
 io_table_name_archive <- function(
   price_type,
   sector_class,
   sector_class_choices,
-  competitive_import = TRUE
+  competitive_import = TRUE,
+  language = "ja"
 ) {
   price_type <- rlang::arg_match(price_type, "producer_price")
   sector_class <- rlang::arg_match(sector_class, sector_class_choices)
+  language <- rlang::arg_match(language, c("ja", "en"))
   if (!competitive_import && sector_class %in% c("basic", "small")) {
     rlang::abort(stringr::str_glue(
       "sector_class = \"{sector_class}\" is only available when ",
@@ -46,7 +70,11 @@ io_table_name_archive <- function(
   if (!competitive_import) {
     name <- stringr::str_glue("{name}_noncompetitive_import")
   }
-  as.character(stringr::str_glue("{name}_{sector_class}"))
+  name <- stringr::str_glue("{name}_{sector_class}")
+  if (language == "en") {
+    name <- stringr::str_glue("{name}_en")
+  }
+  as.character(name)
 }
 
 # `pref` accepts either a numeric prefecture code (e.g. `1`, `13`) or the

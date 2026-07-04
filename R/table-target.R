@@ -12,6 +12,11 @@
 #' convention (matches the `competitive_import` argument of
 #' [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
 #' sector classes are only available when `TRUE`.
+#' @param language Language of the table's sector names, `"ja"` or `"en"`.
+#' See [io_table_regional_get_nation()] for details. Defaults to `NULL`,
+#' which resolves to `"en"` with a one-time message noting the default. This
+#' selects between two precomputed archives (`_en`-suffixed or not) — it does
+#' not translate at build time.
 #' @param ... Arguments passed to [tarchives::tar_target_archive()].
 #'
 #' @inherit tarchives::tar_target_archive return
@@ -23,9 +28,11 @@ io_table_regional_target_nation <- function(
   price_type = "producer_price",
   sector_class = c("basic", "small", "medium", "large", "template"),
   competitive_import = TRUE,
+  language = NULL,
   ...
 ) {
   sector_class <- rlang::arg_match(sector_class)
+  language <- resolve_language(language)
   pipeline <- io_table_pipeline_nation(year)
   check_archive_pipeline("econiodatajp", pipeline)
 
@@ -33,7 +40,8 @@ io_table_regional_target_nation <- function(
     price_type = price_type,
     sector_class = sector_class,
     sector_class_choices = c("basic", "small", "medium", "large", "template"),
-    competitive_import = competitive_import
+    competitive_import = competitive_import,
+    language = language
   )
   tarchives::tar_target_archive_raw(
     name = targets::tar_deparse_language(substitute(name)),

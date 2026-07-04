@@ -35,7 +35,37 @@ target_iotable_producer_price <- tar_plan(
     conversion_sector_input = conversion_sector_input,
     conversion_sector_output = conversion_sector_output,
     sector_class = "template"
-  )
+  ),
+  iotable_producer_price_basic_en = translate_iotable_sector(
+    table = iotable_producer_price_basic,
+    sector_input = sector_input,
+    sector_output = sector_output,
+    sector_class = "basic"
+  ),
+  iotable_producer_price_small_en = translate_iotable_sector(
+    table = iotable_producer_price_small,
+    sector_input = sector_input,
+    sector_output = sector_output,
+    sector_class = "small"
+  ),
+  iotable_producer_price_medium_en = translate_iotable_sector(
+    table = iotable_producer_price_medium,
+    sector_input = sector_input,
+    sector_output = sector_output,
+    sector_class = "medium"
+  ),
+  iotable_producer_price_large_en = translate_iotable_sector(
+    table = iotable_producer_price_large,
+    sector_input = sector_input,
+    sector_output = sector_output,
+    sector_class = "large"
+  ),
+  iotable_producer_price_template_en = translate_iotable_sector(
+    table = iotable_producer_price_template,
+    sector_input = sector_input,
+    sector_output = sector_output,
+    sector_class = "template"
+  ),
 )
 
 read_file_iotable_producer_price_basic <- function(file) {

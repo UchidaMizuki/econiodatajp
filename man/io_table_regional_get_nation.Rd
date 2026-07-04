@@ -8,7 +8,8 @@ io_table_regional_get_nation(
   year,
   price_type = "producer_price",
   sector_class = c("basic", "small", "medium", "large", "template"),
-  competitive_import = TRUE
+  competitive_import = TRUE,
+  language = NULL
 )
 }
 \arguments{
@@ -23,6 +24,15 @@ io_table_regional_get_nation(
 convention (matches the `competitive_import` argument of
 [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
 sector classes are only available when `TRUE`.}
+
+\item{language}{Language of the table's sector names, `"ja"` or `"en"`.
+Japanese is the authoritative source (sector *type* classification is
+derived from the Japanese sector classification workbook); English names
+are pre-translated from it when each tarchive is built (see
+`translate_iotable_sector()` in `inst/tarchives/R/translate.R`), and a
+sector with no English source name keeps its Japanese name. Defaults to
+`NULL`, which resolves to `"en"` with a one-time message noting the
+default.}
 }
 \value{
 An input-output table object for the specified year.
