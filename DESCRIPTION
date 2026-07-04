@@ -20,4 +20,7 @@ Imports:
     tarchives,
     tibble,
     tidyselect
+Remotes:
+    UchidaMizuki/econio,
+    UchidaMizuki/tarchives
 Config/roxygen2/version: 8.0.0
