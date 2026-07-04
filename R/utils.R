@@ -27,6 +27,95 @@ resolve_language <- function(language) {
   rlang::arg_match(language, c("ja", "en"))
 }
 
+# `area = "nation"` (default), `area = 0`, and `area = "00"` all mean
+# nation-level (`0`/`"00"` mirror the JIS-style convention where prefecture
+# code `00` denotes all of Japan, matching the numeric-code input style
+# `area` already accepts for actual prefectures, e.g. `area = 13`).
+is_area_nation <- function(area) {
+  identical(area, "nation") ||
+    (is.numeric(area) && isTRUE(area == 0)) ||
+    (is.character(area) && area %in% c("0", "00"))
+}
+
+# Shared by `io_table_get()`/`io_table_target()` so the region_type/area
+# dispatch logic lives in exactly one place. `competitive_import`/`language`
+# are only meaningful for the nation branch today (the pref/multiregional
+# tarchives don't have noncompetitive-import or `_en` archives yet), so a
+# non-default value for either in any other branch errors instead of being
+# silently ignored.
+io_table_resolve <- function(
+  year,
+  region_type,
+  area,
+  price_type,
+  sector_class,
+  competitive_import,
+  language
+) {
+  nation <- is_area_nation(area)
+
+  if (region_type == "multiregional") {
+    if (!nation) {
+      rlang::abort('`area` must be "nation" when `region_type = "multiregional"`.')
+    }
+    if (!isTRUE(competitive_import)) {
+      rlang::abort(
+        '`competitive_import = FALSE` isn\'t supported when `region_type = "multiregional"`.'
+      )
+    }
+    if (!is.null(language)) {
+      rlang::abort('`language` isn\'t supported when `region_type = "multiregional"`.')
+    }
+    sector_class <- sector_class %||% "large"
+    pipeline <- io_table_pipeline_multiregional_pref(year)
+    check_archive_pipeline("econiodatajp", pipeline)
+    name <- io_table_name_archive(
+      price_type = price_type,
+      sector_class = sector_class,
+      sector_class_choices = "large",
+      competitive_import = TRUE
+    )
+  } else if (nation) {
+    sector_class <- sector_class %||%
+      c("basic", "small", "medium", "large", "template")
+    sector_class <- rlang::arg_match(
+      sector_class,
+      c("basic", "small", "medium", "large", "template")
+    )
+    pipeline <- io_table_pipeline_nation(year)
+    check_archive_pipeline("econiodatajp", pipeline)
+    language <- resolve_language(language)
+    name <- io_table_name_archive(
+      price_type = price_type,
+      sector_class = sector_class,
+      sector_class_choices = c("basic", "small", "medium", "large", "template"),
+      competitive_import = competitive_import,
+      language = language
+    )
+  } else {
+    if (!isTRUE(competitive_import)) {
+      rlang::abort(
+        '`competitive_import = FALSE` isn\'t supported when `area` is a prefecture.'
+      )
+    }
+    if (!is.null(language)) {
+      rlang::abort('`language` isn\'t supported when `area` is a prefecture.')
+    }
+    sector_class <- sector_class %||% "medium"
+    pipeline <- io_table_pipeline_pref(year)
+    check_archive_pipeline("econiodatajp", pipeline)
+    name <- resolve_pref_name_archive(
+      "econiodatajp",
+      pipeline,
+      price_type = price_type,
+      sector_class = sector_class,
+      pref = area
+    )
+  }
+
+  list(pipeline = pipeline, name = name)
+}
+
 check_archive_pipeline <- function(package, pipeline) {
   pipelines <- tarchives::tar_archive_pipelines(package = package)
   if (!pipeline %in% pipelines) {
