@@ -1,16 +1,27 @@
 target_sector <- tar_plan(
   tar_change(
     # https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200603&tstat=000001218140&stat_infid=000040186856
-    file_sector,
+    file_sector_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040186856&fileKind=0",
-      destfile = "_targets/user/sector.xlsx"
+      destfile = "_targets/user/sector_ja.xlsx"
+    ),
+    change = "0.1.0",
+    format = "file"
+  ),
+  tar_change(
+    # https://www.e-stat.go.jp/en/stat-search/files?page=1&toukei=00200603&metadata=1&data=1
+    file_sector_en,
+    download_file(
+      url = "https://www.e-stat.go.jp/en/stat-search/file-download?statInfId=000040186856&fileKind=0",
+      destfile = "_targets/user/sector_en.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
   sector_raw = read_file_sector(
-    file = file_sector
+    file_ja = file_sector_ja,
+    file_en = file_sector_en
   ),
   conversion_sector_input = get_conversion_sector(
     sector_raw = sector_raw,
@@ -21,14 +32,16 @@ target_sector <- tar_plan(
     axis = "output"
   ),
   sector_input = get_sector(
-    conversion_sector = conversion_sector_input
+    sector_raw = sector_raw,
+    axis = "input"
   ),
   sector_output = get_sector(
-    conversion_sector = conversion_sector_output
+    sector_raw = sector_raw,
+    axis = "output"
   ),
 )
 
-read_file_sector <- function(file) {
+read_file_sector <- function(file_ja, file_en) {
   col_names <- c(
     "output_sector_code_basic_1",
     "output_sector_code_basic_2",
@@ -43,8 +56,8 @@ read_file_sector <- function(file) {
     "sector_name_large"
   )
 
-  sector_industry <- readxl::read_excel(
-    file,
+  sector_industry_ja <- readxl::read_excel(
+    file_ja,
     sheet = "内生部門",
     col_names = col_names,
     col_types = "text"
@@ -61,8 +74,8 @@ read_file_sector <- function(file) {
       .before = 1
     )
 
-  sector_final_demand_value_added <- readxl::read_excel(
-    file,
+  sector_final_demand_value_added_ja <- readxl::read_excel(
+    file_ja,
     sheet = "最終需要部門・粗付加価値部門",
     col_names = col_names,
     col_types = "text"
@@ -97,9 +110,9 @@ read_file_sector <- function(file) {
       .before = 1
     )
 
-  sector <- bind_rows(
-    sector_industry,
-    sector_final_demand_value_added
+  sector_ja <- bind_rows(
+    sector_industry_ja,
+    sector_final_demand_value_added_ja
   ) |>
     mutate(
       output_sector_code_basic = str_c(
@@ -134,41 +147,139 @@ read_file_sector <- function(file) {
       sector_name_medium,
       sector_code_large,
       sector_name_large
+    )
+
+  # The English workbook mirrors the Japanese one's code columns exactly
+  # (only the name columns are translated), so sheet-reading uses the same
+  # `col_names`/regex-filter/fill() pipeline; the English names are joined
+  # onto the Japanese rows by numeric sector code below. Unlike the Japanese
+  # cell text (no inter-word spaces, so all whitespace is line-wrap noise),
+  # English names use real spaces between words, so `str_squish()` collapses
+  # incidental whitespace instead of deleting it.
+  sector_en <- bind_rows(
+    readxl::read_excel(
+      file_en,
+      sheet = "Endogeneous Sectors",
+      col_names = col_names,
+      col_types = "text"
+    ) |>
+      filter(
+        str_detect(output_sector_code_basic_1, "^\\d{4}$") |
+          str_detect(input_sector_code_basic_1, "^\\d{4}$")
+      ),
+    readxl::read_excel(
+      file_en,
+      sheet = "Final Demand_Gross Valued Added",
+      col_names = col_names,
+      col_types = "text"
+    ) |>
+      filter(
+        str_detect(output_sector_code_basic_1, "^\\d{4}") |
+          str_detect(input_sector_code_basic_1, "^\\d{4}")
+      )
+  ) |>
+    mutate(
+      output_sector_code_basic = str_c(
+        output_sector_code_basic_1,
+        output_sector_code_basic_2
+      ),
+      .keep = "unused",
+      .before = output_sector_code_basic_1
     ) |>
     mutate(
-      output_sector_name_basic = str_c(
+      input_sector_code_basic = str_c(
+        input_sector_code_basic_1,
+        input_sector_code_basic_2
+      ),
+      .keep = "unused",
+      .before = input_sector_code_basic_1
+    ) |>
+    mutate(
+      across(
+        c(input_sector_code_basic, output_sector_code_basic),
+        \(x) str_remove(x, "P$")
+      ),
+      across(
+        c(sector_name_small, sector_name_medium, sector_name_large),
+        str_squish
+      )
+    ) |>
+    fill(
+      sector_code_small,
+      sector_name_small,
+      sector_code_medium,
+      sector_name_medium,
+      sector_code_large,
+      sector_name_large
+    ) |>
+    rename(
+      sector_name_basic_en = sector_name_basic,
+      sector_name_small_en = sector_name_small,
+      sector_name_medium_en = sector_name_medium,
+      sector_name_large_en = sector_name_large
+    )
+
+  sector <- sector_ja |>
+    left_join(
+      sector_en,
+      by = c(
+        "output_sector_code_basic",
+        "input_sector_code_basic",
+        "sector_code_small",
+        "sector_code_medium",
+        "sector_code_large"
+      )
+    ) |>
+    mutate(
+      output_sector_name_basic_ja = str_c(
         output_sector_code_basic,
         sector_name_basic,
+        sep = "_"
+      ),
+      output_sector_name_basic_en = str_c(
+        output_sector_code_basic,
+        sector_name_basic_en,
         sep = "_"
       ),
       .before = output_sector_code_basic
     ) |>
     mutate(
-      input_sector_name_basic = str_c(
+      input_sector_name_basic_ja = str_c(
         input_sector_code_basic,
         sector_name_basic,
         sep = "_"
       ),
+      input_sector_name_basic_en = str_c(
+        input_sector_code_basic,
+        sector_name_basic_en,
+        sep = "_"
+      ),
       .before = input_sector_code_basic
     ) |>
+    mutate(
+      sector_name_small_ja = str_c(sector_code_small, sector_name_small, sep = "_"),
+      sector_name_small_en = str_c(sector_code_small, sector_name_small_en, sep = "_"),
+      sector_name_medium_ja = str_c(sector_code_medium, sector_name_medium, sep = "_"),
+      sector_name_medium_en = str_c(sector_code_medium, sector_name_medium_en, sep = "_"),
+      sector_name_large_ja = str_c(sector_code_large, sector_name_large, sep = "_"),
+      sector_name_large_en = str_c(sector_code_large, sector_name_large_en, sep = "_"),
+      .keep = "unused"
+    ) |>
     select(
-      !c(output_sector_code_basic, input_sector_code_basic, sector_name_basic)
-    ) |>
-    unite(
-      "sector_name_small",
-      c(sector_code_small, sector_name_small)
-    ) |>
-    unite(
-      "sector_name_medium",
-      c(sector_code_medium, sector_name_medium)
-    ) |>
-    unite(
-      "sector_name_large",
-      c(sector_code_large, sector_name_large)
+      !c(
+        output_sector_code_basic,
+        input_sector_code_basic,
+        sector_name_basic,
+        sector_name_basic_en
+      )
     )
 
+  # 13-sector "template" classification: Japanese-only source data (e-stat
+  # publishes no English equivalent of the "13部門分類" sheet). Industry
+  # rows therefore have no English template name (NA); non-industry rows
+  # fall back to sector_name_large_en, mirroring the Japanese fallback below.
   sector_template <- readxl::read_excel(
-    file,
+    file_ja,
     sheet = "13部門分類",
     col_names = c(
       "sector_code_large",
@@ -185,16 +296,16 @@ read_file_sector <- function(file) {
       sector_name_template
     ) |>
     unite(
-      "sector_name_large",
+      "sector_name_large_ja",
       c(sector_code_large, sector_name_large)
     ) |>
     unite(
-      "sector_name_template",
+      "sector_name_template_ja",
       c(sector_template_code, sector_name_template)
     ) |>
     mutate(
       across(
-        c(sector_name_large, sector_name_template),
+        c(sector_name_large_ja, sector_name_template_ja),
         \(x) str_remove_all(x, "\\s")
       )
     )
@@ -202,40 +313,44 @@ read_file_sector <- function(file) {
   sector <- sector |>
     left_join(
       sector_template,
-      by = join_by(sector_name_large)
+      by = join_by(sector_name_large_ja)
     ) |>
     mutate(
-      across(
-        sector_name_template,
-        \(x) {
-          case_match(
-            sector_type,
-            "industry" ~ x,
-            .default = sector_name_large,
-          )
-        }
+      sector_name_template_ja = recode_values(
+        sector_type,
+        "industry" ~ sector_name_template_ja,
+        default = sector_name_large_ja
+      ),
+      sector_name_template_en = recode_values(
+        sector_type,
+        "industry" ~ NA_character_,
+        default = sector_name_large_en
       )
     )
 
   sector_input <- sector |>
-    drop_na(input_sector_name_basic) |>
-    select(!output_sector_name_basic) |>
+    drop_na(input_sector_name_basic_ja) |>
+    select(!starts_with("output_sector_name_basic")) |>
     rename(
-      sector_name_basic = input_sector_name_basic
+      sector_name_basic_ja = input_sector_name_basic_ja,
+      sector_name_basic_en = input_sector_name_basic_en
     ) |>
     mutate(
       across(sector_type, as_factor),
-      across(starts_with("sector_name"), \(x) str_remove_all(x, "\\s"))
+      across(ends_with("_ja"), \(x) str_remove_all(x, "\\s")),
+      across(ends_with("_en"), str_squish)
     )
   sector_output <- sector |>
-    drop_na(output_sector_name_basic) |>
-    select(!input_sector_name_basic) |>
+    drop_na(output_sector_name_basic_ja) |>
+    select(!starts_with("input_sector_name_basic")) |>
     rename(
-      sector_name_basic = output_sector_name_basic
+      sector_name_basic_ja = output_sector_name_basic_ja,
+      sector_name_basic_en = output_sector_name_basic_en
     ) |>
     mutate(
       across(sector_type, as_factor),
-      across(starts_with("sector_name"), \(x) str_remove_all(x, "\\s"))
+      across(ends_with("_ja"), \(x) str_remove_all(x, "\\s")),
+      across(ends_with("_en"), str_squish)
     )
 
   list(
@@ -254,8 +369,8 @@ get_conversion_sector <- function(sector_raw, axis) {
     sector_class_to = sector_class
   ) |>
     mutate(
-      col_name_sector_class_from = str_c("sector_name_", sector_class_from),
-      col_name_sector_class_to = str_c("sector_name_", sector_class_to)
+      col_name_sector_class_from = str_c("sector_name_", sector_class_from, "_ja"),
+      col_name_sector_class_to = str_c("sector_name_", sector_class_to, "_ja")
     ) |>
     mutate(
       data = list(col_name_sector_class_from, col_name_sector_class_to) |>
@@ -274,19 +389,30 @@ get_conversion_sector <- function(sector_raw, axis) {
     distinct()
 }
 
-get_sector <- function(conversion_sector) {
-  conversion_sector |>
-    select(
-      sector_type,
-      sector_class_from,
-      sector_name_from
-    ) |>
-    rename(
-      sector_class = sector_class_from,
-      sector_name = sector_name_from
+get_sector <- function(sector_raw, axis) {
+  sector <- sector_raw[[axis]]
+
+  sector_class <- as_factor(c("basic", "small", "medium", "large", "template"))
+
+  tibble(sector_class = sector_class) |>
+    mutate(
+      col_name_ja = str_c("sector_name_", sector_class, "_ja"),
+      col_name_en = str_c("sector_name_", sector_class, "_en")
     ) |>
     mutate(
-      across(sector_type, fct_drop)
+      data = list(col_name_ja, col_name_en) |>
+        pmap(\(col_name_ja, col_name_en) {
+          tibble(
+            sector_type = sector$sector_type,
+            sector_name_ja = sector[[col_name_ja]],
+            sector_name_en = sector[[col_name_en]]
+          )
+        }),
+      .keep = "unused"
     ) |>
+    unnest(data) |>
+    relocate(sector_type) |>
+    arrange(sector_type) |>
+    mutate(across(sector_type, fct_drop)) |>
     distinct()
 }
