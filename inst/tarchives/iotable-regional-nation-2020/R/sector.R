@@ -135,6 +135,16 @@ read_file_sector <- function(file_ja, file_en) {
         c(input_sector_code_basic, output_sector_code_basic),
         \(x) str_remove(x, "P$")
       ),
+      # e-stat's classification workbook has at least one row using
+      # half-width parentheses ("と畜場(公営)★★") where the actual IO table
+      # data uses full-width ("と畜場（公営）★★") for the same code; without
+      # normalizing, this basic-level name never matches the real table's
+      # dimnames, so it silently fails to reclassify to any coarser
+      # sector_class (see `io_reclass()` in iotable_producer_price.R).
+      across(
+        sector_name_basic,
+        \(x) str_replace_all(x, c("\\(" = "（", "\\)" = "）"))
+      ),
       across(
         c(sector_name_small, sector_name_medium, sector_name_large),
         \(x) str_remove_all(x, "\\s|^（続き）|（\\d／\\d）$")
@@ -389,9 +399,7 @@ get_conversion_sector <- function(sector_raw, axis) {
     distinct()
 }
 
-get_sector <- function(sector_raw, axis) {
-  sector <- sector_raw[[axis]]
-
+get_sector_long <- function(sector) {
   sector_class <- as_factor(c("basic", "small", "medium", "large", "template"))
 
   tibble(sector_class = sector_class) |>
@@ -415,4 +423,35 @@ get_sector <- function(sector_raw, axis) {
     arrange(sector_type) |>
     mutate(across(sector_type, fct_drop)) |>
     distinct()
+}
+
+get_sector <- function(sector_raw, axis) {
+  sector <- get_sector_long(sector_raw[[axis]])
+
+  if (axis == "output") {
+    # The real IO table's output axis always labels "industry" sectors using
+    # the *input* axis's classification (see
+    # `convert_sector_iotable_producer_price_basic()`'s `bind_rows(input |>
+    # filter(io_sector_type(sector) == "industry"), ...)` in
+    # iotable_producer_price.R), because e-stat's classification workbook
+    # lists a handful of industry codes (e.g. the scrap-material memo items
+    # "2612_鉄屑"/"2712_非鉄金属屑") only on the input side, leaving no
+    # output-side small/medium/large/template grouping for them. Backfill
+    # those from the input axis so `sector_output` doesn't miss sectors that
+    # the real table's output dimension does have. Verified (2020 data) that
+    # every other industry code already classifies identically on both axes
+    # at every sector_class, so this only adds rows, never replaces one.
+    industry_input <- get_sector_long(sector_raw$input) |>
+      filter(sector_type %in% c("industry", "industry_total"))
+    missing <- industry_input |>
+      anti_join(
+        sector,
+        by = c("sector_type", "sector_class", "sector_name_ja")
+      )
+    sector <- bind_rows(sector, missing) |>
+      arrange(sector_type) |>
+      distinct()
+  }
+
+  sector
 }

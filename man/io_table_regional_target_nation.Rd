@@ -10,6 +10,7 @@ io_table_regional_target_nation(
   price_type = "producer_price",
   sector_class = c("basic", "small", "medium", "large", "template"),
   competitive_import = TRUE,
+  language = NULL,
   ...
 )
 }
@@ -27,6 +28,12 @@ io_table_regional_target_nation(
 convention (matches the `competitive_import` argument of
 [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
 sector classes are only available when `TRUE`.}
+
+\item{language}{Language of the table's sector names, `"ja"` or `"en"`.
+See [io_table_regional_get_nation()] for details. Defaults to `NULL`,
+which resolves to `"en"` with a one-time message noting the default. This
+selects between two precomputed archives (`_en`-suffixed or not) — it does
+not translate at build time.}
 
 \item{...}{Arguments passed to [tarchives::tar_target_archive()].}
 }
