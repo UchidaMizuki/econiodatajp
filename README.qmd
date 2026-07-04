@@ -1,0 +1,92 @@
+---
+format:
+  gfm:
+    default-image-extension: ""
+---
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# econiodatajp
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+econiodatajp provides ready-to-use Japanese input-output (IO) tables,
+built from data published by the Ministry of Internal Affairs and
+Communications ([e-Stat](https://www.e-stat.go.jp/)) and other sources.
+Each table is returned as an [econio](https://github.com/UchidaMizuki/econio)
+input-output table object, so it works directly with econio's analysis
+functions (`io_reclass()`, `io_leontief_inverse()`, and so on).
+
+Tables are archived and rebuilt on demand via
+[tarchives](https://github.com/UchidaMizuki/tarchives)/
+[targets](https://books.ropensci.org/targets/), so `io_table_get()` (or
+`io_table_target()`, for use inside your own `_targets.R` pipeline)
+downloads and processes each source file only once per version.
+
+## Installation
+
+You can install the development version of econiodatajp from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("UchidaMizuki/econiodatajp")
+```
+
+## Usage
+
+`io_table_get()` covers three shapes of table, selected via `region_type`
+and `area`.
+
+The national IO table (`region_type = "regional"` is the default; `area`
+defaults to `"nation"`). `language` defaults to `"en"` with a one-time
+note; pass `language = "ja"` for the original Japanese sector names:
+
+```{r}
+library(econiodatajp)
+
+io_table_get(year = 2020, sector_class = "medium")
+```
+
+One prefecture (`area` accepts a numeric code or a `"NN_name"` fragment):
+
+```{r}
+io_table_get(year = 2015, area = 1)
+```
+
+Every prefecture at once, as a single table with a region dimension:
+
+```{r}
+io_table_get(year = 2011, region_type = "multiregional")
+```
+
+`sector_class` controls the sector classification granularity
+(`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for the
+national table; a single fixed granularity for prefectural/multiregional
+tables). `competitive_import` and `language` are only meaningful for the
+national table.
+
+To declare one of these tables as a target in your own `{targets}`
+pipeline instead of fetching it eagerly, use `io_table_target()` with the
+same arguments:
+
+``` r
+# _targets.R
+library(targets)
+library(econiodatajp)
+
+list(
+  io_table_target(iotable_nation_2020, year = 2020, sector_class = "medium")
+)
+```
