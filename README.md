@@ -74,11 +74,6 @@ fragment):
 
 ``` r
 io_table_get(year = 2015, area = 1)
-#> trying URL 'https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx'
-#> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 1637807 bytes (1.6 MB)
-#> ==================================================
-#> downloaded 1.6 MB
-#> 
 #> # Input-output table: regional
 #> # Dimensions:         input [112], output [117]
 #> # Input:              112 sectors
@@ -103,11 +98,6 @@ Every prefecture at once, as a single table with a region dimension:
 
 ``` r
 io_table_get(year = 2011, region_type = "multiregional")
-#> trying URL 'https://www.rieti.go.jp/jp/database/r-io2011/data/i-preio2011.xlsx'
-#> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 14015943 bytes (13.4 MB)
-#> ==================================================
-#> downloaded 13.4 MB
-#> 
 #> # Input-output table: multi-regional
 #> # Dimensions:         input [1,739], output [1,833]
 #> # Input:              47 regions, 31 industries
