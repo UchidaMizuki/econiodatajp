@@ -286,8 +286,11 @@ read_file_sector <- function(file_ja, file_en) {
 
   # 13-sector "template" classification: Japanese-only source data (e-stat
   # publishes no English equivalent of the "13部門分類" sheet). Industry
-  # rows therefore have no English template name (NA); non-industry rows
-  # fall back to sector_name_large_en, mirroring the Japanese fallback below.
+  # rows therefore have no English template *name*, but the numeric
+  # template code itself is language-independent, so industry rows show
+  # just the code (e.g. "01") rather than losing the label entirely.
+  # Non-industry rows fall back to sector_name_large_en, mirroring the
+  # Japanese fallback below.
   sector_template <- readxl::read_excel(
     file_ja,
     sheet = "13部門分類",
@@ -311,11 +314,12 @@ read_file_sector <- function(file_ja, file_en) {
     ) |>
     unite(
       "sector_name_template_ja",
-      c(sector_template_code, sector_name_template)
+      c(sector_template_code, sector_name_template),
+      remove = FALSE
     ) |>
     mutate(
       across(
-        c(sector_name_large_ja, sector_name_template_ja),
+        c(sector_name_large_ja, sector_name_template_ja, sector_template_code),
         \(x) str_remove_all(x, "\\s")
       )
     )
@@ -333,10 +337,11 @@ read_file_sector <- function(file_ja, file_en) {
       ),
       sector_name_template_en = recode_values(
         sector_type,
-        "industry" ~ NA_character_,
+        "industry" ~ sector_template_code,
         default = sector_name_large_en
       )
-    )
+    ) |>
+    select(!sector_template_code)
 
   sector_input <- sector |>
     drop_na(input_sector_name_basic_ja) |>
