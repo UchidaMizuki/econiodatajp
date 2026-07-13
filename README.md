@@ -94,7 +94,9 @@ io_table_get(year = 2015, area = 1)
 #> # ℹ 13,094 more rows
 ```
 
-Every prefecture at once, as a single table with a region dimension:
+Every prefecture at once, as a single table with a region dimension
+(`region_class = "pref"` is the default breakdown for a
+`"multiregional"` table):
 
 ``` r
 io_table_get(year = 2011, region_type = "multiregional")
@@ -123,7 +125,8 @@ io_table_get(year = 2011, region_type = "multiregional")
 (`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for the
 national table; a single fixed granularity for prefectural/multiregional
 tables). `competitive_import` and `language` are only meaningful for the
-national table.
+national table; `region_class` is only meaningful for a
+`"multiregional"` table.
 
 To declare one of these tables as a target in your own `{targets}`
 pipeline instead of fetching it eagerly, use `io_table_target()` with

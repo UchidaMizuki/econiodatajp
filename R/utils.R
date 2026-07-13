@@ -10,6 +10,13 @@ io_table_pipeline_multiregional_pref <- function(year) {
   stringr::str_glue("iotable-multiregional-pref-{year}")
 }
 
+# No backing tarchive exists yet (see GitHub issue #5); `check_archive_pipeline()`
+# in the `region_class == "block"` branch of `io_table_resolve()` gives a clear
+# error until one is added.
+io_table_pipeline_multiregional_block <- function(year) {
+  stringr::str_glue("iotable-multiregional-block-{year}")
+}
+
 # `language = NULL` defaults to `"en"` rather than `"ja"` even though
 # Japanese is the authoritative source, since English is the more broadly
 # useful default for callers who don't otherwise care; the `cli::cli_inform()`
@@ -42,13 +49,18 @@ is_area_nation <- function(area) {
 # are only meaningful for the nation branch today (the pref/multiregional
 # tarchives don't have noncompetitive-import or `_en` archives yet), so a
 # non-default value for either in any other branch errors instead of being
-# silently ignored.
+# silently ignored. `region_class` follows the same pattern: it only applies
+# when `region_type == "multiregional"` (it selects which region breakdown
+# backs that table -- prefectures or the 9-region block table, see GitHub
+# issue #5), and its default (`"pref"`) is a no-op everywhere else, so only a
+# non-default value passed outside `"multiregional"` errors.
 io_table_resolve <- function(
   year,
   region_type,
   area,
   price_type,
   sector_class,
+  region_class,
   competitive_import,
   language
 ) {
@@ -66,9 +78,13 @@ io_table_resolve <- function(
     if (!is.null(language)) {
       rlang::abort('`language` isn\'t supported when `region_type = "multiregional"`.')
     }
-    sector_class <- sector_class %||% "large"
-    pipeline <- io_table_pipeline_multiregional_pref(year)
+    pipeline <- switch(
+      region_class,
+      pref = io_table_pipeline_multiregional_pref(year),
+      block = io_table_pipeline_multiregional_block(year)
+    )
     check_archive_pipeline("econiodatajp", pipeline)
+    sector_class <- sector_class %||% "large"
     name <- io_table_name_archive(
       price_type = price_type,
       sector_class = sector_class,
@@ -76,6 +92,9 @@ io_table_resolve <- function(
       competitive_import = TRUE
     )
   } else if (nation) {
+    if (!identical(region_class, "pref")) {
+      rlang::abort('`region_class` isn\'t supported when `region_type = "regional"`.')
+    }
     sector_class <- sector_class %||%
       c("basic", "small", "medium", "large", "template")
     sector_class <- rlang::arg_match(
@@ -93,6 +112,9 @@ io_table_resolve <- function(
       language = language
     )
   } else {
+    if (!identical(region_class, "pref")) {
+      rlang::abort('`region_class` isn\'t supported when `area` is a prefecture.')
+    }
     if (!isTRUE(competitive_import)) {
       rlang::abort(
         '`competitive_import = FALSE` isn\'t supported when `area` is a prefecture.'
