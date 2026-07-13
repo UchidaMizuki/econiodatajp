@@ -17,9 +17,10 @@
 #' `"producer_price"` is available.
 #' @param sector_class Sector classification granularity. Defaults to the
 #' full choice set (`"basic"`, `"small"`, `"medium"`, `"large"`,
-#' `"template"`) when `area` is nation-level, or the only available value
-#' otherwise (`"medium"` for a prefecture, `"large"` for
-#' `region_type = "multiregional"` with `region_class = "pref"`).
+#' `"template"`) when `area` is nation-level; the only available value for a
+#' prefecture (`"medium"`); the full choice set (`"small"`, `"medium"`,
+#' `"large"`, coarsest to finest) for `region_class = "block"`; or the only
+#' available value for `region_class = "pref"` (`"large"`).
 #' @param region_class Region breakdown used within a `"multiregional"`
 #' table: `"pref"` (the default) for the 47-prefecture interregional table,
 #' or `"block"` for the official 9-region block interregional table.

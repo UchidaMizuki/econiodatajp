@@ -90,11 +90,22 @@ io_table_resolve <- function(
       block = io_table_pipeline_multiregional_nation_block(year)
     )
     check_archive_pipeline("econiodatajp", pipeline)
-    sector_class <- sector_class %||% "large"
+    # The RIETI pref table only has one sector granularity ("large"); the
+    # METI block table has three (12/29/53 sectors from its source workbook,
+    # mapped to small/medium/large -- the same relative-granularity naming
+    # as the nation table's basic/small/medium/large/template). Defaulting
+    # to the first/coarsest choice when unspecified matches the nation
+    # branch's own convention below.
+    sector_class_choices <- switch(
+      region_class,
+      pref = "large",
+      block = c("small", "medium", "large")
+    )
+    sector_class <- sector_class %||% sector_class_choices
     name <- io_table_name_archive(
       price_type = price_type,
       sector_class = sector_class,
-      sector_class_choices = "large",
+      sector_class_choices = sector_class_choices,
       competitive_import = TRUE
     )
   } else if (nation) {

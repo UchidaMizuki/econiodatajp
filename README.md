@@ -121,10 +121,38 @@ io_table_get(year = 2011, region_type = "multiregional")
 #> # ℹ 1 more variable: output$sector <sector>
 ```
 
+Or the official 9-region block breakdown instead
+(`region_class = "block"`; only FY2005 is published):
+
+``` r
+io_table_get(year = 2005, region_type = "multiregional", region_class = "block")
+#> # Input-output table: multi-regional
+#> # Dimensions:         input [180], output [171]
+#> # Input:              9 regions, 12 industries
+#> # Output:             9 regions, 12 industries
+#> # Import type:        competitive
+#>    input$region $sector                 output$region            .
+#>    <glue>       <sector>                <glue>               <dbl>
+#>  1 1_北海道     <industry> 1_農林水産業 1_北海道      274730000000
+#>  2 1_北海道     <industry> 1_農林水産業 1_北海道         180000000
+#>  3 1_北海道     <industry> 1_農林水産業 1_北海道      659752000000
+#>  4 1_北海道     <industry> 1_農林水産業 1_北海道                 0
+#>  5 1_北海道     <industry> 1_農林水産業 1_北海道           1000000
+#>  6 1_北海道     <industry> 1_農林水産業 1_北海道       41690000000
+#>  7 1_北海道     <industry> 1_農林水産業 1_北海道        2807000000
+#>  8 1_北海道     <industry> 1_農林水産業 1_北海道                 0
+#>  9 1_北海道     <industry> 1_農林水産業 1_北海道         252000000
+#> 10 1_北海道     <industry> 1_農林水産業 1_北海道           4000000
+#> # ℹ 30,770 more rows
+#> # ℹ 1 more variable: output$sector <sector>
+```
+
 `sector_class` controls the sector classification granularity
 (`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for the
-national table; a single fixed granularity for prefectural/multiregional
-tables). `competitive_import` and `language` are only meaningful for the
+national table; a fixed single value for a prefecture (`"medium"`) or a
+`region_class = "pref"` multiregional table (`"large"`); `"small"`,
+`"medium"`, or `"large"` for a `region_class = "block"` multiregional
+table). `competitive_import` and `language` are only meaningful for the
 national table; `region_class` is only meaningful for a
 `"multiregional"` table.
 
