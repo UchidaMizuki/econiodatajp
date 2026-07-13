@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^inst/tarchives/.*/_targets$
 ^README\.qmd$
+^\.claude$
