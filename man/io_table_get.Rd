@@ -39,16 +39,8 @@ per-region subsetting).}
 full choice set (`"basic"`, `"small"`, `"medium"`, `"large"`,
 `"template"`) when `area` is nation-level; the only available value for a
 prefecture (`"medium"`); the full choice set (`"coarse"`, `"medium"`,
-`"fine"`) for `region_class = "block"`; or the only available value for
-`region_class = "pref"` (`"large"`). The nation table's tier names are
-direct translations of official Japanese classification tiers (基本分類/
-統合小分類/統合中分類/統合大分類); no such official names exist for the
-block table's three tiers (METI's own documentation only names them by
-sector count), so it uses its own `"coarse"`/`"medium"`/`"fine"` scale
-instead of reusing `"small"`/`"medium"`/`"large"` -- which would be
-actively misleading, since the nation table's `"small"` tier has *more*
-sectors than its `"large"` tier, the opposite of what those names would
-suggest here.}
+`"fine"`, coarsest to finest) for `region_class = "block"`; or the only
+available value for `region_class = "pref"` (`"large"`).}
 
 \item{region_class}{Region breakdown used within a `"multiregional"`
 table: `"pref"` (the default) for the 47-prefecture interregional table,
