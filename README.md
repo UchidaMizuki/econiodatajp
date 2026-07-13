@@ -95,11 +95,11 @@ io_table_get(year = 2015, area = 1)
 ```
 
 Every prefecture at once, as a single table with a region dimension
-(`region_class = "pref"` is the default breakdown for a
+(`region_class` has no default and must be specified for a
 `"multiregional"` table):
 
 ``` r
-io_table_get(year = 2011, region_type = "multiregional")
+io_table_get(year = 2011, region_type = "multiregional", region_class = "pref")
 #> # Input-output table: multi-regional
 #> # Dimensions:         input [1,739], output [1,833]
 #> # Input:              47 regions, 31 industries
@@ -153,8 +153,8 @@ national table; a fixed single value for a prefecture (`"medium"`) or a
 `region_class = "pref"` multiregional table (`"large"`); `"coarse"`,
 `"medium"`, or `"fine"` for a `region_class = "block"` multiregional
 table). `competitive_import` and `language` are only meaningful for the
-national table; `region_class` is only meaningful for a
-`"multiregional"` table.
+national table; `region_class` has no default and must be specified for
+a `"multiregional"` table (and is otherwise unsupported).
 
 To declare one of these tables as a target in your own `{targets}`
 pipeline instead of fetching it eagerly, use `io_table_target()` with

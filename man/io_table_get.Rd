@@ -10,7 +10,7 @@ io_table_get(
   area = "nation",
   price_type = "producer_price",
   sector_class = NULL,
-  region_class = c("pref", "block"),
+  region_class = NULL,
   competitive_import = TRUE,
   language = NULL
 )
@@ -43,9 +43,10 @@ prefecture (`"medium"`); the full choice set (`"coarse"`, `"medium"`,
 available value for `region_class = "pref"` (`"large"`).}
 
 \item{region_class}{Region breakdown used within a `"multiregional"`
-table: `"pref"` (the default) for the 47-prefecture interregional table,
-or `"block"` for the official 9-region block interregional table.
-Ignored when `region_type = "regional"`; a non-default value errors in
+table: `"pref"` for the 47-prefecture interregional table, or `"block"`
+for the official 9-region block interregional table. No default -- must
+be specified when `region_type = "multiregional"`. Must be `NULL` (the
+default) when `region_type = "regional"`; a non-`NULL` value errors in
 that case.}
 
 \item{competitive_import}{Whether to use the competitive-import

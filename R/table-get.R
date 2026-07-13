@@ -22,9 +22,10 @@
 #' `"fine"`, coarsest to finest) for `region_class = "block"`; or the only
 #' available value for `region_class = "pref"` (`"large"`).
 #' @param region_class Region breakdown used within a `"multiregional"`
-#' table: `"pref"` (the default) for the 47-prefecture interregional table,
-#' or `"block"` for the official 9-region block interregional table.
-#' Ignored when `region_type = "regional"`; a non-default value errors in
+#' table: `"pref"` for the 47-prefecture interregional table, or `"block"`
+#' for the official 9-region block interregional table. No default -- must
+#' be specified when `region_type = "multiregional"`. Must be `NULL` (the
+#' default) when `region_type = "regional"`; a non-`NULL` value errors in
 #' that case.
 #' @param competitive_import Whether to use the competitive-import
 #' convention (matches the `competitive_import` argument of
@@ -50,12 +51,11 @@ io_table_get <- function(
   area = "nation",
   price_type = "producer_price",
   sector_class = NULL,
-  region_class = c("pref", "block"),
+  region_class = NULL,
   competitive_import = TRUE,
   language = NULL
 ) {
   region_type <- rlang::arg_match(region_type)
-  region_class <- rlang::arg_match(region_class)
   resolved <- io_table_resolve(
     year = year,
     region_type = region_type,

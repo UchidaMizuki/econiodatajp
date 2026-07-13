@@ -55,11 +55,13 @@ is_area_nation <- function(area) {
 # are only meaningful for the nation branch today (the pref/multiregional
 # tarchives don't have noncompetitive-import or `_en` archives yet), so a
 # non-default value for either in any other branch errors instead of being
-# silently ignored. `region_class` follows the same pattern: it only applies
-# when `region_type == "multiregional"` (it selects which region breakdown
-# backs that table -- prefectures or the 9-region block table, see GitHub
-# issue #5), and its default (`"pref"`) is a no-op everywhere else, so only a
-# non-default value passed outside `"multiregional"` errors.
+# silently ignored. `region_class` only applies when `region_type ==
+# "multiregional"` (it selects which region breakdown backs that table --
+# prefectures or the 9-region block table, see GitHub issue #5); unlike
+# `competitive_import`/`language`, it has no default (`NULL` means
+# "unset"), so callers must say which breakdown they want once
+# `region_type = "multiregional"` has more than one -- any non-`NULL` value
+# passed outside that branch still errors, same as the others.
 io_table_resolve <- function(
   year,
   region_type,
@@ -84,6 +86,12 @@ io_table_resolve <- function(
     if (!is.null(language)) {
       rlang::abort('`language` isn\'t supported when `region_type = "multiregional"`.')
     }
+    if (is.null(region_class)) {
+      rlang::abort(
+        '`region_class` must be specified ("pref" or "block") when `region_type = "multiregional"`.'
+      )
+    }
+    region_class <- rlang::arg_match(region_class, c("pref", "block"))
     pipeline <- switch(
       region_class,
       pref = io_table_pipeline_multiregional_nation_pref(year),
@@ -117,7 +125,7 @@ io_table_resolve <- function(
       competitive_import = TRUE
     )
   } else if (nation) {
-    if (!identical(region_class, "pref")) {
+    if (!is.null(region_class)) {
       rlang::abort('`region_class` isn\'t supported when `region_type = "regional"`.')
     }
     sector_class <- sector_class %||%
@@ -137,7 +145,7 @@ io_table_resolve <- function(
       language = language
     )
   } else {
-    if (!identical(region_class, "pref")) {
+    if (!is.null(region_class)) {
       rlang::abort('`region_class` isn\'t supported when `area` is a prefecture.')
     }
     if (!isTRUE(competitive_import)) {

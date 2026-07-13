@@ -16,13 +16,12 @@ io_table_target <- function(
   area = "nation",
   price_type = "producer_price",
   sector_class = NULL,
-  region_class = c("pref", "block"),
+  region_class = NULL,
   competitive_import = TRUE,
   language = NULL,
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
-  region_class <- rlang::arg_match(region_class)
   resolved <- io_table_resolve(
     year = year,
     region_type = region_type,
