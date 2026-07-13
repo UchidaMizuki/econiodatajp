@@ -4,9 +4,9 @@
 \name{econiodatajp-package}
 \alias{econiodatajp}
 \alias{econiodatajp-package}
-\title{econiodatajp: Dataset for the input-output tables for Japan}
+\title{econiodatajp: Ready-to-Use Japanese Input-Output Tables}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+Provides ready-to-use input-output (IO) tables for Japan, built from data published by Japan's national government (e-Stat), individual prefectures, and the Research Institute of Economy, Trade and Industry (RIETI). Tables are archived and rebuilt on demand via the 'tarchives' and 'targets' packages, and returned as 'econio' input-output table objects for direct use with its analysis functions.
 }
 \author{
 \strong{Maintainer}: Mizuki Uchida \email{uchidamizuki@vivaldi.net}
