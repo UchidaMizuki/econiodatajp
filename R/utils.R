@@ -1,20 +1,26 @@
-io_table_pipeline_nation <- function(year) {
+io_table_pipeline_regional_nation <- function(year) {
   stringr::str_glue("iotable-regional-nation-{year}")
 }
 
-io_table_pipeline_pref <- function(year) {
+io_table_pipeline_regional_pref <- function(year) {
   stringr::str_glue("iotable-regional-pref-{year}")
 }
 
-io_table_pipeline_multiregional_pref <- function(year) {
-  stringr::str_glue("iotable-multiregional-pref-{year}")
+# Named `..._nation_pref()` rather than `..._pref()` because `area` is
+# hardcoded to nation-level for `region_type == "multiregional"` today only
+# for lack of subset data (see the `!nation` guard below) -- a future
+# partial-region table would slot its own area value in between
+# `multiregional` and `pref`/`block`, mirroring how `io_table_pipeline_regional_*()`
+# already puts the area right after `regional`.
+io_table_pipeline_multiregional_nation_pref <- function(year) {
+  stringr::str_glue("iotable-multiregional-nation-pref-{year}")
 }
 
 # No backing tarchive exists yet (see GitHub issue #5); `check_archive_pipeline()`
 # in the `region_class == "block"` branch of `io_table_resolve()` gives a clear
 # error until one is added.
-io_table_pipeline_multiregional_block <- function(year) {
-  stringr::str_glue("iotable-multiregional-block-{year}")
+io_table_pipeline_multiregional_nation_block <- function(year) {
+  stringr::str_glue("iotable-multiregional-nation-block-{year}")
 }
 
 # `language = NULL` defaults to `"en"` rather than `"ja"` even though
@@ -80,8 +86,8 @@ io_table_resolve <- function(
     }
     pipeline <- switch(
       region_class,
-      pref = io_table_pipeline_multiregional_pref(year),
-      block = io_table_pipeline_multiregional_block(year)
+      pref = io_table_pipeline_multiregional_nation_pref(year),
+      block = io_table_pipeline_multiregional_nation_block(year)
     )
     check_archive_pipeline("econiodatajp", pipeline)
     sector_class <- sector_class %||% "large"
@@ -101,7 +107,7 @@ io_table_resolve <- function(
       sector_class,
       c("basic", "small", "medium", "large", "template")
     )
-    pipeline <- io_table_pipeline_nation(year)
+    pipeline <- io_table_pipeline_regional_nation(year)
     check_archive_pipeline("econiodatajp", pipeline)
     language <- resolve_language(language)
     name <- io_table_name_archive(
@@ -124,7 +130,7 @@ io_table_resolve <- function(
       rlang::abort('`language` isn\'t supported when `area` is a prefecture.')
     }
     sector_class <- sector_class %||% "medium"
-    pipeline <- io_table_pipeline_pref(year)
+    pipeline <- io_table_pipeline_regional_pref(year)
     check_archive_pipeline("econiodatajp", pipeline)
     name <- resolve_pref_name_archive(
       "econiodatajp",
