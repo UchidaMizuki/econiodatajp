@@ -3,20 +3,25 @@
 # only benchmark year published (the FY2000 table was never officially
 # released, and no later edition exists). Distributed as three sector
 # granularities of the same MTX-format transaction sheet -- 12/29/53
-# sectors -- mapped onto sector_class small/medium/large respectively, the
-# same convention as the nation table's basic/small/medium/large/template.
+# sectors -- mapped onto sector_class coarse/medium/fine respectively.
+# Unlike the nation table's basic/small/medium/large/template (each a
+# direct translation of a real official Japanese classification tier name),
+# METI's own documentation for this table never names these three tiers,
+# only their sector counts, so "small"/"medium"/"large" isn't reused here:
+# the nation table's "small" tier has *more* sectors than its "large" tier,
+# the opposite direction "small"/"large" would suggest for this table.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small,
+    file_iotable_producer_price_coarse,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467390&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/small.xlsx"
+      destfile = "_targets/user/iotable/producer_price/coarse.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_small,
+  iotable_producer_price_coarse = read_file_iotable_producer_price(
+    file = file_iotable_producer_price_coarse,
     sheet = "取引額(12部門MTX)"
   ),
   tar_change(
@@ -33,16 +38,16 @@ target_iotable_producer_price <- tar_plan(
     sheet = "取引額(29部門MTX)"
   ),
   tar_change(
-    file_iotable_producer_price_large,
+    file_iotable_producer_price_fine,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467392&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/large.xlsx"
+      destfile = "_targets/user/iotable/producer_price/fine.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_large = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_large,
+  iotable_producer_price_fine = read_file_iotable_producer_price(
+    file = file_iotable_producer_price_fine,
     sheet = "取引額(53部門MTX)"
   )
 )

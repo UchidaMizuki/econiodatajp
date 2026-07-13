@@ -90,16 +90,24 @@ io_table_resolve <- function(
       block = io_table_pipeline_multiregional_nation_block(year)
     )
     check_archive_pipeline("econiodatajp", pipeline)
-    # The RIETI pref table only has one sector granularity ("large"); the
-    # METI block table has three (12/29/53 sectors from its source workbook,
-    # mapped to small/medium/large -- the same relative-granularity naming
-    # as the nation table's basic/small/medium/large/template). Defaulting
-    # to the first/coarsest choice when unspecified matches the nation
-    # branch's own convention below.
+    # The RIETI pref table only has one sector granularity ("large"). The
+    # METI block table has three (12/29/53 sectors from its source
+    # workbook), but unlike the nation table's basic/small/medium/large/
+    # template -- each a direct translation of a real official Japanese
+    # classification tier name (基本分類/統合小分類/統合中分類/統合大分類)
+    # -- METI's own documentation for the block table never names these
+    # tiers at all, only their sector counts (see
+    # inst/tarchives/iotable-multiregional-nation-block-2005/R/iotable_producer_price.R).
+    # Reusing "small"/"medium"/"large" here would therefore be an
+    # unfounded borrowing, and an actively misleading one: the nation
+    # table's "small" (統合小分類) has *more* sectors than its "large"
+    # (統合大分類), the opposite direction from what "small"/"large" would
+    # suggest for this table. "coarse"/"medium"/"fine" avoids the
+    # collision entirely.
     sector_class_choices <- switch(
       region_class,
       pref = "large",
-      block = c("small", "medium", "large")
+      block = c("coarse", "medium", "fine")
     )
     sector_class <- sector_class %||% sector_class_choices
     name <- io_table_name_archive(

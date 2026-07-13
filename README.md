@@ -150,8 +150,8 @@ io_table_get(year = 2005, region_type = "multiregional", region_class = "block")
 `sector_class` controls the sector classification granularity
 (`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for the
 national table; a fixed single value for a prefecture (`"medium"`) or a
-`region_class = "pref"` multiregional table (`"large"`); `"small"`,
-`"medium"`, or `"large"` for a `region_class = "block"` multiregional
+`region_class = "pref"` multiregional table (`"large"`); `"coarse"`,
+`"medium"`, or `"fine"` for a `region_class = "block"` multiregional
 table). `competitive_import` and `language` are only meaningful for the
 national table; `region_class` is only meaningful for a
 `"multiregional"` table.
