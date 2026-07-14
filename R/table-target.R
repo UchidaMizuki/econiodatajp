@@ -12,16 +12,18 @@
 io_table_target <- function(
   name,
   region_type = c("regional", "multiregional"),
-  region_class = NULL,
-  region = "nation",
+  region_class = c("nation", "pref", "block"),
+  region = NULL,
   year,
-  sector_class = NULL,
+  sector_class,
   price_type = "producer_price",
   competitive_import = TRUE,
-  language = NULL,
+  language = c("ja", "en"),
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
+  region_class <- rlang::arg_match(region_class)
+  language <- rlang::arg_match(language)
   resolved <- io_table_resolve(
     region_type = region_type,
     region_class = region_class,

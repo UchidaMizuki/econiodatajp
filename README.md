@@ -35,20 +35,42 @@ pak::pak("UchidaMizuki/econiodatajp")
 ## Usage
 
 `io_table_get()` covers three shapes of table, selected via
-`region_type` and `region`.
+`region_type` and `region_class`. `sector_class` has no default and must
+always be specified; `language` defaults to `"ja"` (the original
+Japanese sector names) and only accepts `"en"` for the national table.
 
-The national IO table (`region_type = "regional"` is the default;
-`region` defaults to `"nation"`). `language` defaults to `"en"` with a
-one-time note; pass `language = "ja"` for the original Japanese sector
-names:
+The national IO table (`region_type = "regional"` and
+`region_class = "nation"` are both the default):
 
 ``` r
 library(econiodatajp)
 
 io_table_get(year = 2020, sector_class = "medium")
-#> ℹ Defaulting to `language = "en"`.
-#> ℹ Pass `language = "ja"` for the original Japanese sector names (the
-#>   authoritative source).
+#> # Input-output table: regional
+#> # Dimensions:         input [115], output [119]
+#> # Input:              115 sectors
+#> # Output:             119 sectors
+#> # Import type:        competitive
+#>    input$sector            output$sector                                  
+#>    <sector>                <sector>                                       
+#>  1 <industry> 011_耕種農業 <industry> 011_耕種農業                        
+#>  2 <industry> 011_耕種農業 <industry> 012_畜産                            
+#>  3 <industry> 011_耕種農業 <industry> 013_農業サービス                    
+#>  4 <industry> 011_耕種農業 <industry> 015_林業                            
+#>  5 <industry> 011_耕種農業 <industry> 017_漁業                            
+#>  6 <industry> 011_耕種農業 <industry> 061_石炭・原油・天然ガス            
+#>  7 <industry> 011_耕種農業 <industry> 062_その他の鉱業                    
+#>  8 <industry> 011_耕種農業 <industry> 111_食料品                          
+#>  9 <industry> 011_耕種農業 <industry> 112_飲料                            
+#> 10 <industry> 011_耕種農業 <industry> 113_飼料・有機質肥料（別掲を除く。）
+#> # ℹ 13,675 more rows
+#> # ℹ 1 more variable: . <dbl>
+```
+
+Pass `language = "en"` for English sector names:
+
+``` r
+io_table_get(year = 2020, sector_class = "medium", language = "en")
 #> # Input-output table: regional
 #> # Dimensions:         input [115], output [119]
 #> # Input:              115 sectors
@@ -70,11 +92,12 @@ io_table_get(year = 2020, sector_class = "medium")
 #> # ℹ 2 more variables: output <tibble[,1]>, . <dbl>
 ```
 
-One prefecture (`region` accepts a numeric code or a `"NN_name"`
+One prefecture (`region_class = "pref"` with `region_type = "regional"`
+requires `region`, which accepts a numeric code or a `"NN_name"`
 fragment):
 
 ``` r
-io_table_get(year = 2015, region = 1)
+io_table_get(region_class = "pref", region = 1, year = 2015, sector_class = "medium")
 #> # Input-output table: regional
 #> # Dimensions:         input [112], output [117]
 #> # Input:              112 sectors
@@ -96,11 +119,16 @@ io_table_get(year = 2015, region = 1)
 ```
 
 Every prefecture at once, as a single table with a region dimension
-(`region_class` has no default and must be specified for a
-`"multiregional"` table):
+(`region` isn’t used for a `"multiregional"` table – it always covers
+every region in the breakdown at once):
 
 ``` r
-io_table_get(year = 2011, region_type = "multiregional", region_class = "pref")
+io_table_get(
+  region_type = "multiregional",
+  region_class = "pref",
+  year = 2011,
+  sector_class = "large"
+)
 #> # Input-output table: multi-regional
 #> # Dimensions:         input [1,739], output [1,833]
 #> # Input:              47 regions, 31 industries
@@ -126,7 +154,12 @@ Or the official 9-region block breakdown instead
 (`region_class = "block"`; only FY2005 is published):
 
 ``` r
-io_table_get(year = 2005, region_type = "multiregional", region_class = "block")
+io_table_get(
+  region_type = "multiregional",
+  region_class = "block",
+  year = 2005,
+  sector_class = "coarse"
+)
 #> # Input-output table: multi-regional
 #> # Dimensions:         input [180], output [171]
 #> # Input:              9 regions, 12 industries
@@ -149,13 +182,12 @@ io_table_get(year = 2005, region_type = "multiregional", region_class = "block")
 ```
 
 `sector_class` controls the sector classification granularity
-(`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for the
-national table; a fixed single value for a prefecture (`"medium"`) or a
-`region_class = "pref"` multiregional table (`"large"`); `"coarse"`,
-`"medium"`, or `"fine"` for a `region_class = "block"` multiregional
-table). `competitive_import` and `language` are only meaningful for the
-national table; `region_class` has no default and must be specified for
-a `"multiregional"` table (and is otherwise unsupported).
+(`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for
+`region_class = "nation"`; a fixed single value for one prefecture
+(`"medium"`) or the `region_class = "pref"` multiregional table
+(`"large"`); `"coarse"`, `"medium"`, or `"fine"` for a
+`region_class = "block"` multiregional table). `competitive_import` and
+`language` are only meaningful for `region_class = "nation"`.
 
 To declare one of these tables as a target in your own `{targets}`
 pipeline instead of fetching it eagerly, use `io_table_target()` with

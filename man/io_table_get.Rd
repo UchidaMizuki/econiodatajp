@@ -6,49 +6,46 @@
 \usage{
 io_table_get(
   region_type = c("regional", "multiregional"),
-  region_class = NULL,
-  region = "nation",
+  region_class = c("nation", "pref", "block"),
+  region = NULL,
   year,
-  sector_class = NULL,
+  sector_class,
   price_type = "producer_price",
   competitive_import = TRUE,
-  language = NULL
+  language = c("ja", "en")
 )
 }
 \arguments{
 \item{region_type}{Table "shape": `"regional"` for a single-region table
 (see [econio::io_table_regional()]) or `"multiregional"` for a table with
-an explicit region dimension (see [econio::io_table_multiregional()]).
-`region_type` selects the table's shape; `region_class` (below) selects
-the region breakdown used within a `"multiregional"` table.}
+an explicit region dimension (see [econio::io_table_multiregional()]).}
 
-\item{region_class}{Region breakdown used within a `"multiregional"`
-table: `"pref"` for the 47-prefecture interregional table, or `"block"`
-for the official 9-region block interregional table. No default -- must
-be specified when `region_type = "multiregional"`. Must be `NULL` (the
-default) when `region_type = "regional"`; a non-`NULL` value errors in
-that case.}
+\item{region_class}{Region granularity: `"nation"` (the default) for the
+single national table; `"pref"` for prefecture-level, either the
+47-prefecture interregional table (`region_type = "multiregional"`) or
+one specific prefecture's own table (`region_type = "regional"`, see
+`region`); or `"block"` for the official 9-region block interregional
+table (`region_type = "multiregional"` only).}
 
-\item{region}{Which region the table covers. `"nation"` (the default),
-`0`, and `"00"` all mean nation-level; any other value is a prefecture,
-either a numeric prefecture code (e.g. `1`, `13`) or the code_name
-fragment used in the archive (e.g. `"01_hokkaido"`, `"13_tokyo"`). Must
-resolve to nation-level when `region_type = "multiregional"` (that table
-always covers every region in its breakdown at once — there is no
-per-region subsetting). This selects a single administrative unit; it is
-a different axis from `region_class` (which selects the breakdown
-*scheme* for a `"multiregional"` table). A future feature that subsets a
-`"multiregional"` table's breakdown would use a separate argument (e.g.
-`subregion`) rather than overloading `region`.}
+\item{region}{Which single region to select within `region_class`. Only
+applicable, and required, when `region_class = "pref"` and `region_type =
+"regional"`, where it selects one prefecture -- a numeric prefecture code
+(e.g. `1`, `13`) or the code_name fragment used in the archive (e.g.
+`"01_hokkaido"`, `"13_tokyo"`). Must be `NULL` (the default) in every
+other case: `region_class = "nation"` always covers the whole country,
+and `region_class = "pref"`/`"block"` under `region_type =
+"multiregional"` always cover every region in the breakdown at once --
+there is no per-region subsetting there.}
 
 \item{year}{Year of the data.}
 
-\item{sector_class}{Sector classification granularity. Defaults to the
-full choice set (`"basic"`, `"small"`, `"medium"`, `"large"`,
-`"template"`) when `region` is nation-level; the only available value for
-a prefecture (`"medium"`); the full choice set (`"coarse"`, `"medium"`,
-`"fine"`, coarsest to finest) for `region_class = "block"`; or the only
-available value for `region_class = "pref"` (`"large"`).}
+\item{sector_class}{Sector classification granularity. No default --
+must be specified. Choices depend on `region_class`: the full set
+(`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) for
+`region_class = "nation"`; the only available value for one prefecture
+(`"medium"`); the full choice set (`"coarse"`, `"medium"`, `"fine"`,
+coarsest to finest) for `region_class = "block"`; or the only available
+value for the `region_class = "pref"` interregional table (`"large"`).}
 
 \item{price_type}{Price basis of the table. Currently only
 `"producer_price"` is available.}
@@ -57,17 +54,16 @@ available value for `region_class = "pref"` (`"large"`).}
 convention (matches the `competitive_import` argument of
 [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
 sector classes are only available when `TRUE`. Only supported when
-`region` is nation-level; `FALSE` errors otherwise.}
+`region_class = "nation"`; `FALSE` errors otherwise.}
 
-\item{language}{Language of the table's sector names, `"ja"` or `"en"`.
-Japanese is the authoritative source (sector *type* classification is
-derived from the Japanese sector classification workbook); English names
-are pre-translated from it when each tarchive is built (see
-`translate_iotable_sector()` in `inst/tarchives/R/translate.R`), and a
-sector with no English source name keeps its Japanese name. Defaults to
-`NULL`, which resolves to `"en"` with a one-time message noting the
-default. Only supported when `region` is nation-level; a non-`NULL` value
-errors otherwise.}
+\item{language}{Language of the table's sector names, `"ja"` (the
+default) or `"en"`. Japanese is the authoritative source (sector *type*
+classification is derived from the Japanese sector classification
+workbook); English names are pre-translated from it when each tarchive is
+built (see `translate_iotable_sector()` in
+`inst/tarchives/R/translate.R`), and a sector with no English source name
+keeps its Japanese name. Only supported when `region_class = "nation"`;
+a non-default value errors otherwise.}
 }
 \value{
 An input-output table object for the specified year.
