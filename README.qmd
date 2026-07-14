@@ -47,9 +47,9 @@ pak::pak("UchidaMizuki/econiodatajp")
 ## Usage
 
 `io_table_get()` covers three shapes of table, selected via `region_type`
-and `area`.
+and `region`.
 
-The national IO table (`region_type = "regional"` is the default; `area`
+The national IO table (`region_type = "regional"` is the default; `region`
 defaults to `"nation"`). `language` defaults to `"en"` with a one-time
 note; pass `language = "ja"` for the original Japanese sector names:
 
@@ -59,10 +59,10 @@ library(econiodatajp)
 io_table_get(year = 2020, sector_class = "medium")
 ```
 
-One prefecture (`area` accepts a numeric code or a `"NN_name"` fragment):
+One prefecture (`region` accepts a numeric code or a `"NN_name"` fragment):
 
 ```{r}
-io_table_get(year = 2015, area = 1)
+io_table_get(year = 2015, region = 1)
 ```
 
 Every prefecture at once, as a single table with a region dimension

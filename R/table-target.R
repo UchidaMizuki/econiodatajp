@@ -13,7 +13,7 @@ io_table_target <- function(
   name,
   year,
   region_type = c("regional", "multiregional"),
-  area = "nation",
+  region = "nation",
   price_type = "producer_price",
   sector_class = NULL,
   region_class = NULL,
@@ -25,7 +25,7 @@ io_table_target <- function(
   resolved <- io_table_resolve(
     year = year,
     region_type = region_type,
-    area = area,
+    region = region,
     price_type = price_type,
     sector_class = sector_class,
     region_class = region_class,

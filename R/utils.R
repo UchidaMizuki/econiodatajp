@@ -6,12 +6,12 @@ io_table_pipeline_regional_pref <- function(year) {
   stringr::str_glue("iotable-regional-pref-{year}")
 }
 
-# Named `..._nation_pref()` rather than `..._pref()` because `area` is
+# Named `..._nation_pref()` rather than `..._pref()` because `region` is
 # hardcoded to nation-level for `region_type == "multiregional"` today only
 # for lack of subset data (see the `!nation` guard below) -- a future
-# partial-region table would slot its own area value in between
+# partial-region table would slot its own region value in between
 # `multiregional` and `pref`/`block`, mirroring how `io_table_pipeline_regional_*()`
-# already puts the area right after `regional`.
+# already puts the region right after `regional`.
 io_table_pipeline_multiregional_nation_pref <- function(year) {
   stringr::str_glue("iotable-multiregional-nation-pref-{year}")
 }
@@ -40,17 +40,17 @@ resolve_language <- function(language) {
   rlang::arg_match(language, c("ja", "en"))
 }
 
-# `area = "nation"` (default), `area = 0`, and `area = "00"` all mean
+# `region = "nation"` (default), `region = 0`, and `region = "00"` all mean
 # nation-level (`0`/`"00"` mirror the JIS-style convention where prefecture
 # code `00` denotes all of Japan, matching the numeric-code input style
-# `area` already accepts for actual prefectures, e.g. `area = 13`).
-is_area_nation <- function(area) {
-  identical(area, "nation") ||
-    (is.numeric(area) && isTRUE(area == 0)) ||
-    (is.character(area) && area %in% c("0", "00"))
+# `region` already accepts for actual prefectures, e.g. `region = 13`).
+is_region_nation <- function(region) {
+  identical(region, "nation") ||
+    (is.numeric(region) && isTRUE(region == 0)) ||
+    (is.character(region) && region %in% c("0", "00"))
 }
 
-# Shared by `io_table_get()`/`io_table_target()` so the region_type/area
+# Shared by `io_table_get()`/`io_table_target()` so the region_type/region
 # dispatch logic lives in exactly one place. `competitive_import`/`language`
 # are only meaningful for the nation branch today (the pref/multiregional
 # tarchives don't have noncompetitive-import or `_en` archives yet), so a
@@ -65,18 +65,18 @@ is_area_nation <- function(area) {
 io_table_resolve <- function(
   year,
   region_type,
-  area,
+  region,
   price_type,
   sector_class,
   region_class,
   competitive_import,
   language
 ) {
-  nation <- is_area_nation(area)
+  nation <- is_region_nation(region)
 
   if (region_type == "multiregional") {
     if (!nation) {
-      rlang::abort('`area` must be "nation" when `region_type = "multiregional"`.')
+      rlang::abort('`region` must be "nation" when `region_type = "multiregional"`.')
     }
     if (!isTRUE(competitive_import)) {
       rlang::abort(
@@ -146,15 +146,15 @@ io_table_resolve <- function(
     )
   } else {
     if (!is.null(region_class)) {
-      rlang::abort('`region_class` isn\'t supported when `area` is a prefecture.')
+      rlang::abort('`region_class` isn\'t supported when `region` is a prefecture.')
     }
     if (!isTRUE(competitive_import)) {
       rlang::abort(
-        '`competitive_import = FALSE` isn\'t supported when `area` is a prefecture.'
+        '`competitive_import = FALSE` isn\'t supported when `region` is a prefecture.'
       )
     }
     if (!is.null(language)) {
-      rlang::abort('`language` isn\'t supported when `area` is a prefecture.')
+      rlang::abort('`language` isn\'t supported when `region` is a prefecture.')
     }
     sector_class <- sector_class %||% "medium"
     pipeline <- io_table_pipeline_regional_pref(year)
@@ -164,7 +164,7 @@ io_table_resolve <- function(
       pipeline,
       price_type = price_type,
       sector_class = sector_class,
-      pref = area
+      pref = region
     )
   }
 
