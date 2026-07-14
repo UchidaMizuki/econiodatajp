@@ -63,12 +63,12 @@ is_region_nation <- function(region) {
 # `region_type = "multiregional"` has more than one -- any non-`NULL` value
 # passed outside that branch still errors, same as the others.
 io_table_resolve <- function(
-  year,
   region_type,
-  region,
-  price_type,
-  sector_class,
   region_class,
+  region,
+  year,
+  sector_class,
+  price_type,
   competitive_import,
   language
 ) {
@@ -76,7 +76,9 @@ io_table_resolve <- function(
 
   if (region_type == "multiregional") {
     if (!nation) {
-      rlang::abort('`region` must be "nation" when `region_type = "multiregional"`.')
+      rlang::abort(
+        '`region` must be "nation" when `region_type = "multiregional"`.'
+      )
     }
     if (!isTRUE(competitive_import)) {
       rlang::abort(
@@ -84,7 +86,9 @@ io_table_resolve <- function(
       )
     }
     if (!is.null(language)) {
-      rlang::abort('`language` isn\'t supported when `region_type = "multiregional"`.')
+      rlang::abort(
+        '`language` isn\'t supported when `region_type = "multiregional"`.'
+      )
     }
     if (is.null(region_class)) {
       rlang::abort(
@@ -126,7 +130,9 @@ io_table_resolve <- function(
     )
   } else if (nation) {
     if (!is.null(region_class)) {
-      rlang::abort('`region_class` isn\'t supported when `region_type = "regional"`.')
+      rlang::abort(
+        '`region_class` isn\'t supported when `region_type = "regional"`.'
+      )
     }
     sector_class <- sector_class %||%
       c("basic", "small", "medium", "large", "template")
@@ -146,7 +152,9 @@ io_table_resolve <- function(
     )
   } else {
     if (!is.null(region_class)) {
-      rlang::abort('`region_class` isn\'t supported when `region` is a prefecture.')
+      rlang::abort(
+        '`region_class` isn\'t supported when `region` is a prefecture.'
+      )
     }
     if (!isTRUE(competitive_import)) {
       rlang::abort(

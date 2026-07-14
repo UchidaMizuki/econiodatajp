@@ -1,11 +1,16 @@
 #' Get an input-output table
 #'
-#' @param year Year of the data.
 #' @param region_type Table "shape": `"regional"` for a single-region table
 #' (see [econio::io_table_regional()]) or `"multiregional"` for a table with
 #' an explicit region dimension (see [econio::io_table_multiregional()]).
 #' `region_type` selects the table's shape; `region_class` (below) selects
 #' the region breakdown used within a `"multiregional"` table.
+#' @param region_class Region breakdown used within a `"multiregional"`
+#' table: `"pref"` for the 47-prefecture interregional table, or `"block"`
+#' for the official 9-region block interregional table. No default -- must
+#' be specified when `region_type = "multiregional"`. Must be `NULL` (the
+#' default) when `region_type = "regional"`; a non-`NULL` value errors in
+#' that case.
 #' @param region Which region the table covers. `"nation"` (the default),
 #' `0`, and `"00"` all mean nation-level; any other value is a prefecture,
 #' either a numeric prefecture code (e.g. `1`, `13`) or the code_name
@@ -17,20 +22,15 @@
 #' *scheme* for a `"multiregional"` table). A future feature that subsets a
 #' `"multiregional"` table's breakdown would use a separate argument (e.g.
 #' `subregion`) rather than overloading `region`.
-#' @param price_type Price basis of the table. Currently only
-#' `"producer_price"` is available.
+#' @param year Year of the data.
 #' @param sector_class Sector classification granularity. Defaults to the
 #' full choice set (`"basic"`, `"small"`, `"medium"`, `"large"`,
 #' `"template"`) when `region` is nation-level; the only available value for
 #' a prefecture (`"medium"`); the full choice set (`"coarse"`, `"medium"`,
 #' `"fine"`, coarsest to finest) for `region_class = "block"`; or the only
 #' available value for `region_class = "pref"` (`"large"`).
-#' @param region_class Region breakdown used within a `"multiregional"`
-#' table: `"pref"` for the 47-prefecture interregional table, or `"block"`
-#' for the official 9-region block interregional table. No default -- must
-#' be specified when `region_type = "multiregional"`. Must be `NULL` (the
-#' default) when `region_type = "regional"`; a non-`NULL` value errors in
-#' that case.
+#' @param price_type Price basis of the table. Currently only
+#' `"producer_price"` is available.
 #' @param competitive_import Whether to use the competitive-import
 #' convention (matches the `competitive_import` argument of
 #' [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
@@ -50,23 +50,23 @@
 #'
 #' @export
 io_table_get <- function(
-  year,
   region_type = c("regional", "multiregional"),
-  region = "nation",
-  price_type = "producer_price",
-  sector_class = NULL,
   region_class = NULL,
+  region = "nation",
+  year,
+  sector_class = NULL,
+  price_type = "producer_price",
   competitive_import = TRUE,
   language = NULL
 ) {
   region_type <- rlang::arg_match(region_type)
   resolved <- io_table_resolve(
-    year = year,
     region_type = region_type,
-    region = region,
-    price_type = price_type,
-    sector_class = sector_class,
     region_class = region_class,
+    region = region,
+    year = year,
+    sector_class = sector_class,
+    price_type = price_type,
     competitive_import = competitive_import,
     language = language
   )

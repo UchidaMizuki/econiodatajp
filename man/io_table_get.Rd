@@ -5,24 +5,29 @@
 \title{Get an input-output table}
 \usage{
 io_table_get(
-  year,
   region_type = c("regional", "multiregional"),
-  region = "nation",
-  price_type = "producer_price",
-  sector_class = NULL,
   region_class = NULL,
+  region = "nation",
+  year,
+  sector_class = NULL,
+  price_type = "producer_price",
   competitive_import = TRUE,
   language = NULL
 )
 }
 \arguments{
-\item{year}{Year of the data.}
-
 \item{region_type}{Table "shape": `"regional"` for a single-region table
 (see [econio::io_table_regional()]) or `"multiregional"` for a table with
 an explicit region dimension (see [econio::io_table_multiregional()]).
 `region_type` selects the table's shape; `region_class` (below) selects
 the region breakdown used within a `"multiregional"` table.}
+
+\item{region_class}{Region breakdown used within a `"multiregional"`
+table: `"pref"` for the 47-prefecture interregional table, or `"block"`
+for the official 9-region block interregional table. No default -- must
+be specified when `region_type = "multiregional"`. Must be `NULL` (the
+default) when `region_type = "regional"`; a non-`NULL` value errors in
+that case.}
 
 \item{region}{Which region the table covers. `"nation"` (the default),
 `0`, and `"00"` all mean nation-level; any other value is a prefecture,
@@ -36,8 +41,7 @@ a different axis from `region_class` (which selects the breakdown
 `"multiregional"` table's breakdown would use a separate argument (e.g.
 `subregion`) rather than overloading `region`.}
 
-\item{price_type}{Price basis of the table. Currently only
-`"producer_price"` is available.}
+\item{year}{Year of the data.}
 
 \item{sector_class}{Sector classification granularity. Defaults to the
 full choice set (`"basic"`, `"small"`, `"medium"`, `"large"`,
@@ -46,12 +50,8 @@ a prefecture (`"medium"`); the full choice set (`"coarse"`, `"medium"`,
 `"fine"`, coarsest to finest) for `region_class = "block"`; or the only
 available value for `region_class = "pref"` (`"large"`).}
 
-\item{region_class}{Region breakdown used within a `"multiregional"`
-table: `"pref"` for the 47-prefecture interregional table, or `"block"`
-for the official 9-region block interregional table. No default -- must
-be specified when `region_type = "multiregional"`. Must be `NULL` (the
-default) when `region_type = "regional"`; a non-`NULL` value errors in
-that case.}
+\item{price_type}{Price basis of the table. Currently only
+`"producer_price"` is available.}
 
 \item{competitive_import}{Whether to use the competitive-import
 convention (matches the `competitive_import` argument of
