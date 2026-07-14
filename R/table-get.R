@@ -26,8 +26,8 @@
 #' (`"medium"`); the full choice set (`"coarse"`, `"medium"`, `"fine"`,
 #' coarsest to finest) for `region_class = "block"`; or the only available
 #' value for the `region_class = "pref"` interregional table (`"large"`).
-#' @param price_type Price basis of the table. Currently only
-#' `"producer_price"` is available.
+#' @param price_type Price basis of the table, `"producer_price"` (the
+#' default) or `"purchaser_price"`.
 #' @param competitive_import Whether to use the competitive-import
 #' convention (matches the `competitive_import` argument of
 #' [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
@@ -51,12 +51,13 @@ io_table_get <- function(
   region = NULL,
   year,
   sector_class,
-  price_type = "producer_price",
+  price_type = c("producer_price", "purchaser_price"),
   competitive_import = TRUE,
   language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
+  price_type <- rlang::arg_match(price_type)
   language <- rlang::arg_match(language)
   resolved <- io_table_resolve(
     region_type = region_type,

@@ -33,20 +33,6 @@ io_table_pipeline_multiregional_nation_block <- function(year) {
   stringr::str_glue("iotable-multiregional-nation-block-{year}")
 }
 
-# `competitive_import`/`language` are only meaningful for `region_class =
-# "nation"` today (the pref/block tarchives don't have noncompetitive-import
-# or `_en` archives yet), so a non-default value for either elsewhere errors
-# instead of being silently ignored. `language` is already validated to
-# `"ja"`/`"en"` by the caller, so a plain `!=` comparison (rather than
-# `is.null()`) is enough to detect a non-default value.
-check_nation_only_args <- function(competitive_import, language) {
-  if (!isTRUE(competitive_import) || language != "ja") {
-    rlang::abort(
-      '`competitive_import` and `language` are only supported when `region_class = "nation"`.'
-    )
-  }
-}
-
 # Shared by `io_table_get()`/`io_table_target()` so the region_class/region_type
 # dispatch logic lives in exactly one place. `region_class` picks the region
 # granularity (`"nation"`, `"pref"`, or `"block"`); `region` then picks a
@@ -68,6 +54,7 @@ io_table_resolve <- function(
   competitive_import,
   language
 ) {
+  package <- "econiodatajp"
   region_needed <- region_class != "nation" && region_type == "regional"
   if (region_needed && is.null(region)) {
     rlang::abort(stringr::str_glue(
@@ -88,7 +75,7 @@ io_table_resolve <- function(
       )
     }
     pipeline <- io_table_pipeline_regional_nation(year)
-    check_archive_pipeline("econiodatajp", pipeline)
+    check_archive_pipeline(package, pipeline)
     name <- io_table_name_archive(
       price_type = price_type,
       sector_class = sector_class,
@@ -97,28 +84,28 @@ io_table_resolve <- function(
       language = language
     )
   } else if (region_needed) {
-    check_nation_only_args(competitive_import, language)
     pipeline <- switch(
       region_class,
       pref = io_table_pipeline_regional_pref(year),
       block = io_table_pipeline_regional_block(year)
     )
-    check_archive_pipeline("econiodatajp", pipeline)
+    check_archive_pipeline(package, pipeline)
     name <- resolve_pref_name_archive(
-      "econiodatajp",
+      package,
       pipeline,
       price_type = price_type,
       sector_class = sector_class,
+      competitive_import = competitive_import,
+      language = language,
       pref = region
     )
   } else if (region_type == "multiregional") {
-    check_nation_only_args(competitive_import, language)
     pipeline <- switch(
       region_class,
       pref = io_table_pipeline_multiregional_nation_pref(year),
       block = io_table_pipeline_multiregional_nation_block(year)
     )
-    check_archive_pipeline("econiodatajp", pipeline)
+    check_archive_pipeline(package, pipeline)
     # The RIETI pref table only has one sector granularity ("large"). The
     # METI block table has three (12/29/53 sectors from its source
     # workbook), but unlike the nation table's basic/small/medium/large/
@@ -142,8 +129,8 @@ io_table_resolve <- function(
       price_type = price_type,
       sector_class = sector_class,
       sector_class_choices = sector_class_choices,
-      competitive_import = TRUE,
-      language = "ja"
+      competitive_import = competitive_import,
+      language = language
     )
   }
 
@@ -161,15 +148,18 @@ check_archive_pipeline <- function(package, pipeline) {
   invisible(pipeline)
 }
 
-# `price_type` currently only supports "producer_price" (no purchaser-price
-# pipelines exist yet), kept as an argument so a future purchaser-price
-# pipeline doesn't require a signature change. `sector_class_choices` is
-# passed in by the caller because the set of available granularities differs
-# between nation (basic/small/medium/large/template) and multiregional pref
-# (large only) archives. `language` has no default -- callers must pass it
-# explicitly (pref/multiregional callers always pass `"ja"`, since those
-# archives have no `_en` variant); each nation tarchive precomputes an
-# `_en`-suffixed companion archive for every
+# `price_type` and `language` are already validated by the caller (`io_table_get()`/
+# `io_table_target()`), so only `sector_class` -- whose valid choices vary by
+# caller -- is (re-)validated here. `sector_class_choices` is passed in by the
+# caller because the set of available granularities differs between nation
+# (basic/small/medium/large/template) and multiregional pref (large only)
+# archives. Every caller passes `competitive_import`/`language` straight
+# through rather than hardcoding `TRUE`/`"ja"` for pref/block -- those
+# archives don't have noncompetitive-import or `_en` variants today, so a
+# non-default request there simply matches no target (see
+# `resolve_pref_name_archive()`) or fails at `tar_make_archive()`, the same
+# generic failure as any other not-yet-published archive. Each nation
+# tarchive precomputes an `_en`-suffixed companion archive for every
 # `iotable_{price_type}[_noncompetitive_import]_{sector_class}` target (see
 # `translate_iotable_sector()` in inst/tarchives/R/translate.R), so English
 # is just a different archive name, not a runtime transformation.
@@ -180,9 +170,7 @@ io_table_name_archive <- function(
   competitive_import,
   language
 ) {
-  price_type <- rlang::arg_match(price_type, "producer_price")
   sector_class <- rlang::arg_match(sector_class, sector_class_choices)
-  language <- rlang::arg_match(language, c("ja", "en"))
   if (!competitive_import && sector_class %in% c("basic", "small")) {
     rlang::abort(stringr::str_glue(
       "sector_class = \"{sector_class}\" is only available when ",
@@ -205,19 +193,29 @@ io_table_name_archive <- function(
 # code_name fragment used in archive target names (e.g. `"01_hokkaido"`).
 # Resolved dynamically against the pipeline's manifest instead of a
 # hardcoded code/name lookup table, so this can later be swapped for a
-# `jpcity`-based resolver without changing the public API. `sector_class` is
-# folded into the match prefix so this can't accidentally resolve to a
-# different granularity's target once more than one becomes available.
+# `jpcity`-based resolver without changing the public API. The match prefix
+# is built by `io_table_name_archive()` (same naming convention as the
+# nation/multiregional archives) so `competitive_import`/`language` aren't
+# hardcoded to "nation-only" here -- a `pref`/`block` request for a
+# combination with no backing archive yet (e.g. `language = "en"`) simply
+# matches zero targets below, the same generic failure mode as a missing
+# pipeline.
 resolve_pref_name_archive <- function(
   package,
   pipeline,
   price_type,
   sector_class,
+  competitive_import,
+  language,
   pref
 ) {
-  price_type <- rlang::arg_match(price_type, "producer_price")
-  sector_class <- rlang::arg_match(sector_class, "medium")
-  prefix <- stringr::str_glue("iotable_{price_type}_{sector_class}")
+  prefix <- io_table_name_archive(
+    price_type = price_type,
+    sector_class = sector_class,
+    sector_class_choices = "medium",
+    competitive_import = competitive_import,
+    language = language
+  )
 
   pref <- as.character(pref)
   if (stringr::str_detect(pref, "^[0-9]+$")) {

@@ -11,7 +11,7 @@ io_table_target(
   region = NULL,
   year,
   sector_class,
-  price_type = "producer_price",
+  price_type = c("producer_price", "purchaser_price"),
   competitive_import = TRUE,
   language = c("ja", "en"),
   ...
@@ -51,8 +51,8 @@ must be specified. Choices depend on `region_class`: the full set
 coarsest to finest) for `region_class = "block"`; or the only available
 value for the `region_class = "pref"` interregional table (`"large"`).}
 
-\item{price_type}{Price basis of the table. Currently only
-`"producer_price"` is available.}
+\item{price_type}{Price basis of the table, `"producer_price"` (the
+default) or `"purchaser_price"`.}
 
 \item{competitive_import}{Whether to use the competitive-import
 convention (matches the `competitive_import` argument of
