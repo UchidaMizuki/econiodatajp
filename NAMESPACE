@@ -2,6 +2,7 @@
 
 export(io_table_get)
 export(io_table_target)
+export(io_table_target_raw)
 importFrom(dibble,dibble)
 importFrom(econio,io_table_regional)
 importFrom(rlang,"%||%")

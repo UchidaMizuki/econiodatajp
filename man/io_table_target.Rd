@@ -2,6 +2,7 @@
 % Please edit documentation in R/table-target.R
 \name{io_table_target}
 \alias{io_table_target}
+\alias{io_table_target_raw}
 \title{Declare a target that reads an input-output table}
 \usage{
 io_table_target(
@@ -16,9 +17,23 @@ io_table_target(
   language = c("ja", "en"),
   ...
 )
+
+io_table_target_raw(
+  name,
+  region_type = c("regional", "multiregional"),
+  region_class = c("nation", "pref", "block"),
+  region = NULL,
+  year,
+  sector_class,
+  price_type = c("producer_price", "purchaser_price"),
+  competitive_import = TRUE,
+  language = c("ja", "en"),
+  ...
+)
 }
 \arguments{
-\item{name}{Symbol, name of the target.}
+\item{name}{Symbol (`io_table_target()`) or string (`io_table_target_raw()`),
+name of the target.}
 
 \item{region_type}{Table "shape": `"regional"` for a single-region table
 (see [econio::io_table_regional()]) or `"multiregional"` for a table with
@@ -69,7 +84,7 @@ built (see `translate_iotable_sector()` in
 keeps its Japanese name. Only supported when `region_class = "nation"`;
 a non-default value errors otherwise.}
 
-\item{...}{Arguments passed to [tarchives::tar_target_archive()].}
+\item{...}{Arguments passed to [tarchives::tar_target_archive_raw()].}
 }
 \value{
 A target definition object. Users should not modify these directly,
@@ -78,4 +93,8 @@ just feed them to \code{\link[=list]{list()}} in your target script file
 }
 \description{
 For use inside a `_targets.R` pipeline, e.g. `tar_plan(io_table_target(...))`.
+`io_table_target()` uses non-standard evaluation to capture `name`, mirroring
+[tarchives::tar_target_archive()]; `io_table_target_raw()` takes `name` as a
+string instead, for programmatic use such as building several targets in a
+loop, mirroring [tarchives::tar_target_archive_raw()].
 }
