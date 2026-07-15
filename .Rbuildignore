@@ -4,3 +4,4 @@
 ^inst/tarchives/.*/_targets$
 ^README\.qmd$
 ^\.claude$
+^AGENTS\.md$
