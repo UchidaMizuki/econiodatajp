@@ -11,22 +11,27 @@
 #' @export
 io_table_target <- function(
   name,
-  year,
   region_type = c("regional", "multiregional"),
-  area = "nation",
-  price_type = "producer_price",
-  sector_class = NULL,
+  region_class = c("nation", "pref", "block"),
+  region = NULL,
+  year,
+  sector_class,
+  price_type = c("producer_price", "purchaser_price"),
   competitive_import = TRUE,
-  language = NULL,
+  language = c("ja", "en"),
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
+  region_class <- rlang::arg_match(region_class)
+  price_type <- rlang::arg_match(price_type)
+  language <- rlang::arg_match(language)
   resolved <- io_table_resolve(
-    year = year,
     region_type = region_type,
-    area = area,
-    price_type = price_type,
+    region_class = region_class,
+    region = region,
+    year = year,
     sector_class = sector_class,
+    price_type = price_type,
     competitive_import = competitive_import,
     language = language
   )
