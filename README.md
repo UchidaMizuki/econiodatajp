@@ -46,6 +46,15 @@ The national IO table (`region_type = "regional"` and
 library(econiodatajp)
 
 io_table_get(year = 2020, sector_class = "medium")
+#> trying URL 'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040187024&fileKind=0'
+#> downloaded 734 KB
+#> 
+#> trying URL 'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040186856&fileKind=0'
+#> downloaded 68 KB
+#> 
+#> trying URL 'https://www.e-stat.go.jp/en/stat-search/file-download?statInfId=000040186856&fileKind=0'
+#> downloaded 59 KB
+#> 
 #> # Input-output table: regional
 #> # Dimensions:         input [115], output [119]
 #> # Input:              115 sectors
@@ -98,6 +107,11 @@ fragment):
 
 ``` r
 io_table_get(region_class = "pref", region = 1, year = 2015, sector_class = "medium")
+#> trying URL 'https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx'
+#> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 1637807 bytes (1.6 MB)
+#> ==================================================
+#> downloaded 1.6 MB
+#> 
 #> # Input-output table: regional
 #> # Dimensions:         input [112], output [117]
 #> # Input:              112 sectors
@@ -129,6 +143,11 @@ io_table_get(
   year = 2011,
   sector_class = "large"
 )
+#> trying URL 'https://www.rieti.go.jp/jp/database/r-io2011/data/i-preio2011.xlsx'
+#> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 14015943 bytes (13.4 MB)
+#> ==================================================
+#> downloaded 13.4 MB
+#> 
 #> # Input-output table: multi-regional
 #> # Dimensions:         input [1,739], output [1,833]
 #> # Input:              47 regions, 31 industries
@@ -151,7 +170,8 @@ io_table_get(
 ```
 
 Or the official 9-region block breakdown instead
-(`region_class = "block"`; only FY2005 is published):
+(`region_class = "block"`; published for 1970, 1975, 1980, 1985, 1990,
+1995, and 2005 – use `io_table_available()` to list what’s on hand):
 
 ``` r
 io_table_get(
@@ -185,9 +205,10 @@ io_table_get(
 (`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for
 `region_class = "nation"`; a fixed single value for one prefecture
 (`"medium"`) or the `region_class = "pref"` multiregional table
-(`"large"`); `"coarse"`, `"medium"`, or `"fine"` for a
-`region_class = "block"` multiregional table). `competitive_import` and
-`language` are only meaningful for `region_class = "nation"`.
+(`"large"`); for a `region_class = "block"` multiregional table,
+`"coarse"`, `"medium"`, or `"fine"` in 2005, or just `"medium"` in every
+other year). `competitive_import` and `language` are only meaningful for
+`region_class = "nation"`.
 
 To declare one of these tables as a target in your own `{targets}`
 pipeline instead of fetching it eagerly, use `io_table_target()` with

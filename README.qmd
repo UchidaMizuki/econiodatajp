@@ -87,8 +87,9 @@ io_table_get(
 )
 ```
 
-Or the official 9-region block breakdown instead
-(`region_class = "block"`; only FY2005 is published):
+Or the official 9-region block breakdown instead (`region_class =
+"block"`; published for 1970, 1975, 1980, 1985, 1990, 1995, and 2005 --
+use `io_table_available()` to list what's on hand):
 
 ```{r}
 io_table_get(
@@ -103,9 +104,10 @@ io_table_get(
 (`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for
 `region_class = "nation"`; a fixed single value for one prefecture
 (`"medium"`) or the `region_class = "pref"` multiregional table
-(`"large"`); `"coarse"`, `"medium"`, or `"fine"` for a `region_class =
-"block"` multiregional table). `competitive_import` and `language` are
-only meaningful for `region_class = "nation"`.
+(`"large"`); for a `region_class = "block"` multiregional table,
+`"coarse"`, `"medium"`, or `"fine"` in 2005, or just `"medium"` in every
+other year). `competitive_import` and `language` are only meaningful for
+`region_class = "nation"`.
 
 To declare one of these tables as a target in your own `{targets}`
 pipeline instead of fetching it eagerly, use `io_table_target()` with the

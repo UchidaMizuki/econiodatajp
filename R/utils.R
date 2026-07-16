@@ -106,24 +106,24 @@ io_table_resolve <- function(
       block = io_table_pipeline_multiregional_nation_block(year)
     )
     check_archive_pipeline(package, pipeline)
-    # The RIETI pref table only has one sector granularity ("large"). The
-    # METI block table has three (12/29/53 sectors from its source
-    # workbook), but unlike the nation table's basic/small/medium/large/
-    # template -- each a direct translation of a real official Japanese
-    # classification tier name (基本分類/統合小分類/統合中分類/統合大分類)
-    # -- METI's own documentation for the block table never names these
-    # tiers at all, only their sector counts (see
+    # The RIETI pref table only has one sector granularity ("large"), the
+    # same for every year. The METI block table doesn't: FY2005 has three
+    # (12/29/53 sectors), but FY1970-1995 were each only published at one
+    # granularity apiece (see the sibling -1970..-1995 tarchives), so no
+    # fixed choice set covers every year. It's looked up from the
+    # pipeline's own targets instead (io_table_available_sector_class()),
+    # which also sidesteps needing a hardcoded vocabulary at all: unlike
+    # the nation table's basic/small/medium/large/template (each a direct
+    # translation of a real official Japanese classification tier name,
+    # 基本分類/統合小分類/統合中分類/統合大分類), METI's own documentation
+    # for the block table never names these tiers, only their sector
+    # counts -- "coarse"/"medium"/"fine" (FY2005) and "medium" (every other
+    # year) are just io_table_resolve()'s own dispatch labels (see
     # inst/tarchives/iotable-multiregional-nation-block-2005/R/iotable_producer_price.R).
-    # Reusing "small"/"medium"/"large" here would therefore be an
-    # unfounded borrowing, and an actively misleading one: the nation
-    # table's "small" (統合小分類) has *more* sectors than its "large"
-    # (統合大分類), the opposite direction from what "small"/"large" would
-    # suggest for this table. "coarse"/"medium"/"fine" avoids the
-    # collision entirely.
     sector_class_choices <- switch(
       region_class,
       pref = "large",
-      block = c("coarse", "medium", "fine")
+      block = io_table_available_sector_class(package, pipeline)
     )
     name <- io_table_name_archive(
       price_type = price_type,
@@ -242,4 +242,84 @@ resolve_pref_name_archive <- function(
     ))
   }
   matches
+}
+
+# Reverses io_table_pipeline_*()'s naming scheme back into region_type/
+# region_class/year, so io_table_available() can list what's on disk
+# instead of a hardcoded set of pipelines. Vectorized: `pipeline` can be
+# the full character vector from tar_archive_pipelines(). The
+# `(?:nation-)?` group absorbs the extra "nation-" segment that only the
+# `multiregional` pipelines have (see io_table_pipeline_multiregional_nation_pref());
+# regex backtracking lets the same pattern also match `region_type =
+# "regional"` pipelines, which don't have that segment, including
+# `iotable-regional-nation-{year}` where "nation" is `region_class` itself
+# rather than that segment.
+io_table_parse_pipeline <- function(pipeline) {
+  m <- stringr::str_match(
+    pipeline,
+    "^iotable-(regional|multiregional)-(?:nation-)?(nation|pref|block)-([0-9]+)$"
+  )
+  data.frame(
+    region_type = m[, 2],
+    region_class = m[, 3],
+    year = as.integer(m[, 4]),
+    stringsAsFactors = FALSE
+  )
+}
+
+# Reverses io_table_name_archive()'s naming scheme back into price_type/
+# competitive_import/sector_class/language/region, so sector_class choices
+# (io_table_available_sector_class()) and io_table_available() can both be
+# read back from whatever targets a pipeline actually defines instead of a
+# hardcoded vocabulary. Vectorized: `name` can be a whole manifest's
+# `$name` column. Only "nation" archives have `_noncompetitive_import`/
+# `_en` (see io_table_name_archive()).
+#
+# A pipeline's manifest also lists its non-table targets (e.g. the
+# `tar_change()`-generated `file_...`/`file..._change` targets that
+# download and track each source workbook); those don't match this naming
+# scheme at all and are silently dropped rather than returned as NA rows.
+#
+# Known gap: the `iotable-regional-pref-*` archives' per-prefecture targets
+# (one selected by `region` in io_table_get()) aren't reversed by this
+# pattern at all and so are silently dropped too, same as the file_...
+# targets above -- each is hand-named per prefecture (in each archive's own
+# R/iotable_producer_price/{code}_{name}.R) as
+# `iotable_{price_type}_{sector_class}_raw_{pref_code}_{pref_name}`, with a
+# literal `_raw` that io_table_name_archive() never generates and that
+# `resolve_pref_name_archive()`'s own matching only tolerates via a
+# wildcard (`.*`), not by naming it. io_table_available() therefore
+# currently omits `region_class = "pref"`, `region_type = "regional"` rows;
+# `region` stays a plain column here for `region_class = "block"`, which
+# never has one (always `NA`), rather than being dropped entirely.
+io_table_parse_name_archive <- function(name) {
+  m <- stringr::str_match(
+    name,
+    "^iotable_(producer_price|purchaser_price)(_noncompetitive_import)?_([^_]+)(_en)?(?:_([0-9]{2})_(.+))?$"
+  )
+  m <- m[!is.na(m[, 1]), , drop = FALSE]
+  data.frame(
+    name = m[, 1],
+    price_type = m[, 2],
+    competitive_import = is.na(m[, 3]),
+    sector_class = m[, 4],
+    language = ifelse(is.na(m[, 5]), "ja", "en"),
+    region = ifelse(
+      is.na(m[, 6]),
+      NA_character_,
+      stringr::str_c(m[, 6], "_", m[, 7])
+    ),
+    stringsAsFactors = FALSE
+  )
+}
+
+# See io_table_resolve()'s multiregional branch: the block archive's
+# sector_class choices vary by year, so they're read back from the
+# pipeline's own manifest instead of a hardcoded vector.
+io_table_available_sector_class <- function(package, pipeline) {
+  manifest <- tarchives::tar_manifest_archive(
+    package = package,
+    pipeline = pipeline
+  )
+  unique(io_table_parse_name_archive(manifest$name)$sector_class)
 }

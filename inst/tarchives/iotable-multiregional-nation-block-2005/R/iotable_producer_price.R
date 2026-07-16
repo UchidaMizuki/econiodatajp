@@ -1,9 +1,13 @@
 # https://www.meti.go.jp/statistics/tyo/tiikiio/result/result_02.html
 # METI's official 9-region (block) interregional table, FY2005 (H17); the
-# only benchmark year published (the FY2000 table was never officially
-# released, and no later edition exists). Distributed as three sector
-# granularities of the same MTX-format transaction sheet -- 12/29/53
-# sectors -- mapped onto sector_class coarse/medium/fine respectively.
+# last benchmark year published (the FY2000 table was never officially
+# released -- see the "その他" section of kekka.html -- and no later
+# edition exists). Earlier vintages back to FY1970 are the sibling
+# -1970/-1975/-1980/-1985/-1990/-1995 tarchives; FY2005 is the only one
+# e-stat.go.jp hosts (see its sibling tarchives' comments for why that
+# matters), and the only one distributed as three sector granularities of
+# the same MTX-format transaction sheet -- 12/29/53 sectors -- mapped onto
+# sector_class coarse/medium/fine respectively.
 # Unlike the nation table's basic/small/medium/large/template (each a
 # direct translation of a real official Japanese classification tier name),
 # METI's own documentation for this table never names these three tiers,

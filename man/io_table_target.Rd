@@ -62,9 +62,11 @@ there is no per-region subsetting there.}
 must be specified. Choices depend on `region_class`: the full set
 (`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) for
 `region_class = "nation"`; the only available value for one prefecture
-(`"medium"`); the full choice set (`"coarse"`, `"medium"`, `"fine"`,
-coarsest to finest) for `region_class = "block"`; or the only available
-value for the `region_class = "pref"` interregional table (`"large"`).}
+(`"medium"`); or the only available value for the `region_class =
+"pref"` interregional table (`"large"`). For `region_class = "block"`,
+choices vary by `year`: `"coarse"`/`"medium"`/`"fine"` (coarsest to
+finest) for `year = 2005`, or just `"medium"` for every other available
+year -- see [io_table_available()] to list them.}
 
 \item{price_type}{Price basis of the table, `"producer_price"` (the
 default) or `"purchaser_price"`.}
