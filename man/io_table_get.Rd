@@ -49,7 +49,7 @@ METI's own documentation never names the `region_class = "block"`
 table's sector granularities, only their sector counts, so
 `sector_class` there is that count as a string (e.g. `"53"`) and varies
 by `year` (`"12"`/`"29"`/`"53"` for `year = 2005`; a single
-year-specific count otherwise) -- see [io_table_list()] to list them.}
+year-specific count otherwise) -- see [io_table_available()] to list them.}
 
 \item{price_type}{Price basis of the table, `"producer_price"` (the
 default) or `"purchaser_price"`.}

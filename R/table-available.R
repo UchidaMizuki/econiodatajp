@@ -18,7 +18,7 @@
 #' this introspects (see `io_table_parse_name_archive()` in `R/utils.R`).
 #'
 #' @export
-io_table_list <- function() {
+io_table_available <- function() {
   package <- "econiodatajp"
   pipelines <- tarchives::tar_archive_pipelines(package = package)
   pipeline_info <- io_table_parse_pipeline(pipelines)

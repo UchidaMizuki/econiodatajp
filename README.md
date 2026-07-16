@@ -171,7 +171,7 @@ io_table_get(
 
 Or the official 9-region block breakdown instead
 (`region_class = "block"`; published for 1970, 1975, 1980, 1985, 1990,
-1995, and 2005 – use `io_table_list()` to list what’s on hand):
+1995, and 2005 – use `io_table_available()` to list what’s on hand):
 
 ``` r
 io_table_get(
@@ -180,6 +180,9 @@ io_table_get(
   year = 2005,
   sector_class = "12"
 )
+#> trying URL 'https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467390&fileKind=0'
+#> downloaded 3.6 MB
+#> 
 #> # Input-output table: multi-regional
 #> # Dimensions:         input [180], output [171]
 #> # Input:              9 regions, 12 industries

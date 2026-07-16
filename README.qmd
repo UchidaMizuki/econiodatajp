@@ -89,7 +89,7 @@ io_table_get(
 
 Or the official 9-region block breakdown instead (`region_class =
 "block"`; published for 1970, 1975, 1980, 1985, 1990, 1995, and 2005 --
-use `io_table_list()` to list what's on hand):
+use `io_table_available()` to list what's on hand):
 
 ```{r}
 io_table_get(

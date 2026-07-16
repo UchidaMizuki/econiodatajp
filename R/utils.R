@@ -272,7 +272,7 @@ resolve_pref_name_archive <- function(
 }
 
 # Reverses io_table_pipeline_*()'s naming scheme back into region_type/
-# region_class/year, so io_table_list() can list what's on disk instead
+# region_class/year, so io_table_available() can list what's on disk instead
 # of a hardcoded set of pipelines. Vectorized: `pipeline` can be
 # the full character vector from tar_archive_pipelines(). The
 # `(?:nation-)?` group absorbs the extra "nation-" segment that only the
@@ -296,7 +296,7 @@ io_table_parse_pipeline <- function(pipeline) {
 
 # Reverses io_table_name_archive()'s naming scheme back into price_type/
 # competitive_import/sector_class/language/region, so sector_class choices
-# (check_archive_name()) and io_table_list() can both be read back from
+# (check_archive_name()) and io_table_available() can both be read back from
 # whatever targets a pipeline actually defines instead of a hardcoded
 # vocabulary. Vectorized: `name` can be a whole manifest's `$name` column.
 # Only "nation" archives have `_noncompetitive_import`/`_en` (see
@@ -315,7 +315,7 @@ io_table_parse_pipeline <- function(pipeline) {
 # `iotable_{price_type}_{sector_class}_raw_{pref_code}_{pref_name}`, with a
 # literal `_raw` that io_table_name_archive() never generates and that
 # `resolve_pref_name_archive()`'s own matching only tolerates via a
-# wildcard (`.*`), not by naming it. io_table_list() therefore currently
+# wildcard (`.*`), not by naming it. io_table_available() therefore currently
 # omits `region_class = "pref"`, `region_type = "regional"` rows; `region`
 # stays a plain column here for `region_class = "block"`, which never has
 # one (always `NA`), rather than being dropped entirely.
