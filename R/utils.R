@@ -79,7 +79,14 @@ io_table_resolve <- function(
     name <- io_table_name_archive(
       price_type = price_type,
       sector_class = sector_class,
-      sector_class_choices = c("basic", "small", "medium", "large", "template"),
+      competitive_import = competitive_import,
+      language = language
+    )
+    check_archive_name(
+      package,
+      pipeline,
+      name,
+      price_type = price_type,
       competitive_import = competitive_import,
       language = language
     )
@@ -106,29 +113,17 @@ io_table_resolve <- function(
       block = io_table_pipeline_multiregional_nation_block(year)
     )
     check_archive_pipeline(package, pipeline)
-    # The RIETI pref table only has one sector granularity ("large"), the
-    # same for every year. The METI block table doesn't: FY2005 has three
-    # (12/29/53 sectors), but FY1970-1995 were each only published at one
-    # granularity apiece (see the sibling -1970..-1995 tarchives), so no
-    # fixed choice set covers every year. It's looked up from the
-    # pipeline's own targets instead (io_table_available_sector_class()),
-    # which also sidesteps needing a hardcoded vocabulary at all: unlike
-    # the nation table's basic/small/medium/large/template (each a direct
-    # translation of a real official Japanese classification tier name,
-    # 基本分類/統合小分類/統合中分類/統合大分類), METI's own documentation
-    # for the block table never names these tiers, only their sector
-    # counts -- "coarse"/"medium"/"fine" (FY2005) and "medium" (every other
-    # year) are just io_table_resolve()'s own dispatch labels (see
-    # inst/tarchives/iotable-multiregional-nation-block-2005/R/iotable_producer_price.R).
-    sector_class_choices <- switch(
-      region_class,
-      pref = "large",
-      block = io_table_available_sector_class(package, pipeline)
-    )
     name <- io_table_name_archive(
       price_type = price_type,
       sector_class = sector_class,
-      sector_class_choices = sector_class_choices,
+      competitive_import = competitive_import,
+      language = language
+    )
+    check_archive_name(
+      package,
+      pipeline,
+      name,
+      price_type = price_type,
       competitive_import = competitive_import,
       language = language
     )
@@ -148,36 +143,27 @@ check_archive_pipeline <- function(package, pipeline) {
   invisible(pipeline)
 }
 
-# `price_type` and `language` are already validated by the caller (`io_table_get()`/
-# `io_table_target()`), so only `sector_class` -- whose valid choices vary by
-# caller -- is (re-)validated here. `sector_class_choices` is passed in by the
-# caller because the set of available granularities differs between nation
-# (basic/small/medium/large/template) and multiregional pref (large only)
-# archives. Every caller passes `competitive_import`/`language` straight
-# through rather than hardcoding `TRUE`/`"ja"` for pref/block -- those
-# archives don't have noncompetitive-import or `_en` variants today, so a
-# non-default request there simply matches no target (see
-# `resolve_pref_name_archive()`) or fails at `tar_make_archive()`, the same
-# generic failure as any other not-yet-published archive. Each nation
-# tarchive precomputes an `_en`-suffixed companion archive for every
+# Doesn't validate `sector_class` itself -- valid choices vary by pipeline
+# (nation: basic/small/medium/large/template; block: sector counts that
+# differ by year, see io_table_resolve()) and there's no single vocabulary
+# to check against here. io_table_resolve() validates the *result*
+# instead, via check_archive_name(). Every caller passes
+# `competitive_import`/`language` straight through rather than hardcoding
+# `TRUE`/`"ja"` for pref/block -- those archives don't have
+# noncompetitive-import or `_en` variants today, so a non-default request
+# there simply builds a name that check_archive_name() (or
+# resolve_pref_name_archive()'s own matching) won't find, the same generic
+# failure as any other not-yet-published archive. Each nation tarchive
+# precomputes an `_en`-suffixed companion archive for every
 # `iotable_{price_type}[_noncompetitive_import]_{sector_class}` target (see
 # `translate_iotable_sector()` in inst/tarchives/R/translate.R), so English
 # is just a different archive name, not a runtime transformation.
 io_table_name_archive <- function(
   price_type,
   sector_class,
-  sector_class_choices,
   competitive_import,
   language
 ) {
-  sector_class <- rlang::arg_match(sector_class, sector_class_choices)
-  if (!competitive_import && sector_class %in% c("basic", "small")) {
-    rlang::abort(stringr::str_glue(
-      "sector_class = \"{sector_class}\" is only available when ",
-      "competitive_import = TRUE."
-    ))
-  }
-
   name <- stringr::str_glue("iotable_{price_type}")
   if (!competitive_import) {
     name <- stringr::str_glue("{name}_noncompetitive_import")
@@ -187,6 +173,48 @@ io_table_name_archive <- function(
     name <- stringr::str_glue("{name}_en")
   }
   as.character(name)
+}
+
+# Confirms `name` (built by io_table_name_archive()) is actually one of
+# `pipeline`'s targets, listing the pipeline's real sector_class choices
+# for the requested `price_type`/`competitive_import`/`language` in the
+# error otherwise (falling back to every sector_class the pipeline has at
+# all if that combination has none, e.g. `competitive_import = FALSE` for
+# a pipeline that only ever publishes competitive-import tables, so the
+# error still suggests something) -- read back from the manifest
+# (io_table_parse_name_archive()) rather than checked against a hardcoded
+# vocabulary, since valid choices vary by pipeline and, for `region_class
+# = "block"`, by year too (FY2005 has three sector granularities; every
+# other year has one -- see the sibling
+# iotable-multiregional-nation-block-1970..1995 tarchives).
+check_archive_name <- function(
+  package,
+  pipeline,
+  name,
+  price_type,
+  competitive_import,
+  language
+) {
+  manifest <- tarchives::tar_manifest_archive(
+    package = package,
+    pipeline = pipeline
+  )
+  if (!name %in% manifest$name) {
+    info <- io_table_parse_name_archive(manifest$name)
+    sector_classes <- unique(info$sector_class[
+      info$price_type == price_type &
+        info$competitive_import == competitive_import &
+        info$language == language
+    ])
+    if (length(sector_classes) == 0) {
+      sector_classes <- unique(info$sector_class)
+    }
+    rlang::abort(stringr::str_glue(
+      "Can't find target \"{name}\" in pipeline \"{pipeline}\".\n",
+      "Available sector_class choices: {stringr::str_c(sector_classes, collapse = ', ')}."
+    ))
+  }
+  invisible(name)
 }
 
 # `pref` accepts either a numeric prefecture code (e.g. `1`, `13`) or the
@@ -212,7 +240,6 @@ resolve_pref_name_archive <- function(
   prefix <- io_table_name_archive(
     price_type = price_type,
     sector_class = sector_class,
-    sector_class_choices = "medium",
     competitive_import = competitive_import,
     language = language
   )
@@ -245,8 +272,8 @@ resolve_pref_name_archive <- function(
 }
 
 # Reverses io_table_pipeline_*()'s naming scheme back into region_type/
-# region_class/year, so io_table_available() can list what's on disk
-# instead of a hardcoded set of pipelines. Vectorized: `pipeline` can be
+# region_class/year, so io_table_list() can list what's on disk instead
+# of a hardcoded set of pipelines. Vectorized: `pipeline` can be
 # the full character vector from tar_archive_pipelines(). The
 # `(?:nation-)?` group absorbs the extra "nation-" segment that only the
 # `multiregional` pipelines have (see io_table_pipeline_multiregional_nation_pref());
@@ -269,11 +296,11 @@ io_table_parse_pipeline <- function(pipeline) {
 
 # Reverses io_table_name_archive()'s naming scheme back into price_type/
 # competitive_import/sector_class/language/region, so sector_class choices
-# (io_table_available_sector_class()) and io_table_available() can both be
-# read back from whatever targets a pipeline actually defines instead of a
-# hardcoded vocabulary. Vectorized: `name` can be a whole manifest's
-# `$name` column. Only "nation" archives have `_noncompetitive_import`/
-# `_en` (see io_table_name_archive()).
+# (check_archive_name()) and io_table_list() can both be read back from
+# whatever targets a pipeline actually defines instead of a hardcoded
+# vocabulary. Vectorized: `name` can be a whole manifest's `$name` column.
+# Only "nation" archives have `_noncompetitive_import`/`_en` (see
+# io_table_name_archive()).
 #
 # A pipeline's manifest also lists its non-table targets (e.g. the
 # `tar_change()`-generated `file_...`/`file..._change` targets that
@@ -288,10 +315,10 @@ io_table_parse_pipeline <- function(pipeline) {
 # `iotable_{price_type}_{sector_class}_raw_{pref_code}_{pref_name}`, with a
 # literal `_raw` that io_table_name_archive() never generates and that
 # `resolve_pref_name_archive()`'s own matching only tolerates via a
-# wildcard (`.*`), not by naming it. io_table_available() therefore
-# currently omits `region_class = "pref"`, `region_type = "regional"` rows;
-# `region` stays a plain column here for `region_class = "block"`, which
-# never has one (always `NA`), rather than being dropped entirely.
+# wildcard (`.*`), not by naming it. io_table_list() therefore currently
+# omits `region_class = "pref"`, `region_type = "regional"` rows; `region`
+# stays a plain column here for `region_class = "block"`, which never has
+# one (always `NA`), rather than being dropped entirely.
 io_table_parse_name_archive <- function(name) {
   m <- stringr::str_match(
     name,
@@ -311,15 +338,4 @@ io_table_parse_name_archive <- function(name) {
     ),
     stringsAsFactors = FALSE
   )
-}
-
-# See io_table_resolve()'s multiregional branch: the block archive's
-# sector_class choices vary by year, so they're read back from the
-# pipeline's own manifest instead of a hardcoded vector.
-io_table_available_sector_class <- function(package, pipeline) {
-  manifest <- tarchives::tar_manifest_archive(
-    package = package,
-    pipeline = pipeline
-  )
-  unique(io_table_parse_name_archive(manifest$name)$sector_class)
 }

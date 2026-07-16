@@ -6,9 +6,8 @@
 # 表" reference workbook, the only one at full region/sector detail. Same
 # 9 regions (北海道/東北/関東/中部/近畿/中国/四国/九州/沖縄) and total
 # row/column labels as FY1980-1990 ("地域内最終需要計"/"粗付加価値部門計"),
-# verified against this workbook's own header cells; "medium" is just
-# io_table_resolve()'s dispatch label for this vintage's single (46-sector)
-# granularity.
+# verified against this workbook's own header cells; this vintage's single
+# granularity has 46 sectors, so `sector_class = "46"`.
 #
 # One quirk unique to this workbook: every other vintage's "地域内生産額"
 # (total_pattern) appears as a column header only once, for the "地域計"
@@ -24,16 +23,16 @@
 # outright rather than kept as if it meant something.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium,
+    file_iotable_producer_price_46,
     download_file_meti(
       url = "https://www.meti.go.jp/statistics/tyo/tiikiio/result/result_1/xls/h2rio95c.xlsx",
-      destfile = "_targets/user/iotable/producer_price/medium.xlsx"
+      destfile = "_targets/user/iotable/producer_price/46.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_medium,
+  iotable_producer_price_46 = read_file_iotable_producer_price(
+    file = file_iotable_producer_price_46,
     sheet = "取引額(46部門MTX)"
   )
 )

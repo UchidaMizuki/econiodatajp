@@ -7,11 +7,9 @@
 # online on 2014-02-04 (hence download_file_meti() -- meti.go.jp, unlike
 # e-stat.go.jp, blocks a plain download.file() request). FY2005's workbook
 # has three sector granularities (12/29/53 sectors); this vintage was only
-# published at one (43 sectors), so there's only one target here -- still
-# named "medium" for consistency with io_table_resolve()'s sector_class
-# dispatch (see io_table_available_sector_class() in R/utils.R), even
-# though METI's documentation doesn't name single-tier vintages any more
-# than it names FY2005's three tiers.
+# published at one. METI's documentation doesn't name any block-table
+# sector granularity, only its sector count, so `sector_class` here is
+# that count itself: "43".
 #
 # The 9 regions match FY1975 onward (see that tarchive) except 中部/沖縄:
 # this vintage still splits 中部 into 東海/北陸 and predates Okinawa's 1972
@@ -25,16 +23,16 @@
 # "地域内最終需要計" (which only appears from FY1975 on).
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium,
+    file_iotable_producer_price_43,
     download_file_meti(
       url = "https://www.meti.go.jp/statistics/tyo/tiikiio/result/result_3/xlsx/h2rio70a.xlsx",
-      destfile = "_targets/user/iotable/producer_price/medium.xlsx"
+      destfile = "_targets/user/iotable/producer_price/43.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_medium,
+  iotable_producer_price_43 = read_file_iotable_producer_price(
+    file = file_iotable_producer_price_43,
     sheet = "取引額（43部門MTX）"
   )
 )
