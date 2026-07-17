@@ -101,7 +101,7 @@ read_file_iotable_producer_price <- function(file, sheet) {
         \(x) {
           str_pad(
             x,
-            width = max(nchar(c(input_sector_code, output_sector_code))),
+            width = max(str_length(c(input_sector_code, output_sector_code))),
             pad = "0"
           )
         }
