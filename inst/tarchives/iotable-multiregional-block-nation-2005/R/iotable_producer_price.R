@@ -89,6 +89,24 @@ read_file_iotable_producer_price <- function(file, sheet) {
       input_region_glue = "{input_region_code}_{input_region_name}",
       output_region_glue = "{output_region_code}_{output_region_name}"
     ) |>
+    # Unlike RIETI's prefecture tables, METI's sector codes here are plain
+    # unpadded numbers (e.g. "1".."12"), which sorts lexicographically
+    # wrong once a sheet has 10+ codes (see the 12-sector sheet's
+    # value-added rows, coded up into the 20s). Zero-pad to the widest
+    # code actually present in this sheet -- shared across input/output so
+    # the same code always renders identically on both axes.
+    as_step(mutate)(
+      across(
+        c(input_sector_code, output_sector_code),
+        \(x) {
+          str_pad(
+            x,
+            width = max(nchar(c(input_sector_code, output_sector_code))),
+            pad = "0"
+          )
+        }
+      )
+    ) |>
     io_table_read_sector_names(
       input_sector_name_glue = "{input_sector_code}_{input_sector_name}",
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
