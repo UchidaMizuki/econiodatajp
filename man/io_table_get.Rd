@@ -40,12 +40,16 @@ there is no per-region subsetting there.}
 \item{year}{Year of the data.}
 
 \item{sector_class}{Sector classification granularity. No default --
-must be specified. Choices depend on `region_class`: the full set
-(`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) for
-`region_class = "nation"`; the only available value for one prefecture
-(`"medium"`); the full choice set (`"coarse"`, `"medium"`, `"fine"`,
-coarsest to finest) for `region_class = "block"`; or the only available
-value for the `region_class = "pref"` interregional table (`"large"`).}
+must be specified. For `region_class = "nation"`, the full set
+(`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) -- each a
+direct translation of a real official Japanese classification tier
+name. For `region_class = "pref"`, the only available value for one
+prefecture (`"medium"`) or for its interregional table (`"large"`).
+METI's own documentation never names the `region_class = "block"`
+table's sector granularities, only their sector counts, so
+`sector_class` there is that count as a string (e.g. `"53"`) and varies
+by `year` (`"12"`/`"29"`/`"53"` for `year = 2005`; a single
+year-specific count otherwise) -- see [io_table_available()] to list them.}
 
 \item{price_type}{Price basis of the table, `"producer_price"` (the
 default) or `"purchaser_price"`.}
