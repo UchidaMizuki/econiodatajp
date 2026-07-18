@@ -22,18 +22,21 @@ io_table_available <- function() {
   package <- "econiodatajp"
   pipelines <- tarchives::tar_archive_pipelines(package = package)
   pipeline_info <- io_table_parse_pipeline(pipelines)
+  pipeline_info$pipeline <- pipelines
 
-  tables <- lapply(seq_along(pipelines), function(i) {
-    manifest <- tarchives::tar_manifest_archive(
-      package = package,
-      pipeline = pipelines[i]
-    )
-    name_info <- io_table_parse_name_archive(manifest$name)
-    cbind(
-      pipeline_info[rep(i, nrow(name_info)), , drop = FALSE],
-      name_info,
-      row.names = NULL
-    )
-  })
-  do.call(rbind, tables)
+  pipeline_info |>
+    purrr::pmap(function(pipeline, region_type, region_class, year) {
+      manifest <- tarchives::tar_manifest_archive(
+        package = package,
+        pipeline = pipeline
+      )
+      io_table_parse_name_archive(manifest$name) |>
+        dplyr::mutate(
+          region_type = region_type,
+          region_class = region_class,
+          year = year,
+          .before = 1
+        )
+    }) |>
+    dplyr::bind_rows()
 }

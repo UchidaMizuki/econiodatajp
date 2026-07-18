@@ -327,18 +327,18 @@ io_table_parse_name_archive <- function(name) {
     name,
     "^iotable_(producer_price|purchaser_price)(_noncompetitive_import)?_([^_]+)(_en)?(?:_([0-9]{2})_(.+))?$"
   )
-  m <- m[!is.na(m[, 1]), , drop = FALSE]
   data.frame(
     name = m[, 1],
     price_type = m[, 2],
     competitive_import = is.na(m[, 3]),
     sector_class = m[, 4],
-    language = ifelse(is.na(m[, 5]), "ja", "en"),
-    region = ifelse(
+    language = dplyr::if_else(is.na(m[, 5]), "ja", "en"),
+    region = dplyr::if_else(
       is.na(m[, 6]),
       NA_character_,
       stringr::str_c(m[, 6], "_", m[, 7])
     ),
     stringsAsFactors = FALSE
-  )
+  ) |>
+    dplyr::filter(!is.na(name))
 }
