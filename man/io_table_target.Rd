@@ -62,13 +62,17 @@ there is no per-region subsetting there.}
 must be specified. For `region_class = "nation"`, the full set
 (`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) -- each a
 direct translation of a real official Japanese classification tier
-name. For `region_class = "pref"`, the only available value for one
-prefecture (`"medium"`) or for its interregional table (`"large"`).
-METI's own documentation never names the `region_class = "block"`
-table's sector granularities, only their sector counts, so
-`sector_class` there is that count as a string (e.g. `"53"`) and varies
-by `year` (`"12"`/`"29"`/`"53"` for `year = 2005`; a single
-year-specific count otherwise) -- see [io_table_available()] to list them.}
+name. No official documentation gives a common tier name to the
+`region_class = "pref"` or `"block"` tables' sector granularities, only
+their sector counts, so `sector_class` there is that count as a string
+instead: for `region_class = "pref"` with `region_type = "regional"`
+(one prefecture's own table), each prefecture publishes its own count
+(e.g. `"105"` for Hokkaido, `"187"` for Osaka); for `region_class =
+"pref"` with `region_type = "multiregional"` (the interregional table),
+the count varies by `year` (`"26"` for `year = 2005`, `"31"` for `year =
+2011`); for `region_class = "block"`, the count varies by `year` too
+(`"12"`/`"29"`/`"53"` for `year = 2005`; a single year-specific count
+otherwise) -- see [io_table_available()] to list them all.}
 
 \item{price_type}{Price basis of the table, `"producer_price"` (the
 default) or `"purchaser_price"`.}

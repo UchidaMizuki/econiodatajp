@@ -9,7 +9,7 @@ target_iotable_producer_price_40_fukuoka <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_40_fukuoka = read_file_iotable_producer_price_medium_40_fukuoka(
+  iotable_producer_price_106_ja_40_fukuoka = read_file_iotable_producer_price_medium_40_fukuoka(
     file = file_iotable_producer_price_medium_40_fukuoka
   ),
 )

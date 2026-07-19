@@ -1,20 +1,24 @@
 # https://www.rieti.go.jp/jp/database/r-io2011/index.html
+# RIETI never names this table's sector granularity with a classification
+# tier (the database page only ever calls it the 31-sector table -- 30
+# sectors plus 本社), so `sector_class` is that count itself ("31"), the
+# same convention as the block tarchives.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_large,
+    file_iotable_producer_price_31,
     download_file(
       url = "https://www.rieti.go.jp/jp/database/r-io2011/data/i-preio2011.xlsx",
-      destfile = "_targets/user/iotable/producer_price/large.xlsx"
+      destfile = "_targets/user/iotable/producer_price/31.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_large = read_file_iotable_producer_price_large(
-    file = file_iotable_producer_price_large
+  iotable_producer_price_31_ja = read_file_iotable_producer_price_31(
+    file = file_iotable_producer_price_31
   )
 )
 
-read_file_iotable_producer_price_large <- function(file) {
+read_file_iotable_producer_price_31 <- function(file) {
   io_table_reader(file, region_type = "multiregional") |>
     io_table_read_cells(
       sheets = "2011都道府県間表",

@@ -3,13 +3,13 @@ target_iotable_producer_price_25_shiga <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_25_shiga,
     download_file(
-      url = "https://www.pref.shiga.lg.jp/file/attachment/5406601.xlsx",
+      url = "https://www.pref.shiga.lg.jp/file/attachment/5596347.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/25_shiga.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_25_shiga = read_file_iotable_producer_price_medium_25_shiga(
+  iotable_producer_price_107_ja_25_shiga = read_file_iotable_producer_price_medium_25_shiga(
     file = file_iotable_producer_price_medium_25_shiga
   ),
 )

@@ -1,15 +1,15 @@
-# https://www.pref.nagasaki.jp/bunrui/kenseijoho/toukeijoho/renkan/27io/432552.html
+# https://www.pref.nagasaki.jp/doc/page-432552.html
 target_iotable_producer_price_42_nagasaki <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_42_nagasaki,
     download_file(
-      url = "https://www.pref.nagasaki.jp/shared/uploads/2020/03/1584605514.xlsx",
+      url = "https://www.pref.nagasaki.jp/uploads/2020/03/1584605514.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/42_nagasaki.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_42_nagasaki = read_file_iotable_producer_price_medium_42_nagasaki(
+  iotable_producer_price_107_ja_42_nagasaki = read_file_iotable_producer_price_medium_42_nagasaki(
     file = file_iotable_producer_price_medium_42_nagasaki
   ),
 )

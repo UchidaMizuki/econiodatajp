@@ -9,7 +9,7 @@ target_iotable_producer_price_32_shimane <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_32_shimane = read_file_iotable_producer_price_medium_32_shimane(
+  iotable_producer_price_97_ja_32_shimane = read_file_iotable_producer_price_medium_32_shimane(
     file = file_iotable_producer_price_medium_32_shimane
   ),
 )

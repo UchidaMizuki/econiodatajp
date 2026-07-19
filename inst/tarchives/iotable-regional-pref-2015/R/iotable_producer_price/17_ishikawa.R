@@ -9,7 +9,7 @@ target_iotable_producer_price_17_ishikawa <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_17_ishikawa = read_file_iotable_producer_price_small_17_ishikawa(
+  iotable_producer_price_187_ja_17_ishikawa = read_file_iotable_producer_price_small_17_ishikawa(
     file = file_iotable_producer_price_small_17_ishikawa
   ),
 )

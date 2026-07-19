@@ -12,10 +12,7 @@
 #' for [io_table_target()]'s `...`/`tarchives::tar_read_archive_raw()`),
 #' `price_type`, `competitive_import`, `sector_class`, `language`, and
 #' `region` (only non-`NA` for a `region_class = "pref"`, `region_type =
-#' "regional"` table -- see [io_table_get()]'s `region`). Known gap: today
-#' this omits `region_class = "pref"`, `region_type = "regional"` rows (one
-#' per prefecture) -- their target names don't follow the naming scheme
-#' this introspects (see `io_table_parse_name_archive()` in `R/utils.R`).
+#' "regional"` table -- see [io_table_get()]'s `region`).
 #'
 #' @export
 io_table_available <- function() {

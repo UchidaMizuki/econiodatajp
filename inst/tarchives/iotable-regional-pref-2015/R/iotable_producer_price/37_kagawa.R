@@ -9,7 +9,7 @@ target_iotable_producer_price_37_kagawa <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_37_kagawa = read_file_iotable_producer_price_medium_37_kagawa(
+  iotable_producer_price_105_ja_37_kagawa = read_file_iotable_producer_price_medium_37_kagawa(
     file = file_iotable_producer_price_medium_37_kagawa
   ),
 )

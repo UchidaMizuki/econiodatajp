@@ -1,15 +1,15 @@
-# https://www.pref.nara.jp/16376.htm
+# https://www.pref.nara.lg.jp/n003/16376.html
 target_iotable_producer_price_29_nara <- tar_plan(
   tar_change(
     file_iotable_producer_price_small_29_nara,
     download_file(
-      url = "https://www.pref.nara.jp/secure/36885/2015-171.xlsx",
+      url = "https://www.pref.nara.lg.jp/documents/12418/2015-171.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/29_nara.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_29_nara = read_file_iotable_producer_price_small_29_nara(
+  iotable_producer_price_171_ja_29_nara = read_file_iotable_producer_price_small_29_nara(
     file = file_iotable_producer_price_small_29_nara
   ),
 )

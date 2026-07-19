@@ -9,7 +9,7 @@ target_iotable_producer_price_27_osaka <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_27_osaka = read_file_iotable_producer_price_small_27_osaka(
+  iotable_producer_price_187_ja_27_osaka = read_file_iotable_producer_price_small_27_osaka(
     file = file_iotable_producer_price_small_27_osaka
   ),
 )

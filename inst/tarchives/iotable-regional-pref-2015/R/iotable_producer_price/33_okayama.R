@@ -9,7 +9,7 @@ target_iotable_producer_price_33_okayama <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_33_okayama = read_file_iotable_producer_price_small_33_okayama(
+  iotable_producer_price_187_ja_33_okayama = read_file_iotable_producer_price_small_33_okayama(
     file = file_iotable_producer_price_small_33_okayama
   ),
 )

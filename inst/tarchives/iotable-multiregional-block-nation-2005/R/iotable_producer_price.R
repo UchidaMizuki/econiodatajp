@@ -23,7 +23,7 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_12 = read_file_iotable_producer_price(
+  iotable_producer_price_12_ja = read_file_iotable_producer_price(
     file = file_iotable_producer_price_12,
     sheet = "取引額(12部門MTX)"
   ),
@@ -36,7 +36,7 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_29 = read_file_iotable_producer_price(
+  iotable_producer_price_29_ja = read_file_iotable_producer_price(
     file = file_iotable_producer_price_29,
     sheet = "取引額(29部門MTX)"
   ),
@@ -49,7 +49,7 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_53 = read_file_iotable_producer_price(
+  iotable_producer_price_53_ja = read_file_iotable_producer_price(
     file = file_iotable_producer_price_53,
     sheet = "取引額(53部門MTX)"
   )

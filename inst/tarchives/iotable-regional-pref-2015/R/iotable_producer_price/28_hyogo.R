@@ -9,7 +9,7 @@ target_iotable_producer_price_28_hyogo <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_28_hyogo = read_file_iotable_producer_price_small_28_hyogo(
+  iotable_producer_price_185_ja_28_hyogo = read_file_iotable_producer_price_small_28_hyogo(
     file = file_iotable_producer_price_small_28_hyogo
   ),
 )

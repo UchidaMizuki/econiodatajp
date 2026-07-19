@@ -9,7 +9,7 @@ target_iotable_producer_price_10_gunma <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_10_gunma = read_file_iotable_producer_price_medium_10_gunma(
+  iotable_producer_price_107_ja_10_gunma = read_file_iotable_producer_price_medium_10_gunma(
     file = file_iotable_producer_price_medium_10_gunma
   ),
 )

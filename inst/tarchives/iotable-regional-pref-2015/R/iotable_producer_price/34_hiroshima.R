@@ -9,7 +9,7 @@ target_iotable_producer_price_34_hiroshima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_34_hiroshima = read_file_iotable_producer_price_medium_34_hiroshima(
+  iotable_producer_price_107_ja_34_hiroshima = read_file_iotable_producer_price_medium_34_hiroshima(
     file = file_iotable_producer_price_medium_34_hiroshima
   ),
 )

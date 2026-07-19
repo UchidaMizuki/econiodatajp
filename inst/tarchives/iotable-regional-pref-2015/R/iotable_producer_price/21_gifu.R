@@ -9,7 +9,7 @@ target_iotable_producer_price_21_gifu <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_21_gifu = read_file_iotable_producer_price_small_21_gifu(
+  iotable_producer_price_187_ja_21_gifu = read_file_iotable_producer_price_small_21_gifu(
     file = file_iotable_producer_price_small_21_gifu
   ),
 )

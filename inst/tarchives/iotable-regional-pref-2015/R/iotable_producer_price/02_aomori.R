@@ -9,7 +9,7 @@ target_iotable_producer_price_02_aomori <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_02_aomori = read_file_iotable_producer_price_medium_02_aomori(
+  iotable_producer_price_107_ja_02_aomori = read_file_iotable_producer_price_medium_02_aomori(
     file = file_iotable_producer_price_medium_02_aomori
   ),
 )

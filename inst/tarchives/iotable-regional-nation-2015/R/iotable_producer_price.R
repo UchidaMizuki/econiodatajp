@@ -9,59 +9,59 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_basic = read_file_iotable_producer_price_basic(
+  iotable_producer_price_basic_ja = read_file_iotable_producer_price_basic(
     file = file_iotable_producer_price_basic
   ),
-  iotable_producer_price_small = convert_sector_iotable_producer_price_basic(
-    iotable_producer_price_basic = iotable_producer_price_basic,
+  iotable_producer_price_small_ja = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic_ja,
     conversion_sector_input = conversion_sector_input,
     conversion_sector_output = conversion_sector_output,
     sector_class = "small"
   ),
-  iotable_producer_price_medium = convert_sector_iotable_producer_price_basic(
-    iotable_producer_price_basic = iotable_producer_price_basic,
+  iotable_producer_price_medium_ja = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic_ja,
     conversion_sector_input = conversion_sector_input,
     conversion_sector_output = conversion_sector_output,
     sector_class = "medium"
   ),
-  iotable_producer_price_large = convert_sector_iotable_producer_price_basic(
-    iotable_producer_price_basic = iotable_producer_price_basic,
+  iotable_producer_price_large_ja = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic_ja,
     conversion_sector_input = conversion_sector_input,
     conversion_sector_output = conversion_sector_output,
     sector_class = "large"
   ),
-  iotable_producer_price_template = convert_sector_iotable_producer_price_basic(
-    iotable_producer_price_basic = iotable_producer_price_basic,
+  iotable_producer_price_template_ja = convert_sector_iotable_producer_price_basic(
+    iotable_producer_price_basic = iotable_producer_price_basic_ja,
     conversion_sector_input = conversion_sector_input,
     conversion_sector_output = conversion_sector_output,
     sector_class = "template"
   ),
   iotable_producer_price_basic_en = translate_iotable_sector(
-    table = iotable_producer_price_basic,
+    table = iotable_producer_price_basic_ja,
     sector_input = sector_input,
     sector_output = sector_output,
     sector_class = "basic"
   ),
   iotable_producer_price_small_en = translate_iotable_sector(
-    table = iotable_producer_price_small,
+    table = iotable_producer_price_small_ja,
     sector_input = sector_input,
     sector_output = sector_output,
     sector_class = "small"
   ),
   iotable_producer_price_medium_en = translate_iotable_sector(
-    table = iotable_producer_price_medium,
+    table = iotable_producer_price_medium_ja,
     sector_input = sector_input,
     sector_output = sector_output,
     sector_class = "medium"
   ),
   iotable_producer_price_large_en = translate_iotable_sector(
-    table = iotable_producer_price_large,
+    table = iotable_producer_price_large_ja,
     sector_input = sector_input,
     sector_output = sector_output,
     sector_class = "large"
   ),
   iotable_producer_price_template_en = translate_iotable_sector(
-    table = iotable_producer_price_template,
+    table = iotable_producer_price_template_ja,
     sector_input = sector_input,
     sector_output = sector_output,
     sector_class = "template"
