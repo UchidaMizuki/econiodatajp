@@ -9,7 +9,7 @@ target_iotable_producer_price_47_okinawa <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_basic_raw_47_okinawa = read_file_iotable_producer_price_basic_47_okinawa(
+  iotable_producer_price_458_ja_47_okinawa = read_file_iotable_producer_price_basic_47_okinawa(
     file = file_iotable_producer_price_basic_47_okinawa
   ),
 )

@@ -9,7 +9,7 @@ target_iotable_producer_price_15_niigata <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_15_niigata = read_file_iotable_producer_price_small_15_niigata(
+  iotable_producer_price_175_ja_15_niigata = read_file_iotable_producer_price_small_15_niigata(
     file = file_iotable_producer_price_small_15_niigata
   ),
 )

@@ -9,7 +9,7 @@ target_iotable_producer_price_41_saga <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_41_saga = read_file_iotable_producer_price_medium_41_saga(
+  iotable_producer_price_107_ja_41_saga = read_file_iotable_producer_price_medium_41_saga(
     file = file_iotable_producer_price_medium_41_saga
   ),
 )

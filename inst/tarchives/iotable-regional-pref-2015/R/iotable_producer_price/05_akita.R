@@ -9,7 +9,7 @@ target_iotable_producer_price_05_akita <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_05_akita = read_file_iotable_producer_price_medium_05_akita(
+  iotable_producer_price_107_ja_05_akita = read_file_iotable_producer_price_medium_05_akita(
     file = file_iotable_producer_price_medium_05_akita
   ),
 )

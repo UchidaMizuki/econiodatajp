@@ -26,7 +26,7 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_43 = read_file_iotable_producer_price(
+  iotable_producer_price_43_ja = read_file_iotable_producer_price(
     file = file_iotable_producer_price_43,
     sheet = "取引額（43部門MTX）"
   )
