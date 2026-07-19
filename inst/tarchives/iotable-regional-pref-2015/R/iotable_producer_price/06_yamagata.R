@@ -9,7 +9,7 @@ target_iotable_producer_price_06_yamagata <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_06_yamagata = read_file_iotable_producer_price_medium_06_yamagata(
+  iotable_producer_price_107_ja_06_yamagata = read_file_iotable_producer_price_medium_06_yamagata(
     file = file_iotable_producer_price_medium_06_yamagata
   ),
 )

@@ -103,10 +103,12 @@ io_table_get(year = 2020, sector_class = "medium", language = "en")
 
 One prefecture (`region_class = "pref"` with `region_type = "regional"`
 requires `region`, which accepts a numeric code or a `"NN_name"`
-fragment):
+fragment); `sector_class` is that prefecture’s own sector count, not a
+tier shared across prefectures – use `io_table_available()` to look it
+up:
 
 ``` r
-io_table_get(region_class = "pref", region = 1, year = 2015, sector_class = "medium")
+io_table_get(region_class = "pref", region = 1, year = 2015, sector_class = "105")
 #> trying URL 'https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx'
 #> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 1637807 bytes (1.6 MB)
 #> ==================================================
@@ -141,7 +143,7 @@ io_table_get(
   region_type = "multiregional",
   region_class = "pref",
   year = 2011,
-  sector_class = "large"
+  sector_class = "31"
 )
 #> trying URL 'https://www.rieti.go.jp/jp/database/r-io2011/data/i-preio2011.xlsx'
 #> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 14015943 bytes (13.4 MB)
@@ -188,32 +190,35 @@ io_table_get(
 #> # Input:              9 regions, 12 industries
 #> # Output:             9 regions, 12 industries
 #> # Import type:        competitive
-#>    input$region $sector                 output$region            .
-#>    <glue>       <sector>                <glue>               <dbl>
-#>  1 1_北海道     <industry> 1_農林水産業 1_北海道      274730000000
-#>  2 1_北海道     <industry> 1_農林水産業 1_北海道         180000000
-#>  3 1_北海道     <industry> 1_農林水産業 1_北海道      659752000000
-#>  4 1_北海道     <industry> 1_農林水産業 1_北海道                 0
-#>  5 1_北海道     <industry> 1_農林水産業 1_北海道           1000000
-#>  6 1_北海道     <industry> 1_農林水産業 1_北海道       41690000000
-#>  7 1_北海道     <industry> 1_農林水産業 1_北海道        2807000000
-#>  8 1_北海道     <industry> 1_農林水産業 1_北海道                 0
-#>  9 1_北海道     <industry> 1_農林水産業 1_北海道         252000000
-#> 10 1_北海道     <industry> 1_農林水産業 1_北海道           4000000
+#>    input$region $sector                  output$region            .
+#>    <glue>       <sector>                 <glue>               <dbl>
+#>  1 1_北海道     <industry> 01_農林水産業 1_北海道      274730000000
+#>  2 1_北海道     <industry> 01_農林水産業 1_北海道         180000000
+#>  3 1_北海道     <industry> 01_農林水産業 1_北海道      659752000000
+#>  4 1_北海道     <industry> 01_農林水産業 1_北海道                 0
+#>  5 1_北海道     <industry> 01_農林水産業 1_北海道           1000000
+#>  6 1_北海道     <industry> 01_農林水産業 1_北海道       41690000000
+#>  7 1_北海道     <industry> 01_農林水産業 1_北海道        2807000000
+#>  8 1_北海道     <industry> 01_農林水産業 1_北海道                 0
+#>  9 1_北海道     <industry> 01_農林水産業 1_北海道         252000000
+#> 10 1_北海道     <industry> 01_農林水産業 1_北海道           4000000
 #> # ℹ 30,770 more rows
 #> # ℹ 1 more variable: output$sector <sector>
 ```
 
 `sector_class` controls the sector classification granularity
 (`"basic"`, `"small"`, `"medium"`, `"large"`, or `"template"` for
-`region_class = "nation"`; a fixed single value for one prefecture
-(`"medium"`) or the `region_class = "pref"` multiregional table
-(`"large"`); for a `region_class = "block"` multiregional table, METI
-doesn’t name its sector granularities, only counts them, so
-`sector_class` is that count as a string – `"12"`, `"29"`, or `"53"` in
-2005, or a single year-specific count otherwise, e.g. `"43"` in 1970).
-`competitive_import` and `language` are only meaningful for
-`region_class = "nation"`.
+`region_class = "nation"`, each a direct translation of a real official
+Japanese classification tier name). No official source names the sector
+granularities of a `region_class = "pref"` or `"block"` table, only
+counts them, so `sector_class` there is that count as a string instead:
+each prefecture’s own count for its `region_type = "regional"` table
+(e.g. `"105"` for Hokkaido); `"26"`/`"31"` (2005/2011) for the
+`region_class = "pref"` multiregional table; and `"12"`/`"29"`/`"53"` in
+2005, or a single year-specific count otherwise (e.g. `"43"` in 1970),
+for the `region_class = "block"` multiregional table – use
+`io_table_available()` to look any of these up. `competitive_import` and
+`language` are only meaningful for `region_class = "nation"`.
 
 To declare one of these tables as a target in your own `{targets}`
 pipeline instead of fetching it eagerly, use `io_table_target()` with

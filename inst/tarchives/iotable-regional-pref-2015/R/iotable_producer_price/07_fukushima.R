@@ -9,7 +9,7 @@ target_iotable_producer_price_07_fukushima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_07_fukushima = read_file_iotable_producer_price_medium_07_fukushima(
+  iotable_producer_price_105_ja_07_fukushima = read_file_iotable_producer_price_medium_07_fukushima(
     file = file_iotable_producer_price_medium_07_fukushima
   ),
 )

@@ -11,7 +11,7 @@ target_iotable_producer_price_24_mie <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_24_mie = read_file_iotable_producer_price_small_24_mie(
+  iotable_producer_price_185_ja_24_mie = read_file_iotable_producer_price_small_24_mie(
     file = file_iotable_producer_price_small_24_mie
   ),
 )

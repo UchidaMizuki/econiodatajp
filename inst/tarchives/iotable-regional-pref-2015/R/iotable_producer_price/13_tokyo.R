@@ -9,7 +9,7 @@ target_iotable_producer_price_13_tokyo <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_13_tokyo = read_file_iotable_producer_price_small_13_tokyo(
+  iotable_producer_price_182_ja_13_tokyo = read_file_iotable_producer_price_small_13_tokyo(
     file = file_iotable_producer_price_small_13_tokyo
   ),
 )

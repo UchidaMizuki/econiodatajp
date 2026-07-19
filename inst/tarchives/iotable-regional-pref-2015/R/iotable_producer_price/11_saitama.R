@@ -9,7 +9,7 @@ target_iotable_producer_price_11_saitama <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_11_saitama = read_file_iotable_producer_price_small_11_saitama(
+  iotable_producer_price_187_ja_11_saitama = read_file_iotable_producer_price_small_11_saitama(
     file = file_iotable_producer_price_small_11_saitama
   ),
 )

@@ -9,7 +9,7 @@ target_iotable_producer_price_18_fukui <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_18_fukui = read_file_iotable_producer_price_medium_18_fukui(
+  iotable_producer_price_103_ja_18_fukui = read_file_iotable_producer_price_medium_18_fukui(
     file = file_iotable_producer_price_medium_18_fukui
   ),
 )

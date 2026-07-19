@@ -1,0 +1,5 @@
+# econiodatajp (development version)
+
+* Fixed several `region_class = "pref"` (2015) source downloads: Tochigi's URL pointed at Ibaraki's own workbook (wrong prefecture entirely), Kumamoto's URL pointed at the 2020 table instead of 2015, and Miyagi's, Kanagawa's, Shiga's, Yamaguchi's, Nagasaki's, and Nara's URLs had gone stale and 404'd.
+* `io_table_available()` now also lists `region_class = "pref"`, `region_type = "regional"` tables (one row per prefecture), previously omitted because their target names didn't match the naming scheme it introspects.
+* `io_table_get()`/`io_table_target()`'s `sector_class` for `region_class = "pref"` and `"block"` tables is now each table's actual official sector count (e.g. `"105"` for Hokkaido's own table, `"26"`/`"31"` for the 2005/2011 interregional table) instead of a `"small"`/`"medium"`/`"large"` label borrowed from the national table's classification tiers, which don't exist for these tables and pointed in a misleading direction (e.g. Hokkaido's old `"medium"` label had fewer sectors than some other prefectures' old `"small"`).

@@ -146,20 +146,23 @@ check_archive_pipeline <- function(package, pipeline) {
 }
 
 # Doesn't validate `sector_class` itself -- valid choices vary by pipeline
-# (nation: basic/small/medium/large/template; block: sector counts that
-# differ by year, see io_table_resolve()) and there's no single vocabulary
-# to check against here. io_table_resolve() validates the *result*
-# instead, via check_archive_name(). Every caller passes
+# (nation: basic/small/medium/large/template; block/RIETI-pref: sector
+# counts that differ by year/region, see io_table_resolve()) and there's no
+# single vocabulary to check against here. io_table_resolve() validates the
+# *result* instead, via check_archive_name(). Every caller passes
 # `competitive_import`/`language` straight through rather than hardcoding
-# `TRUE`/`"ja"` for pref/block -- those archives don't have
-# noncompetitive-import or `_en` variants today, so a non-default request
-# there simply builds a name that check_archive_name() (or
+# `TRUE`/`"ja"` for pref/block -- those archives don't have a
+# noncompetitive-import variant today, so a non-default request there
+# simply builds a name that check_archive_name() (or
 # resolve_pref_name_archive()'s own matching) won't find, the same generic
-# failure as any other not-yet-published archive. Each nation tarchive
+# failure as any other not-yet-published archive. Every archive name always
+# carries an explicit `_ja`/`_en` language suffix (never bare), so a
+# tarchive target name alone is enough to tell which language it holds --
+# no archive needs to be assumed Japanese by omission. Each nation tarchive
 # precomputes an `_en`-suffixed companion archive for every
-# `iotable_{price_type}[_noncompetitive_import]_{sector_class}` target (see
-# `translate_iotable_sector()` in inst/tarchives/R/translate.R), so English
-# is just a different archive name, not a runtime transformation.
+# `iotable_{price_type}[_noncompetitive_import]_{sector_class}_ja` target
+# (see `translate_iotable_sector()` in inst/tarchives/R/translate.R), so
+# English is just a different archive name, not a runtime transformation.
 io_table_name_archive <- function(
   price_type,
   sector_class,
@@ -170,11 +173,8 @@ io_table_name_archive <- function(
   if (!competitive_import) {
     name <- stringr::str_glue("{name}_noncompetitive_import")
   }
-  name <- stringr::str_glue("{name}_{sector_class}")
-  if (language == "en") {
-    name <- stringr::str_glue("{name}_en")
-  }
-  as.character(name)
+  stringr::str_glue("{name}_{sector_class}_{language}") |>
+    as.character()
 }
 
 # Confirms `name` (built by io_table_name_archive()) is actually one of
@@ -229,7 +229,12 @@ check_archive_name <- function(
 # hardcoded to "nation-only" here -- a `pref`/`block` request for a
 # combination with no backing archive yet (e.g. `language = "en"`) simply
 # matches zero targets below, the same generic failure mode as a missing
-# pipeline.
+# pipeline. `sector_class` for a `pref` archive is that prefecture's own
+# sector count (a direct translation of its official "n部門" name, e.g.
+# `"105"` for Hokkaido) rather than a tier shared across prefectures --
+# each prefecture's own documentation never gives these a common tier
+# name, so, like the block tables, the count itself is the only vocabulary
+# that exists. `io_table_available()` lists each prefecture's actual value.
 resolve_pref_name_archive <- function(
   package,
   pipeline,
@@ -249,9 +254,9 @@ resolve_pref_name_archive <- function(
   pref <- as.character(pref)
   if (stringr::str_detect(pref, "^[0-9]+$")) {
     code <- stringr::str_pad(pref, width = 2, pad = "0")
-    pattern <- stringr::str_glue("^{prefix}.*_{code}_[^_]+$")
+    pattern <- stringr::str_glue("^{prefix}_{code}_[^_]+$")
   } else {
-    pattern <- stringr::str_glue("^{prefix}.*_{pref}$")
+    pattern <- stringr::str_glue("^{prefix}_{pref}$")
   }
 
   manifest <- tarchives::tar_manifest_archive(
@@ -302,43 +307,41 @@ io_table_parse_pipeline <- function(pipeline) {
 # (check_archive_name()) and io_table_available() can both be read back from
 # whatever targets a pipeline actually defines instead of a hardcoded
 # vocabulary. Vectorized: `name` can be a whole manifest's `$name` column.
-# Only "nation" archives have `_noncompetitive_import`/`_en` (see
-# io_table_name_archive()).
+# Only "nation" archives have `_noncompetitive_import`; every archive of
+# every region_class carries an explicit `_ja`/`_en` language suffix (see
+# io_table_name_archive()), so that group is mandatory here, not optional.
 #
 # A pipeline's manifest also lists its non-table targets (e.g. the
 # `tar_change()`-generated `file_...`/`file..._change` targets that
 # download and track each source workbook); those don't match this naming
 # scheme at all and are silently dropped rather than returned as NA rows.
 #
-# Known gap: the `iotable-regional-pref-*` archives' per-prefecture targets
-# (one selected by `region` in io_table_get()) aren't reversed by this
-# pattern at all and so are silently dropped too, same as the file_...
-# targets above -- each is hand-named per prefecture (in each archive's own
-# R/iotable_producer_price/{code}_{name}.R) as
-# `iotable_{price_type}_{sector_class}_raw_{pref_code}_{pref_name}`, with a
-# literal `_raw` that io_table_name_archive() never generates and that
-# `resolve_pref_name_archive()`'s own matching only tolerates via a
-# wildcard (`.*`), not by naming it. io_table_available() therefore currently
-# omits `region_class = "pref"`, `region_type = "regional"` rows; `region`
-# stays a plain column here for `region_class = "block"`, which never has
-# one (always `NA`), rather than being dropped entirely.
+# The `iotable-regional-pref-*` archives' per-prefecture targets (one
+# selected by `region` in io_table_get()) *do* match this pattern: each is
+# named `iotable_{price_type}_{sector_class}_{language}_{pref_code}_
+# {pref_name}` by its own R/iotable_producer_price/{code}_{name}.R, the
+# same `io_table_name_archive()` convention as every other archive, with
+# the `(?:_([0-9]{2})_(.+))?` region group capturing the trailing
+# `{pref_code}_{pref_name}`. `region` stays a plain column here for
+# `region_class = "block"`/nation targets, which never have one (always
+# `NA`), rather than being dropped entirely.
 io_table_parse_name_archive <- function(name) {
   m <- stringr::str_match(
     name,
-    "^iotable_(producer_price|purchaser_price)(_noncompetitive_import)?_([^_]+)(_en)?(?:_([0-9]{2})_(.+))?$"
+    "^iotable_(producer_price|purchaser_price)(_noncompetitive_import)?_([^_]+)_(ja|en)(?:_([0-9]{2})_(.+))?$"
   )
-  m <- m[!is.na(m[, 1]), , drop = FALSE]
   data.frame(
     name = m[, 1],
     price_type = m[, 2],
     competitive_import = is.na(m[, 3]),
     sector_class = m[, 4],
-    language = ifelse(is.na(m[, 5]), "ja", "en"),
-    region = ifelse(
+    language = m[, 5],
+    region = dplyr::if_else(
       is.na(m[, 6]),
       NA_character_,
       stringr::str_c(m[, 6], "_", m[, 7])
     ),
     stringsAsFactors = FALSE
-  )
+  ) |>
+    dplyr::filter(!is.na(name))
 }

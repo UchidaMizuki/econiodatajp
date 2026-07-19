@@ -9,7 +9,7 @@ target_iotable_producer_price_19_yamanashi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_19_yamanashi = read_file_iotable_producer_price_small_19_yamanashi(
+  iotable_producer_price_187_ja_19_yamanashi = read_file_iotable_producer_price_small_19_yamanashi(
     file = file_iotable_producer_price_small_19_yamanashi
   ),
 )

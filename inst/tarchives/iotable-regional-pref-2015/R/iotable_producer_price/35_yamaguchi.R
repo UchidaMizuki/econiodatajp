@@ -1,17 +1,16 @@
-# https://www.pref.yamaguchi.lg.jp/soshiki/22/15720.html
-# https://www.pref.yamaguchi.lg.jp/uploaded/attachment/38354.xlsx
+# https://www.pref.yamaguchi.lg.jp/soshiki/22/341734.html
 
 target_iotable_producer_price_35_yamaguchi <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_35_yamaguchi,
     download_file(
-      url = "https://www.pref.yamaguchi.lg.jp/uploaded/attachment/38354.xlsx",
+      url = "https://www.pref.yamaguchi.lg.jp/uploaded/attachment/236088.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/35_yamaguchi.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_35_yamaguchi = read_file_iotable_producer_price_medium_35_yamaguchi(
+  iotable_producer_price_107_ja_35_yamaguchi = read_file_iotable_producer_price_medium_35_yamaguchi(
     file = file_iotable_producer_price_medium_35_yamaguchi
   ),
 )

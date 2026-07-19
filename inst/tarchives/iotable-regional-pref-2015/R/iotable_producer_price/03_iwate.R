@@ -9,7 +9,7 @@ target_iotable_producer_price_03_iwate <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_03_iwate = read_file_iotable_producer_price_small_03_iwate(
+  iotable_producer_price_187_ja_03_iwate = read_file_iotable_producer_price_small_03_iwate(
     file = file_iotable_producer_price_small_03_iwate
   ),
 )

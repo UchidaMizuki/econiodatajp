@@ -9,7 +9,7 @@ target_iotable_producer_price_46_kagoshima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_46_kagoshima = read_file_iotable_producer_price_medium_46_kagoshima(
+  iotable_producer_price_106_ja_46_kagoshima = read_file_iotable_producer_price_medium_46_kagoshima(
     file = file_iotable_producer_price_medium_46_kagoshima
   ),
 )

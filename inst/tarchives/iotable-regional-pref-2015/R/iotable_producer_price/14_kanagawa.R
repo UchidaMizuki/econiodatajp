@@ -1,15 +1,15 @@
-# https://www.pref.kanagawa.jp/docs/x6z/tc20/sanren/newest.html
+# https://www.pref.kanagawa.jp/docs/x6z/tc20/sanren/past.html
 target_iotable_producer_price_14_kanagawa <- tar_plan(
   tar_change(
     file_iotable_producer_price_small_14_kanagawa,
     download_file(
-      url = "https://www.pref.kanagawa.jp/documents/63167/h27data187.xlsx",
+      url = "https://www.pref.kanagawa.jp/documents/3239/h27data187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/14_kanagawa.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_14_kanagawa = read_file_iotable_producer_price_small_14_kanagawa(
+  iotable_producer_price_187_ja_14_kanagawa = read_file_iotable_producer_price_small_14_kanagawa(
     file = file_iotable_producer_price_small_14_kanagawa
   ),
 )

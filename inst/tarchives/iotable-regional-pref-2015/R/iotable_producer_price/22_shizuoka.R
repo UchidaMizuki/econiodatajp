@@ -9,7 +9,7 @@ target_iotable_producer_price_22_shizuoka <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_22_shizuoka = read_file_iotable_producer_price_small_22_shizuoka(
+  iotable_producer_price_187_ja_22_shizuoka = read_file_iotable_producer_price_small_22_shizuoka(
     file = file_iotable_producer_price_small_22_shizuoka
   ),
 )

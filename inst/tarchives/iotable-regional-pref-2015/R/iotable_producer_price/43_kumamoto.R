@@ -3,13 +3,13 @@ target_iotable_producer_price_43_kumamoto <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_43_kumamoto,
     download_file(
-      url = "https://www.pref.kumamoto.jp/uploaded/attachment/282593.xlsx",
+      url = "https://www.pref.kumamoto.jp/uploaded/attachment/122447.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/43_kumamoto.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_43_kumamoto = read_file_iotable_producer_price_medium_43_kumamoto(
+  iotable_producer_price_105_ja_43_kumamoto = read_file_iotable_producer_price_medium_43_kumamoto(
     file = file_iotable_producer_price_medium_43_kumamoto
   ),
 )
@@ -43,7 +43,7 @@ read_file_iotable_producer_price_medium_43_kumamoto <- function(file) {
       export_pattern = export_pattern,
       export_total_pattern = export_total_pattern,
       import_pattern = import_pattern,
-      import_total_pattern = "（控除）輸移入$",
+      import_total_pattern = import_total_pattern,
       total_pattern = total_pattern
     ) |>
     io_table_read_data(

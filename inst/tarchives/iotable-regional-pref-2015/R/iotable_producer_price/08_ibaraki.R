@@ -9,7 +9,7 @@ target_iotable_producer_price_08_ibaraki <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_small_raw_08_ibaraki = read_file_iotable_producer_price_small_08_ibaraki(
+  iotable_producer_price_184_ja_08_ibaraki = read_file_iotable_producer_price_small_08_ibaraki(
     file = file_iotable_producer_price_small_08_ibaraki
   ),
 )

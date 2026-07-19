@@ -3,13 +3,13 @@ target_iotable_producer_price_04_miyagi <- tar_plan(
   tar_change(
     file_iotable_producer_price_medium_04_miyagi,
     download_file(
-      url = "https://www.pref.miyagi.jp/documents/27447/831396.xlsx",
+      url = "https://www.pref.miyagi.jp/documents/27447/h27_101bumon.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/04_miyagi.xlsx"
     ),
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_medium_raw_04_miyagi = read_file_iotable_producer_price_medium_04_miyagi(
+  iotable_producer_price_101_ja_04_miyagi = read_file_iotable_producer_price_medium_04_miyagi(
     file = file_iotable_producer_price_medium_04_miyagi
   ),
 )
