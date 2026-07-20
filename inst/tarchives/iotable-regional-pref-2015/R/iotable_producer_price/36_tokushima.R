@@ -1,7 +1,7 @@
 # https://www.pref.tokushima.lg.jp/statistics/year/io/
 target_iotable_producer_price_36_tokushima <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_36_tokushima,
+    file_iotable_36_tokushima_medium_producer_price,
     download_file(
       url = "https://www.pref.tokushima.lg.jp/file/attachment/634095.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/36_tokushima.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_36_tokushima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_36_tokushima = read_file_iotable_producer_price_medium_36_tokushima(
-    file = file_iotable_producer_price_medium_36_tokushima
+  iotable_36_tokushima_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_36_tokushima(
+    file = file_iotable_36_tokushima_medium_producer_price
   ),
 )
 
@@ -29,7 +29,7 @@ read_file_iotable_producer_price_medium_36_tokushima <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

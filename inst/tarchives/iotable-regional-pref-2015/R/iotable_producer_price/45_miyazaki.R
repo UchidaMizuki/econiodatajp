@@ -1,7 +1,7 @@
 # https://www.pref.miyazaki.lg.jp/tokeichosa/kense/toke/sangyorenkan/27toukeihyou.html
 target_iotable_producer_price_45_miyazaki <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_45_miyazaki,
+    file_iotable_45_miyazaki_medium_producer_price,
     download_file(
       url = "https://www.pref.miyazaki.lg.jp/documents/52621/52621_20200709154402-1.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/45_miyazaki.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_45_miyazaki <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_45_miyazaki = read_file_iotable_producer_price_medium_45_miyazaki(
-    file = file_iotable_producer_price_medium_45_miyazaki
+  iotable_45_miyazaki_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_45_miyazaki(
+    file = file_iotable_45_miyazaki_medium_producer_price
   ),
 )
 
@@ -39,7 +39,7 @@ read_file_iotable_producer_price_medium_45_miyazaki <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

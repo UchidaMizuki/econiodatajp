@@ -1,7 +1,7 @@
 # https://www.pref.fukushima.lg.jp/sec/11045b/sangyourenkan27.html
 target_iotable_producer_price_07_fukushima <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_07_fukushima,
+    file_iotable_07_fukushima_medium_producer_price,
     download_file(
       url = "https://www.pref.fukushima.lg.jp/uploaded/attachment/392561.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/07_fukushima.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_07_fukushima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_105_ja_07_fukushima = read_file_iotable_producer_price_medium_07_fukushima(
-    file = file_iotable_producer_price_medium_07_fukushima
+  iotable_07_fukushima_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_07_fukushima(
+    file = file_iotable_07_fukushima_medium_producer_price
   ),
 )
 
@@ -35,7 +35,7 @@ read_file_iotable_producer_price_medium_07_fukushima <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

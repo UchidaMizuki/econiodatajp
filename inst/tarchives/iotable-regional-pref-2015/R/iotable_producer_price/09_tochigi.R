@@ -1,7 +1,7 @@
 # https://www.pref.tochigi.lg.jp/c04/pref/toukei/toukei/ioh2-.html
 target_iotable_producer_price_09_tochigi <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_09_tochigi,
+    file_iotable_09_tochigi_small_producer_price,
     download_file(
       url = "https://www.pref.tochigi.lg.jp/c04/pref/toukei/toukei/documents/h27_102bumonhyou2.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/09_tochigi.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_09_tochigi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_102_ja_09_tochigi = read_file_iotable_producer_price_small_09_tochigi(
-    file = file_iotable_producer_price_small_09_tochigi
+  iotable_09_tochigi_102_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_09_tochigi(
+    file = file_iotable_09_tochigi_small_producer_price
   ),
 )
 
@@ -42,7 +42,7 @@ read_file_iotable_producer_price_small_09_tochigi <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

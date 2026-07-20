@@ -2,7 +2,7 @@
 
 target_iotable_producer_price_35_yamaguchi <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_35_yamaguchi,
+    file_iotable_35_yamaguchi_medium_producer_price,
     download_file(
       url = "https://www.pref.yamaguchi.lg.jp/uploaded/attachment/236088.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/35_yamaguchi.xlsx"
@@ -10,8 +10,8 @@ target_iotable_producer_price_35_yamaguchi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_35_yamaguchi = read_file_iotable_producer_price_medium_35_yamaguchi(
-    file = file_iotable_producer_price_medium_35_yamaguchi
+  iotable_35_yamaguchi_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_35_yamaguchi(
+    file = file_iotable_35_yamaguchi_medium_producer_price
   ),
 )
 
@@ -30,7 +30,7 @@ read_file_iotable_producer_price_medium_35_yamaguchi <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

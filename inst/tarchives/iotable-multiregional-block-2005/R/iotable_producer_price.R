@@ -15,7 +15,7 @@
 # block-table year (see the sibling tarchives).
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_12,
+    file_iotable_nation_12_producer_price,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467390&fileKind=0",
       destfile = "_targets/user/iotable/producer_price/12.xlsx"
@@ -23,12 +23,12 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_12_ja = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_12,
+  iotable_nation_12_producer_price_competitive_import_ja = read_file_iotable_producer_price(
+    file = file_iotable_nation_12_producer_price,
     sheet = "取引額(12部門MTX)"
   ),
   tar_change(
-    file_iotable_producer_price_29,
+    file_iotable_nation_29_producer_price,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467391&fileKind=0",
       destfile = "_targets/user/iotable/producer_price/29.xlsx"
@@ -36,12 +36,12 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_29_ja = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_29,
+  iotable_nation_29_producer_price_competitive_import_ja = read_file_iotable_producer_price(
+    file = file_iotable_nation_29_producer_price,
     sheet = "取引額(29部門MTX)"
   ),
   tar_change(
-    file_iotable_producer_price_53,
+    file_iotable_nation_53_producer_price,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467392&fileKind=0",
       destfile = "_targets/user/iotable/producer_price/53.xlsx"
@@ -49,8 +49,8 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_53_ja = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_53,
+  iotable_nation_53_producer_price_competitive_import_ja = read_file_iotable_producer_price(
+    file = file_iotable_nation_53_producer_price,
     sheet = "取引額(53部門MTX)"
   )
 )
@@ -112,7 +112,7 @@ read_file_iotable_producer_price <- function(file, sheet) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = "内生部門計$",
       value_added_total_pattern = "粗付加価値部門計$",
       final_demand_total_pattern = "地域内最終需要計$",

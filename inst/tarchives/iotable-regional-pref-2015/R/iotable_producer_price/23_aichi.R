@@ -1,7 +1,7 @@
 # https://www.pref.aichi.jp/soshiki/toukei/io2015.html
 target_iotable_producer_price_23_aichi <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_23_aichi,
+    file_iotable_23_aichi_small_producer_price,
     download_file(
       url = "https://www.pref.aichi.jp/uploaded/attachment/375804.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/23_aichi.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_23_aichi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_186_ja_23_aichi = read_file_iotable_producer_price_small_23_aichi(
-    file = file_iotable_producer_price_small_23_aichi
+  iotable_23_aichi_186_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_23_aichi(
+    file = file_iotable_23_aichi_small_producer_price
   ),
 )
 
@@ -42,7 +42,7 @@ read_file_iotable_producer_price_small_23_aichi <- function(file) {
       )
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

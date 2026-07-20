@@ -1,7 +1,7 @@
 # https://www.pref.saga.lg.jp/kiji00373733/index.html
 target_iotable_producer_price_41_saga <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_41_saga,
+    file_iotable_41_saga_medium_producer_price,
     download_file(
       url = "https://www.pref.saga.lg.jp/kiji00373733/3_73733_164848_up_yudlbzav.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/41_saga.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_41_saga <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_41_saga = read_file_iotable_producer_price_medium_41_saga(
-    file = file_iotable_producer_price_medium_41_saga
+  iotable_41_saga_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_41_saga(
+    file = file_iotable_41_saga_medium_producer_price
   ),
 )
 
@@ -29,7 +29,7 @@ read_file_iotable_producer_price_medium_41_saga <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

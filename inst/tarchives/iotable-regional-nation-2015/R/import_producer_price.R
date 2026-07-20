@@ -47,7 +47,7 @@ read_file_import_producer_price_medium <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = "内生部門計$",
       final_demand_total_pattern = "国内最終需要計$",
       export_pattern = "輸出$",

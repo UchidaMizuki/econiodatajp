@@ -1,7 +1,7 @@
 # https://www.pref.shiga.lg.jp/kensei/tokei/sonota/sangyou/317842.html
 target_iotable_producer_price_25_shiga <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_25_shiga,
+    file_iotable_25_shiga_medium_producer_price,
     download_file(
       url = "https://www.pref.shiga.lg.jp/file/attachment/5596347.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/25_shiga.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_25_shiga <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_25_shiga = read_file_iotable_producer_price_medium_25_shiga(
-    file = file_iotable_producer_price_medium_25_shiga
+  iotable_25_shiga_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_25_shiga(
+    file = file_iotable_25_shiga_medium_producer_price
   ),
 )
 
@@ -42,7 +42,7 @@ read_file_iotable_producer_price_medium_25_shiga <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

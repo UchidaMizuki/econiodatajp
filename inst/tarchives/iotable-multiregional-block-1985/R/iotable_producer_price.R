@@ -13,7 +13,7 @@
 # industry_total_pattern tolerates trailing whitespace.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_45,
+    file_iotable_nation_45_producer_price,
     download_file_meti(
       url = "https://www.meti.go.jp/statistics/tyo/tiikiio/result/result_3/xlsx/h2rio85a.xlsx",
       destfile = "_targets/user/iotable/producer_price/45.xlsx"
@@ -21,8 +21,8 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_45_ja = read_file_iotable_producer_price(
-    file = file_iotable_producer_price_45,
+  iotable_nation_45_producer_price_competitive_import_ja = read_file_iotable_producer_price(
+    file = file_iotable_nation_45_producer_price,
     sheet = "取引額（45部門MTX）"
   )
 )
@@ -59,7 +59,7 @@ read_file_iotable_producer_price <- function(file, sheet) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = "内生部門計\\s*$",
       value_added_total_pattern = "粗付加価値部門計$",
       final_demand_total_pattern = "地域内最終需要計$",

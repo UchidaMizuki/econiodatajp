@@ -1,7 +1,7 @@
 # https://www.pref.saitama.lg.jp/a0206/a152/2015io-main.html
 target_iotable_producer_price_11_saitama <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_11_saitama,
+    file_iotable_11_saitama_small_producer_price,
     download_file(
       url = "https://www.pref.saitama.lg.jp/documents/173111/h27-seisanhyouka-187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/11_saitama.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_11_saitama <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_187_ja_11_saitama = read_file_iotable_producer_price_small_11_saitama(
-    file = file_iotable_producer_price_small_11_saitama
+  iotable_11_saitama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_11_saitama(
+    file = file_iotable_11_saitama_small_producer_price
   ),
 )
 
@@ -41,7 +41,7 @@ read_file_iotable_producer_price_small_11_saitama <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

@@ -1,7 +1,7 @@
 # https://www.pref.nagasaki.jp/doc/page-432552.html
 target_iotable_producer_price_42_nagasaki <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_42_nagasaki,
+    file_iotable_42_nagasaki_medium_producer_price,
     download_file(
       url = "https://www.pref.nagasaki.jp/uploads/2020/03/1584605514.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/42_nagasaki.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_42_nagasaki <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_42_nagasaki = read_file_iotable_producer_price_medium_42_nagasaki(
-    file = file_iotable_producer_price_medium_42_nagasaki
+  iotable_42_nagasaki_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_42_nagasaki(
+    file = file_iotable_42_nagasaki_medium_producer_price
   ),
 )
 
@@ -29,7 +29,7 @@ read_file_iotable_producer_price_medium_42_nagasaki <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

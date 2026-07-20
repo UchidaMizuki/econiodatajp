@@ -102,13 +102,13 @@ io_table_get(year = 2020, sector_class = "medium", language = "en")
 ```
 
 One prefecture (`region_class = "pref"` with `region_type = "regional"`
-requires `region`, which accepts a numeric code or a `"NN_name"`
-fragment); `sector_class` is that prefecture’s own sector count, not a
-tier shared across prefectures – use `io_table_available()` to look it
-up:
+requires `region`, the `"NN_name"` code_name fragment used in the
+archive); `sector_class` is that prefecture’s own sector count, not a
+tier shared across prefectures – use `io_table_available()` to look
+both up:
 
 ``` r
-io_table_get(region_class = "pref", region = 1, year = 2015, sector_class = "105")
+io_table_get(region_class = "pref", region = "01_hokkaido", year = 2015, sector_class = "105")
 #> trying URL 'https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx'
 #> Content type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' length 1637807 bytes (1.6 MB)
 #> ==================================================
@@ -217,7 +217,7 @@ each prefecture’s own count for its `region_type = "regional"` table
 `region_class = "pref"` multiregional table; and `"12"`/`"29"`/`"53"` in
 2005, or a single year-specific count otherwise (e.g. `"43"` in 1970),
 for the `region_class = "block"` multiregional table – use
-`io_table_available()` to look any of these up. `competitive_import` and
+`io_table_available()` to look any of these up. `import_type` and
 `language` are only meaningful for `region_class = "nation"`.
 
 To declare one of these tables as a target in your own `{targets}`
