@@ -22,8 +22,22 @@ Imports:
     stringr,
     tarchives (>= 0.2.0.9000),
     targets,
+    tibble,
     tidyselect
+Suggests:
+    adverbial,
+    conflicted,
+    econioread,
+    forcats,
+    tarchetypes,
+    testthat (>= 3.0.0),
+    tidyr
 Remotes:
+    UchidaMizuki/adverbial,
     UchidaMizuki/econio,
+    UchidaMizuki/econioread,
     UchidaMizuki/tarchives
 Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3
+Depends: 
+    R (>= 3.5)

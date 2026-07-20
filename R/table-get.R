@@ -14,11 +14,18 @@
 #' applicable, and required, when `region_class = "pref"` and `region_type =
 #' "regional"`, where it selects one prefecture by the code_name fragment
 #' used in the archive (e.g. `"01_hokkaido"`, `"13_tokyo"` -- see
-#' [io_table_available()] to list them). Must be `NULL` (the default) in
-#' every other case: `region_class = "nation"` always covers the whole
-#' country, and `region_class = "pref"`/`"block"` under `region_type =
-#' "multiregional"` always cover every region in the breakdown at once --
-#' there is no per-region subsetting there.
+#' [io_table_available()] to list them). Defaults to `NULL` in every other
+#' case, where it resolves to `"nation"`: `region_class = "nation"` always
+#' covers the whole country as a single scope, and `region_class =
+#' "pref"`/`"block"` under `region_type = "multiregional"` also cover the
+#' whole country as their scope (they're broken into prefecture/block
+#' detail internally -- that's `region_class`, not a different `region`).
+#' If `region` is omitted where it's actually required (`region_class =
+#' "pref"`, `region_type = "regional"`), it likewise resolves to
+#' `"nation"`, which doesn't match any real per-prefecture archive name, so
+#' the call fails with the same generic "can't find it, here's what's
+#' available" error as an invalid `region` rather than a dedicated
+#' missing-argument error.
 #' @param sector_class Sector classification granularity. No default --
 #' must be specified. For `region_class = "nation"`, the full set
 #' (`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) -- each a

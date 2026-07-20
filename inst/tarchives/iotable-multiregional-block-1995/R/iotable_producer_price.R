@@ -23,7 +23,7 @@
 # outright rather than kept as if it meant something.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_46_producer_price,
+    file_iotable_nation_46_producer_price,
     download_file_meti(
       url = "https://www.meti.go.jp/statistics/tyo/tiikiio/result/result_1/xls/h2rio95c.xlsx",
       destfile = "_targets/user/iotable/producer_price/46.xlsx"
@@ -31,8 +31,8 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_46_producer_price_competitive_import_ja = read_file_iotable_producer_price(
-    file = file_iotable_46_producer_price,
+  iotable_nation_46_producer_price_competitive_import_ja = read_file_iotable_producer_price(
+    file = file_iotable_nation_46_producer_price,
     sheet = "取引額(46部門MTX)"
   )
 )

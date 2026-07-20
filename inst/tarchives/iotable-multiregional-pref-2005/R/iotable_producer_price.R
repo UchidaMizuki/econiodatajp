@@ -5,7 +5,7 @@
 # is that count itself ("26"), the same convention as the block tarchives.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_26_producer_price,
+    file_iotable_nation_26_producer_price,
     download_file(
       url = "https://www.rieti.go.jp/jp/database/R-JIP2005/data/I-preIO2005.xlsx",
       destfile = "_targets/user/iotable/producer_price/26.xlsx"
@@ -13,8 +13,8 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_26_producer_price_competitive_import_ja = read_file_iotable_producer_price_26(
-    file = file_iotable_26_producer_price
+  iotable_nation_26_producer_price_competitive_import_ja = read_file_iotable_producer_price_26(
+    file = file_iotable_nation_26_producer_price
   )
 )
 

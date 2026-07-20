@@ -5,3 +5,4 @@
 ^README\.qmd$
 ^\.claude$
 ^AGENTS\.md$
+^data-raw$
