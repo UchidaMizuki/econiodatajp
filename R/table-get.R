@@ -9,16 +9,16 @@
 #' one specific prefecture's own table (`region_type = "regional"`, see
 #' `region`); or `"block"` for the official 9-region block interregional
 #' table (`region_type = "multiregional"` only).
+#' @param year Year of the data.
 #' @param region Which single region to select within `region_class`. Only
 #' applicable, and required, when `region_class = "pref"` and `region_type =
-#' "regional"`, where it selects one prefecture -- a numeric prefecture code
-#' (e.g. `1`, `13`) or the code_name fragment used in the archive (e.g.
-#' `"01_hokkaido"`, `"13_tokyo"`). Must be `NULL` (the default) in every
-#' other case: `region_class = "nation"` always covers the whole country,
-#' and `region_class = "pref"`/`"block"` under `region_type =
+#' "regional"`, where it selects one prefecture by the code_name fragment
+#' used in the archive (e.g. `"01_hokkaido"`, `"13_tokyo"` -- see
+#' [io_table_available()] to list them). Must be `NULL` (the default) in
+#' every other case: `region_class = "nation"` always covers the whole
+#' country, and `region_class = "pref"`/`"block"` under `region_type =
 #' "multiregional"` always cover every region in the breakdown at once --
 #' there is no per-region subsetting there.
-#' @param year Year of the data.
 #' @param sector_class Sector classification granularity. No default --
 #' must be specified. For `region_class = "nation"`, the full set
 #' (`"basic"`, `"small"`, `"medium"`, `"large"`, `"template"`) -- each a
@@ -36,11 +36,13 @@
 #' otherwise) -- see [io_table_available()] to list them all.
 #' @param price_type Price basis of the table, `"producer_price"` (the
 #' default) or `"purchaser_price"`.
-#' @param competitive_import Whether to use the competitive-import
-#' convention (matches the `competitive_import` argument of
+#' @param import_type Import convention used in the table,
+#' `"competitive_import"` (the default) or `"noncompetitive_import"`
+#' (matches `competitive_import = TRUE`/`FALSE` in
 #' [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
-#' sector classes are only available when `TRUE`. Only supported when
-#' `region_class = "nation"`; `FALSE` errors otherwise.
+#' sector classes are only available for `"competitive_import"`. Only
+#' `"competitive_import"` is supported when `region_class` isn't
+#' `"nation"`.
 #' @param language Language of the table's sector names, `"ja"` (the
 #' default) or `"en"`. Japanese is the authoritative source (sector *type*
 #' classification is derived from the Japanese sector classification
@@ -56,25 +58,26 @@
 io_table_get <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
-  region = NULL,
   year,
+  region = NULL,
   sector_class,
   price_type = c("producer_price", "purchaser_price"),
-  competitive_import = TRUE,
+  import_type = c("competitive_import", "noncompetitive_import"),
   language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
   price_type <- rlang::arg_match(price_type)
+  import_type <- rlang::arg_match(import_type)
   language <- rlang::arg_match(language)
   resolved <- io_table_resolve(
     region_type = region_type,
     region_class = region_class,
-    region = region,
     year = year,
+    region = region,
     sector_class = sector_class,
     price_type = price_type,
-    competitive_import = competitive_import,
+    import_type = import_type,
     language = language
   )
   tarchives::tar_make_archive(

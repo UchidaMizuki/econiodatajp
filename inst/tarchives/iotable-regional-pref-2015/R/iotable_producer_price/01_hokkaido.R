@@ -1,7 +1,7 @@
 # https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt.html
 target_iotable_producer_price_01_hokkaido <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_01_hokkaido,
+    file_iotable_01_hokkaido_medium_producer_price,
     download_file(
       url = "https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/01_hokkaido.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_01_hokkaido <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_105_ja_01_hokkaido = read_file_iotable_producer_price_medium_01_hokkaido(
-    file = file_iotable_producer_price_medium_01_hokkaido
+  iotable_01_hokkaido_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_01_hokkaido(
+    file = file_iotable_01_hokkaido_medium_producer_price
   ),
 )
 
@@ -36,10 +36,11 @@ read_file_iotable_producer_price_medium_01_hokkaido <- function(file) {
     as_step(mutate)(
       across(
         starts_with(c("input", "output")),
-        \(x)
+        \(x) {
           x |>
             str_remove_all("\\s") |>
             replace_na("")
+        }
       )
     ) |>
     io_table_read_sector_names(
@@ -49,17 +50,18 @@ read_file_iotable_producer_price_medium_01_hokkaido <- function(file) {
     as_step(mutate)(
       across(
         input_sector_name,
-        \(x)
+        \(x) {
           case_match(
             x,
             "54_電子計算機・同付属装置" ~ "54_電子計算機・同附属装置",
             "85_インターネット付随サービス" ~ "85_インターネット附随サービス",
             .default = x
           )
+        }
       ),
       across(
         output_sector_name,
-        \(x)
+        \(x) {
           case_match(
             x,
             "16_衣服・その他の繊維製品" ~ "16_衣服・その他の繊維既製品",
@@ -67,10 +69,11 @@ read_file_iotable_producer_price_medium_01_hokkaido <- function(file) {
               "26_化学最終製品（医薬品を除く。）",
             .default = x
           )
+        }
       )
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

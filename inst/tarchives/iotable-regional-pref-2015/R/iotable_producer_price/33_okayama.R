@@ -1,7 +1,7 @@
 # https://www.pref.okayama.jp/page/detail-16600.html
 target_iotable_producer_price_33_okayama <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_33_okayama,
+    file_iotable_33_okayama_small_producer_price,
     download_file(
       url = "https://www.pref.okayama.jp/uploaded/life/951294_9131056_misc.xls",
       destfile = "_targets/user/iotable/producer_price/small/33_okayama.xls"
@@ -9,8 +9,8 @@ target_iotable_producer_price_33_okayama <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_187_ja_33_okayama = read_file_iotable_producer_price_small_33_okayama(
-    file = file_iotable_producer_price_small_33_okayama
+  iotable_33_okayama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_33_okayama(
+    file = file_iotable_33_okayama_small_producer_price
   ),
 )
 
@@ -29,7 +29,7 @@ read_file_iotable_producer_price_small_33_okayama <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

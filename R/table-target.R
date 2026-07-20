@@ -18,11 +18,11 @@ io_table_target <- function(
   name,
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
-  region = NULL,
   year,
+  region = NULL,
   sector_class,
   price_type = c("producer_price", "purchaser_price"),
-  competitive_import = TRUE,
+  import_type = c("competitive_import", "noncompetitive_import"),
   language = c("ja", "en"),
   ...
 ) {
@@ -30,11 +30,11 @@ io_table_target <- function(
     name = targets::tar_deparse_language(substitute(name)),
     region_type = region_type,
     region_class = region_class,
-    region = region,
     year = year,
+    region = region,
     sector_class = sector_class,
     price_type = price_type,
-    competitive_import = competitive_import,
+    import_type = import_type,
     language = language,
     ...
   )
@@ -46,26 +46,27 @@ io_table_target_raw <- function(
   name,
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
-  region = NULL,
   year,
+  region = NULL,
   sector_class,
   price_type = c("producer_price", "purchaser_price"),
-  competitive_import = TRUE,
+  import_type = c("competitive_import", "noncompetitive_import"),
   language = c("ja", "en"),
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
   price_type <- rlang::arg_match(price_type)
+  import_type <- rlang::arg_match(import_type)
   language <- rlang::arg_match(language)
   resolved <- io_table_resolve(
     region_type = region_type,
     region_class = region_class,
-    region = region,
     year = year,
+    region = region,
     sector_class = sector_class,
     price_type = price_type,
-    competitive_import = competitive_import,
+    import_type = import_type,
     language = language
   )
   tarchives::tar_target_archive_raw(

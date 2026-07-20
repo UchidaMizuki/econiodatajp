@@ -1,7 +1,7 @@
 # https://www.pref.yamagata.jp/020052/kensei/shoukai/toukeijouhou/sangyourenkanhyou-1/h17sangyorenkan.html
 target_iotable_producer_price_06_yamagata <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_06_yamagata,
+    file_iotable_06_yamagata_medium_producer_price,
     download_file(
       url = "https://www.pref.yamagata.jp/documents/1637/h27renkan107.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/06_yamagata.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_06_yamagata <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_107_ja_06_yamagata = read_file_iotable_producer_price_medium_06_yamagata(
-    file = file_iotable_producer_price_medium_06_yamagata
+  iotable_06_yamagata_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_06_yamagata(
+    file = file_iotable_06_yamagata_medium_producer_price
   ),
 )
 
@@ -49,7 +49,7 @@ read_file_iotable_producer_price_medium_06_yamagata <- function(file) {
       )
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

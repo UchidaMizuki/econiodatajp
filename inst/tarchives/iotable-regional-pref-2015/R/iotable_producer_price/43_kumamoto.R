@@ -1,7 +1,7 @@
 # https://www.pref.kumamoto.jp/soshiki/20/50333.html
 target_iotable_producer_price_43_kumamoto <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_43_kumamoto,
+    file_iotable_43_kumamoto_medium_producer_price,
     download_file(
       url = "https://www.pref.kumamoto.jp/uploaded/attachment/122447.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/43_kumamoto.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_43_kumamoto <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_105_ja_43_kumamoto = read_file_iotable_producer_price_medium_43_kumamoto(
-    file = file_iotable_producer_price_medium_43_kumamoto
+  iotable_43_kumamoto_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_43_kumamoto(
+    file = file_iotable_43_kumamoto_medium_producer_price
   ),
 )
 
@@ -36,7 +36,7 @@ read_file_iotable_producer_price_medium_43_kumamoto <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

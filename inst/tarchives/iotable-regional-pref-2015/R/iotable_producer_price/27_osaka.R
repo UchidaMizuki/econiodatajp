@@ -1,7 +1,7 @@
 # https://www.pref.osaka.lg.jp/o040090/toukei/sanren/sanren_k-io15k000xls.html
 target_iotable_producer_price_27_osaka <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_27_osaka,
+    file_iotable_27_osaka_small_producer_price,
     download_file(
       url = "https://www.pref.osaka.lg.jp/documents/8490/h27k_187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/27_osaka.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_27_osaka <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_187_ja_27_osaka = read_file_iotable_producer_price_small_27_osaka(
-    file = file_iotable_producer_price_small_27_osaka
+  iotable_27_osaka_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_27_osaka(
+    file = file_iotable_27_osaka_small_producer_price
   ),
 )
 
@@ -35,7 +35,7 @@ read_file_iotable_producer_price_small_27_osaka <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

@@ -1,7 +1,7 @@
 # https://data.bodik.jp/dataset/400009_sangyourenkanhyou_h27
 target_iotable_producer_price_40_fukuoka <- tar_plan(
   tar_change(
-    file_iotable_producer_price_medium_40_fukuoka,
+    file_iotable_40_fukuoka_medium_producer_price,
     download_file(
       url = "https://data.bodik.jp/dataset/e9a2d1be-8bb4-4cf7-a936-dc57823dda2a/resource/209e822d-41ff-49c1-99d9-62fd43c984bc/download",
       destfile = "_targets/user/iotable/producer_price/medium/40_fukuoka.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_40_fukuoka <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_106_ja_40_fukuoka = read_file_iotable_producer_price_medium_40_fukuoka(
-    file = file_iotable_producer_price_medium_40_fukuoka
+  iotable_40_fukuoka_106_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_40_fukuoka(
+    file = file_iotable_40_fukuoka_medium_producer_price
   ),
 )
 
@@ -29,7 +29,7 @@ read_file_iotable_producer_price_medium_40_fukuoka <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

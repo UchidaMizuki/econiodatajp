@@ -8,11 +8,11 @@
 #' so aren't listed in [io_table_get()]'s documentation.
 #'
 #' @return A data frame with one row per available table, with columns
-#' `region_type`, `region_class`, `year`, `name` (the archive target name,
-#' for [io_table_target()]'s `...`/`tarchives::tar_read_archive_raw()`),
-#' `price_type`, `competitive_import`, `sector_class`, `language`, and
-#' `region` (only non-`NA` for a `region_class = "pref"`, `region_type =
-#' "regional"` table -- see [io_table_get()]'s `region`).
+#' `region_type`, `region_class`, `year`, `region` (only non-`NA` for a
+#' `region_class = "pref"`, `region_type = "regional"` table -- see
+#' [io_table_get()]'s `region`), `sector_class`, `price_type`,
+#' `import_type`, `language`, and `name` (the archive target name, for
+#' [io_table_target()]'s `...`/`tarchives::tar_read_archive_raw()`).
 #'
 #' @export
 io_table_available <- function() {

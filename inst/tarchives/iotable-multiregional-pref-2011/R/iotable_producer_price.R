@@ -5,7 +5,7 @@
 # same convention as the block tarchives.
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_producer_price_31,
+    file_iotable_31_producer_price,
     download_file(
       url = "https://www.rieti.go.jp/jp/database/r-io2011/data/i-preio2011.xlsx",
       destfile = "_targets/user/iotable/producer_price/31.xlsx"
@@ -13,8 +13,8 @@ target_iotable_producer_price <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_31_ja = read_file_iotable_producer_price_31(
-    file = file_iotable_producer_price_31
+  iotable_31_producer_price_competitive_import_ja = read_file_iotable_producer_price_31(
+    file = file_iotable_31_producer_price
   )
 )
 
@@ -53,7 +53,7 @@ read_file_iotable_producer_price_31 <- function(file) {
       output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = "内生部門計$",
       value_added_total_pattern = "粗付加価値部門計$",
       final_demand_total_pattern = "県内最終需要計$",
@@ -70,13 +70,14 @@ read_file_iotable_producer_price_31 <- function(file) {
     as_step(mutate)(
       across(
         input_region,
-        \(x)
+        \(x) {
           case_when(
             input_sector_type == "value_added" & str_detect(x, "列の当該県") ~
               output_region,
             input_sector_type == "total" ~ NA,
             .default = input_region
           )
+        }
       )
     ) |>
     io_table_read_data(

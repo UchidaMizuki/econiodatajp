@@ -9,11 +9,11 @@ io_table_target(
   name,
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
-  region = NULL,
   year,
+  region = NULL,
   sector_class,
   price_type = c("producer_price", "purchaser_price"),
-  competitive_import = TRUE,
+  import_type = c("competitive_import", "noncompetitive_import"),
   language = c("ja", "en"),
   ...
 )
@@ -22,11 +22,11 @@ io_table_target_raw(
   name,
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
-  region = NULL,
   year,
+  region = NULL,
   sector_class,
   price_type = c("producer_price", "purchaser_price"),
-  competitive_import = TRUE,
+  import_type = c("competitive_import", "noncompetitive_import"),
   language = c("ja", "en"),
   ...
 )
@@ -46,17 +46,17 @@ one specific prefecture's own table (`region_type = "regional"`, see
 `region`); or `"block"` for the official 9-region block interregional
 table (`region_type = "multiregional"` only).}
 
+\item{year}{Year of the data.}
+
 \item{region}{Which single region to select within `region_class`. Only
 applicable, and required, when `region_class = "pref"` and `region_type =
-"regional"`, where it selects one prefecture -- a numeric prefecture code
-(e.g. `1`, `13`) or the code_name fragment used in the archive (e.g.
-`"01_hokkaido"`, `"13_tokyo"`). Must be `NULL` (the default) in every
-other case: `region_class = "nation"` always covers the whole country,
-and `region_class = "pref"`/`"block"` under `region_type =
+"regional"`, where it selects one prefecture by the code_name fragment
+used in the archive (e.g. `"01_hokkaido"`, `"13_tokyo"` -- see
+[io_table_available()] to list them). Must be `NULL` (the default) in
+every other case: `region_class = "nation"` always covers the whole
+country, and `region_class = "pref"`/`"block"` under `region_type =
 "multiregional"` always cover every region in the breakdown at once --
 there is no per-region subsetting there.}
-
-\item{year}{Year of the data.}
 
 \item{sector_class}{Sector classification granularity. No default --
 must be specified. For `region_class = "nation"`, the full set
@@ -77,11 +77,13 @@ otherwise) -- see [io_table_available()] to list them all.}
 \item{price_type}{Price basis of the table, `"producer_price"` (the
 default) or `"purchaser_price"`.}
 
-\item{competitive_import}{Whether to use the competitive-import
-convention (matches the `competitive_import` argument of
+\item{import_type}{Import convention used in the table,
+`"competitive_import"` (the default) or `"noncompetitive_import"`
+(matches `competitive_import = TRUE`/`FALSE` in
 [econioread::io_table_read_sector_types()]). `"basic"` and `"small"`
-sector classes are only available when `TRUE`. Only supported when
-`region_class = "nation"`; `FALSE` errors otherwise.}
+sector classes are only available for `"competitive_import"`. Only
+`"competitive_import"` is supported when `region_class` isn't
+`"nation"`.}
 
 \item{language}{Language of the table's sector names, `"ja"` (the
 default) or `"en"`. Japanese is the authoritative source (sector *type*

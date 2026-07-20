@@ -3,7 +3,7 @@
 
 target_iotable_producer_price_24_mie <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_24_mie,
+    file_iotable_24_mie_small_producer_price,
     download_file(
       url = "https://www.pref.mie.lg.jp/common/content/000910433.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/24_mie.xlsx"
@@ -11,8 +11,8 @@ target_iotable_producer_price_24_mie <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_185_ja_24_mie = read_file_iotable_producer_price_small_24_mie(
-    file = file_iotable_producer_price_small_24_mie
+  iotable_24_mie_185_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_24_mie(
+    file = file_iotable_24_mie_small_producer_price
   ),
 )
 
@@ -43,7 +43,7 @@ read_file_iotable_producer_price_small_24_mie <- function(file) {
       )
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,

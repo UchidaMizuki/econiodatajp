@@ -1,7 +1,7 @@
 # https://www.pref.kanagawa.jp/docs/x6z/tc20/sanren/past.html
 target_iotable_producer_price_14_kanagawa <- tar_plan(
   tar_change(
-    file_iotable_producer_price_small_14_kanagawa,
+    file_iotable_14_kanagawa_small_producer_price,
     download_file(
       url = "https://www.pref.kanagawa.jp/documents/3239/h27data187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/14_kanagawa.xlsx"
@@ -9,8 +9,8 @@ target_iotable_producer_price_14_kanagawa <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_producer_price_187_ja_14_kanagawa = read_file_iotable_producer_price_small_14_kanagawa(
-    file = file_iotable_producer_price_small_14_kanagawa
+  iotable_14_kanagawa_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_14_kanagawa(
+    file = file_iotable_14_kanagawa_small_producer_price
   ),
 )
 
@@ -47,7 +47,7 @@ read_file_iotable_producer_price_small_14_kanagawa <- function(file) {
       )
     ) |>
     io_table_read_sector_types(
-      competitive_import = TRUE,
+      import_type = "competitive_import",
       industry_total_pattern = industry_total_pattern,
       value_added_total_pattern = value_added_total_pattern,
       final_demand_total_pattern = final_demand_total_pattern,
