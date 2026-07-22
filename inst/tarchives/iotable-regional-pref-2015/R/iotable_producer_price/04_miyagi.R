@@ -1,7 +1,7 @@
 # https://www.pref.miyagi.jp/soshiki/toukei/rennkann.html
 target_iotable_producer_price_04_miyagi <- tar_plan(
   tar_change(
-    file_iotable_04_miyagi_medium_producer_price,
+    file_iotable_04_miyagi_101_producer_price,
     download_file(
       url = "https://www.pref.miyagi.jp/documents/27447/h27_101bumon.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/04_miyagi.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_04_miyagi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_04_miyagi_101_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_04_miyagi(
-    file = file_iotable_04_miyagi_medium_producer_price
+  iotable_04_miyagi_101_producer_price_competitive_import_ja = read_file_iotable_producer_price_101_04_miyagi(
+    file = file_iotable_04_miyagi_101_producer_price
   ),
 )
 
-read_file_iotable_producer_price_medium_04_miyagi <- function(file) {
+read_file_iotable_producer_price_101_04_miyagi <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "H27生産者価格評価表（101部門）",

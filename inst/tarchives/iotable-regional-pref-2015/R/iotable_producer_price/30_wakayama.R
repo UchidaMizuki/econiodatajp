@@ -1,7 +1,7 @@
 # https://www.pref.wakayama.lg.jp/prefg/020300/sangyo/h27/d00203979.html
 target_iotable_producer_price_30_wakayama <- tar_plan(
   tar_change(
-    file_iotable_30_wakayama_small_producer_price,
+    file_iotable_30_wakayama_187_producer_price,
     download_file(
       url = "https://www.pref.wakayama.lg.jp/prefg/020300/sangyo/h27/d00203979_d/fil/t_187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/30_wakayama.xlsx"
@@ -9,11 +9,11 @@ target_iotable_producer_price_30_wakayama <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_30_wakayama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_30_wakayama(
-    file = file_iotable_30_wakayama_small_producer_price
+  iotable_30_wakayama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_30_wakayama(
+    file = file_iotable_30_wakayama_187_producer_price
   ),
 )
-read_file_iotable_producer_price_small_30_wakayama <- function(file) {
+read_file_iotable_producer_price_187_30_wakayama <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "187部門表",

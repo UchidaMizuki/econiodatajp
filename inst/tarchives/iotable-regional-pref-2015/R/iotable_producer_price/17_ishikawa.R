@@ -1,7 +1,7 @@
 # https://toukei.pref.ishikawa.lg.jp/search/detail.asp?d_id=4524
 target_iotable_producer_price_17_ishikawa <- tar_plan(
   tar_change(
-    file_iotable_17_ishikawa_small_producer_price,
+    file_iotable_17_ishikawa_187_producer_price,
     download_file(
       url = "https://toukei.pref.ishikawa.lg.jp/dl/4524/h27io_187sec.xls",
       destfile = "_targets/user/iotable/producer_price/small/17_ishikawa.xls"
@@ -9,12 +9,12 @@ target_iotable_producer_price_17_ishikawa <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_17_ishikawa_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_17_ishikawa(
-    file = file_iotable_17_ishikawa_small_producer_price
+  iotable_17_ishikawa_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_17_ishikawa(
+    file = file_iotable_17_ishikawa_187_producer_price
   ),
 )
 
-read_file_iotable_producer_price_small_17_ishikawa <- function(file) {
+read_file_iotable_producer_price_187_17_ishikawa <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "1_生産者価格評価表",

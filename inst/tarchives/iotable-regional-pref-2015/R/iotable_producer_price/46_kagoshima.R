@@ -1,7 +1,7 @@
 # https://www.pref.kagoshima.jp/ac09/tokei/bunya/keizai/renkan/keisu_kako.html
 target_iotable_producer_price_46_kagoshima <- tar_plan(
   tar_change(
-    file_iotable_46_kagoshima_medium_producer_price,
+    file_iotable_46_kagoshima_106_producer_price,
     download_file(
       url = "https://www.pref.kagoshima.jp/ac09/tokei/bunya/keizai/renkan/documents/16211_20251003115640-1.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/46_kagoshima.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_46_kagoshima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_46_kagoshima_106_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_46_kagoshima(
-    file = file_iotable_46_kagoshima_medium_producer_price
+  iotable_46_kagoshima_106_producer_price_competitive_import_ja = read_file_iotable_producer_price_106_46_kagoshima(
+    file = file_iotable_46_kagoshima_106_producer_price
   ),
 )
 
-read_file_iotable_producer_price_medium_46_kagoshima <- function(file) {
+read_file_iotable_producer_price_106_46_kagoshima <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "生産者価格評価表",

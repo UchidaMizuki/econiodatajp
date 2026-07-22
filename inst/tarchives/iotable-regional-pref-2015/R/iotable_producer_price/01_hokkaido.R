@@ -1,7 +1,7 @@
 # https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt.html
 target_iotable_producer_price_01_hokkaido <- tar_plan(
   tar_change(
-    file_iotable_01_hokkaido_medium_producer_price,
+    file_iotable_01_hokkaido_105_producer_price,
     download_file(
       url = "https://www.hkd.mlit.go.jp/ky/ki/keikaku/splaat000001yqxt-att/splaat000001yr7c.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/01_hokkaido.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_01_hokkaido <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_01_hokkaido_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_01_hokkaido(
-    file = file_iotable_01_hokkaido_medium_producer_price
+  iotable_01_hokkaido_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_105_01_hokkaido(
+    file = file_iotable_01_hokkaido_105_producer_price
   ),
 )
 
-read_file_iotable_producer_price_medium_01_hokkaido <- function(file) {
+read_file_iotable_producer_price_105_01_hokkaido <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "第4-1表　取引基本表",

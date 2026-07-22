@@ -1,7 +1,7 @@
 # https://www.pref.fukui.lg.jp/doc/toukei-jouhou/sanren.html
 target_iotable_producer_price_18_fukui <- tar_plan(
   tar_change(
-    file_iotable_18_fukui_medium_producer_price,
+    file_iotable_18_fukui_103_producer_price,
     download_file(
       url = "https://www.pref.fukui.lg.jp/doc/toukei-jouhou/sanren_d/fil/064.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/18_fukui.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_18_fukui <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_18_fukui_103_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_18_fukui(
-    file = file_iotable_18_fukui_medium_producer_price
+  iotable_18_fukui_103_producer_price_competitive_import_ja = read_file_iotable_producer_price_103_18_fukui(
+    file = file_iotable_18_fukui_103_producer_price
   ),
 )
 
-read_file_iotable_producer_price_medium_18_fukui <- function(file) {
+read_file_iotable_producer_price_103_18_fukui <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "取引基本表",

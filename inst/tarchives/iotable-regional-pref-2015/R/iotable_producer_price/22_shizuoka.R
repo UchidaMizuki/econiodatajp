@@ -1,7 +1,7 @@
 # https://toukei.pref.shizuoka.jp/bunsekihan/data/h27_187.html
 target_iotable_producer_price_22_shizuoka <- tar_plan(
   tar_change(
-    file_iotable_22_shizuoka_small_producer_price,
+    file_iotable_22_shizuoka_187_producer_price,
     download_file(
       url = "https://toukei.pref.shizuoka.jp/bunsekihan/data/documents/h27_187kihon.xls",
       destfile = "_targets/user/iotable/producer_price/small/22_shizuoka.xls"
@@ -9,12 +9,12 @@ target_iotable_producer_price_22_shizuoka <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_22_shizuoka_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_22_shizuoka(
-    file = file_iotable_22_shizuoka_small_producer_price
+  iotable_22_shizuoka_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_22_shizuoka(
+    file = file_iotable_22_shizuoka_187_producer_price
   ),
 )
 
-read_file_iotable_producer_price_small_22_shizuoka <- function(file) {
+read_file_iotable_producer_price_187_22_shizuoka <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "187部門",

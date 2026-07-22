@@ -1,7 +1,7 @@
 # https://web.pref.hyogo.lg.jp/kk11/hyogoio/hyogoio2015.html
 target_iotable_producer_price_28_hyogo <- tar_plan(
   tar_change(
-    file_iotable_28_hyogo_small_producer_price,
+    file_iotable_28_hyogo_185_producer_price,
     download_file(
       url = "https://web.pref.hyogo.lg.jp/kk11/hyogoio/documents/hyogoio2015-185bumon.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/28_hyogo.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_28_hyogo <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_28_hyogo_185_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_28_hyogo(
-    file = file_iotable_28_hyogo_small_producer_price
+  iotable_28_hyogo_185_producer_price_competitive_import_ja = read_file_iotable_producer_price_185_28_hyogo(
+    file = file_iotable_28_hyogo_185_producer_price
   ),
 )
 
-read_file_iotable_producer_price_small_28_hyogo <- function(file) {
+read_file_iotable_producer_price_185_28_hyogo <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "取引基本表",

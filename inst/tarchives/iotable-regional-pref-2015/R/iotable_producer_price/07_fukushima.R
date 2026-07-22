@@ -1,7 +1,7 @@
 # https://www.pref.fukushima.lg.jp/sec/11045b/sangyourenkan27.html
 target_iotable_producer_price_07_fukushima <- tar_plan(
   tar_change(
-    file_iotable_07_fukushima_medium_producer_price,
+    file_iotable_07_fukushima_105_producer_price,
     download_file(
       url = "https://www.pref.fukushima.lg.jp/uploaded/attachment/392561.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/07_fukushima.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_07_fukushima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_07_fukushima_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_07_fukushima(
-    file = file_iotable_07_fukushima_medium_producer_price
+  iotable_07_fukushima_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_105_07_fukushima(
+    file = file_iotable_07_fukushima_105_producer_price
   ),
 )
 
-read_file_iotable_producer_price_medium_07_fukushima <- function(file) {
+read_file_iotable_producer_price_105_07_fukushima <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "生産者価格評価表",

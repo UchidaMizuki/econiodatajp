@@ -1,7 +1,7 @@
 # https://www.pref.tokushima.lg.jp/statistics/year/io/
 target_iotable_producer_price_36_tokushima <- tar_plan(
   tar_change(
-    file_iotable_36_tokushima_medium_producer_price,
+    file_iotable_36_tokushima_107_producer_price,
     download_file(
       url = "https://www.pref.tokushima.lg.jp/file/attachment/634095.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/36_tokushima.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_36_tokushima <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_36_tokushima_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_36_tokushima(
-    file = file_iotable_36_tokushima_medium_producer_price
+  iotable_36_tokushima_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_36_tokushima(
+    file = file_iotable_36_tokushima_107_producer_price
   ),
 )
 
-read_file_iotable_producer_price_medium_36_tokushima <- function(file) {
+read_file_iotable_producer_price_107_36_tokushima <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "取引基本表",

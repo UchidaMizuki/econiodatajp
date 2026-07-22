@@ -1,7 +1,7 @@
 # https://www.pref.gifu.lg.jp/page/25991.html
 target_iotable_producer_price_21_gifu <- tar_plan(
   tar_change(
-    file_iotable_21_gifu_small_producer_price,
+    file_iotable_21_gifu_187_producer_price,
     download_file(
       url = "https://www.pref.gifu.lg.jp/uploaded/attachment/211274.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/21_gifu.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_21_gifu <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_21_gifu_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_21_gifu(
-    file = file_iotable_21_gifu_small_producer_price
+  iotable_21_gifu_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_21_gifu(
+    file = file_iotable_21_gifu_187_producer_price
   ),
 )
 
-read_file_iotable_producer_price_small_21_gifu <- function(file) {
+read_file_iotable_producer_price_187_21_gifu <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "4-1",
