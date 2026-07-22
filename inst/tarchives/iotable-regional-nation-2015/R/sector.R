@@ -23,11 +23,11 @@ target_sector <- tar_plan(
     file_ja = file_sector_ja,
     file_en = file_sector_en
   ),
-  conversion_sector_input = get_conversion_sector(
+  sector_conversion_input = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "input"
   ),
-  conversion_sector_output = get_conversion_sector(
+  sector_conversion_output = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "output"
   ),
@@ -267,12 +267,36 @@ read_file_sector <- function(file_ja, file_en) {
       .before = input_sector_code_basic
     ) |>
     mutate(
-      sector_name_small_ja = str_c(sector_code_small, sector_name_small, sep = "_"),
-      sector_name_small_en = str_c(sector_code_small, sector_name_small_en, sep = "_"),
-      sector_name_medium_ja = str_c(sector_code_medium, sector_name_medium, sep = "_"),
-      sector_name_medium_en = str_c(sector_code_medium, sector_name_medium_en, sep = "_"),
-      sector_name_large_ja = str_c(sector_code_large, sector_name_large, sep = "_"),
-      sector_name_large_en = str_c(sector_code_large, sector_name_large_en, sep = "_"),
+      sector_name_small_ja = str_c(
+        sector_code_small,
+        sector_name_small,
+        sep = "_"
+      ),
+      sector_name_small_en = str_c(
+        sector_code_small,
+        sector_name_small_en,
+        sep = "_"
+      ),
+      sector_name_medium_ja = str_c(
+        sector_code_medium,
+        sector_name_medium,
+        sep = "_"
+      ),
+      sector_name_medium_en = str_c(
+        sector_code_medium,
+        sector_name_medium_en,
+        sep = "_"
+      ),
+      sector_name_large_ja = str_c(
+        sector_code_large,
+        sector_name_large,
+        sep = "_"
+      ),
+      sector_name_large_en = str_c(
+        sector_code_large,
+        sector_name_large_en,
+        sep = "_"
+      ),
       .keep = "unused"
     ) |>
     select(
@@ -374,7 +398,7 @@ read_file_sector <- function(file_ja, file_en) {
   )
 }
 
-get_conversion_sector <- function(sector_raw, axis) {
+get_sector_conversion <- function(sector_raw, axis) {
   sector <- sector_raw[[axis]]
 
   sector_class <- as_factor(c("basic", "small", "medium", "large", "template"))
@@ -384,7 +408,11 @@ get_conversion_sector <- function(sector_raw, axis) {
     sector_class_to = sector_class
   ) |>
     mutate(
-      col_name_sector_class_from = str_c("sector_name_", sector_class_from, "_ja"),
+      col_name_sector_class_from = str_c(
+        "sector_name_",
+        sector_class_from,
+        "_ja"
+      ),
       col_name_sector_class_to = str_c("sector_name_", sector_class_to, "_ja")
     ) |>
     mutate(

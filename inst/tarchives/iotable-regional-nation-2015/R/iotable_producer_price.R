@@ -14,26 +14,26 @@ target_iotable_producer_price <- tar_plan(
   ),
   iotable_nation_small_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    conversion_sector_input = conversion_sector_input,
-    conversion_sector_output = conversion_sector_output,
+    sector_conversion_input = sector_conversion_input,
+    sector_conversion_output = sector_conversion_output,
     sector_class = "small"
   ),
   iotable_nation_medium_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    conversion_sector_input = conversion_sector_input,
-    conversion_sector_output = conversion_sector_output,
+    sector_conversion_input = sector_conversion_input,
+    sector_conversion_output = sector_conversion_output,
     sector_class = "medium"
   ),
   iotable_nation_large_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    conversion_sector_input = conversion_sector_input,
-    conversion_sector_output = conversion_sector_output,
+    sector_conversion_input = sector_conversion_input,
+    sector_conversion_output = sector_conversion_output,
     sector_class = "large"
   ),
   iotable_nation_template_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    conversion_sector_input = conversion_sector_input,
-    conversion_sector_output = conversion_sector_output,
+    sector_conversion_input = sector_conversion_input,
+    sector_conversion_output = sector_conversion_output,
     sector_class = "template"
   ),
   iotable_nation_basic_producer_price_competitive_import_en = translate_iotable_sector(
@@ -108,11 +108,11 @@ read_file_iotable_producer_price_basic <- function(file) {
 
 convert_sector_iotable_producer_price_basic <- function(
   iotable_producer_price_basic,
-  conversion_sector_input,
-  conversion_sector_output,
+  sector_conversion_input,
+  sector_conversion_output,
   sector_class
 ) {
-  input_sector_data <- conversion_sector_input |>
+  input_sector_data <- sector_conversion_input |>
     filter(
       sector_type %in% c("industry", "value_added"),
       sector_class_from == "basic",
@@ -122,7 +122,7 @@ convert_sector_iotable_producer_price_basic <- function(
     rename(from = sector_name_from, to = sector_name_to) |>
     add_column(weight = 1)
 
-  output_sector_data <- conversion_sector_output |>
+  output_sector_data <- sector_conversion_output |>
     filter(
       sector_type %in% c("industry", "final_demand", "export", "import"),
       sector_class_from == "basic",
