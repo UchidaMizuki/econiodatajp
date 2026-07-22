@@ -14,14 +14,14 @@ target_import_producer_price <- tar_plan(
   ),
   import_producer_price_large = convert_sector_import_producer_price_medium(
     import_producer_price_medium = import_producer_price_medium,
-    conversion_sector_input = conversion_sector_input,
-    conversion_sector_output = conversion_sector_output,
+    sector_conversion_input = sector_conversion_input,
+    sector_conversion_output = sector_conversion_output,
     sector_class = "large"
   ),
   import_producer_price_template = convert_sector_import_producer_price_medium(
     import_producer_price_medium = import_producer_price_medium,
-    conversion_sector_input = conversion_sector_input,
-    conversion_sector_output = conversion_sector_output,
+    sector_conversion_input = sector_conversion_input,
+    sector_conversion_output = sector_conversion_output,
     sector_class = "template"
   ),
 )
@@ -62,11 +62,11 @@ read_file_import_producer_price_medium <- function(file) {
 
 convert_sector_import_producer_price_medium <- function(
   import_producer_price_medium,
-  conversion_sector_input,
-  conversion_sector_output,
+  sector_conversion_input,
+  sector_conversion_output,
   sector_class
 ) {
-  input_sector_data <- conversion_sector_input |>
+  input_sector_data <- sector_conversion_input |>
     filter(
       sector_type == "industry",
       sector_class_from == "medium",
@@ -76,7 +76,7 @@ convert_sector_import_producer_price_medium <- function(
     rename(from = sector_name_from, to = sector_name_to) |>
     add_column(weight = 1)
 
-  output_sector_data <- conversion_sector_output |>
+  output_sector_data <- sector_conversion_output |>
     filter(
       sector_type %in% c("industry", "final_demand", "export"),
       sector_class_from == "medium",
