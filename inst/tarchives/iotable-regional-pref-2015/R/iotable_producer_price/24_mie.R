@@ -3,7 +3,7 @@
 
 target_iotable_producer_price_24_mie <- tar_plan(
   tar_change(
-    file_iotable_24_mie_185_producer_price,
+    file_iotable_24_mie_185_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.mie.lg.jp/common/content/000910433.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/24_mie.xlsx"
@@ -12,7 +12,7 @@ target_iotable_producer_price_24_mie <- tar_plan(
     format = "file"
   ),
   iotable_24_mie_185_producer_price_competitive_import_ja = read_file_iotable_producer_price_185_24_mie(
-    file = file_iotable_24_mie_185_producer_price
+    file = file_iotable_24_mie_185_producer_price_competitive_import_ja
   ),
 )
 

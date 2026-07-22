@@ -1,7 +1,7 @@
 # https://www.pref.aichi.jp/soshiki/toukei/io2015.html
 target_iotable_producer_price_23_aichi <- tar_plan(
   tar_change(
-    file_iotable_23_aichi_186_producer_price,
+    file_iotable_23_aichi_186_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.aichi.jp/uploaded/attachment/375804.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/23_aichi.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_23_aichi <- tar_plan(
     format = "file"
   ),
   iotable_23_aichi_186_producer_price_competitive_import_ja = read_file_iotable_producer_price_186_23_aichi(
-    file = file_iotable_23_aichi_186_producer_price
+    file = file_iotable_23_aichi_186_producer_price_competitive_import_ja
   ),
 )
 

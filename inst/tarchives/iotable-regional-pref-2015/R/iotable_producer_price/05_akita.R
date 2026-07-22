@@ -1,7 +1,7 @@
 # https://www.pref.akita.lg.jp/pages/archive/53289
 target_iotable_producer_price_05_akita <- tar_plan(
   tar_change(
-    file_iotable_05_akita_107_producer_price,
+    file_iotable_05_akita_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.akita.lg.jp/uploads/public/archive_0000053289_00/27-3%E5%85%AC%E8%A1%A8%E7%94%A8%E3%83%87%E3%83%BC%E3%82%BF%EF%BC%88107%E9%83%A8%E9%96%80%E5%88%86%E9%A1%9E%EF%BC%89ok.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/05_akita.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_05_akita <- tar_plan(
     format = "file"
   ),
   iotable_05_akita_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_05_akita(
-    file = file_iotable_05_akita_107_producer_price
+    file = file_iotable_05_akita_107_producer_price_competitive_import_ja
   ),
 )
 

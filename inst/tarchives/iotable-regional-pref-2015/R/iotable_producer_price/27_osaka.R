@@ -1,7 +1,7 @@
 # https://www.pref.osaka.lg.jp/o040090/toukei/sanren/sanren_k-io15k000xls.html
 target_iotable_producer_price_27_osaka <- tar_plan(
   tar_change(
-    file_iotable_27_osaka_187_producer_price,
+    file_iotable_27_osaka_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.osaka.lg.jp/documents/8490/h27k_187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/27_osaka.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_27_osaka <- tar_plan(
     format = "file"
   ),
   iotable_27_osaka_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_27_osaka(
-    file = file_iotable_27_osaka_187_producer_price
+    file = file_iotable_27_osaka_187_producer_price_competitive_import_ja
   ),
 )
 

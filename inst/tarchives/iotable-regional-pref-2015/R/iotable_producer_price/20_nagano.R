@@ -2,7 +2,7 @@
 # https://tokei.pref.nagano.lg.jp/statist_list/1876.html
 target_iotable_producer_price_20_nagano <- tar_plan(
   tar_change(
-    file_iotable_20_nagano_187_producer_price,
+    file_iotable_20_nagano_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://tokei.pref.nagano.lg.jp/statistics-info/statistics_download?pid=18716&type=excel",
       destfile = "_targets/user/iotable/producer_price/small/20_nagano.xlsx"
@@ -11,7 +11,7 @@ target_iotable_producer_price_20_nagano <- tar_plan(
     format = "file"
   ),
   iotable_20_nagano_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_20_nagano(
-    file = file_iotable_20_nagano_187_producer_price
+    file = file_iotable_20_nagano_187_producer_price_competitive_import_ja
   ),
 )
 

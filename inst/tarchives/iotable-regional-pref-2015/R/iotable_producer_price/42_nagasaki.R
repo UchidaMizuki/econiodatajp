@@ -1,7 +1,7 @@
 # https://www.pref.nagasaki.jp/doc/page-432552.html
 target_iotable_producer_price_42_nagasaki <- tar_plan(
   tar_change(
-    file_iotable_42_nagasaki_107_producer_price,
+    file_iotable_42_nagasaki_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.nagasaki.jp/uploads/2020/03/1584605514.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/42_nagasaki.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_42_nagasaki <- tar_plan(
     format = "file"
   ),
   iotable_42_nagasaki_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_42_nagasaki(
-    file = file_iotable_42_nagasaki_107_producer_price
+    file = file_iotable_42_nagasaki_107_producer_price_competitive_import_ja
   ),
 )
 

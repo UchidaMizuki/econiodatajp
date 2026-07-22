@@ -1,7 +1,7 @@
 # https://opendata.pref.kagawa.lg.jp/dataset/360.html
 target_iotable_producer_price_37_kagawa <- tar_plan(
   tar_change(
-    file_iotable_37_kagawa_105_producer_price,
+    file_iotable_37_kagawa_105_producer_price_competitive_import_ja,
     download_file(
       url = "https://opendata.pref.kagawa.lg.jp/dataset/360/resource/4445/27_107%E9%83%A8%E9%96%80%E8%A1%A8%EF%BC%88%E7%94%9F%E7%94%A3%E8%80%85%E4%BE%A1%E6%A0%BC%E8%A9%95%E4%BE%A1%E8%A1%A8%EF%BC%89.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/37_kagawa.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_37_kagawa <- tar_plan(
     format = "file"
   ),
   iotable_37_kagawa_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_105_37_kagawa(
-    file = file_iotable_37_kagawa_105_producer_price
+    file = file_iotable_37_kagawa_105_producer_price_competitive_import_ja
   ),
 )
 

@@ -1,7 +1,7 @@
 # https://www.pref.wakayama.lg.jp/prefg/020300/sangyo/h27/d00203979.html
 target_iotable_producer_price_30_wakayama <- tar_plan(
   tar_change(
-    file_iotable_30_wakayama_187_producer_price,
+    file_iotable_30_wakayama_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.wakayama.lg.jp/prefg/020300/sangyo/h27/d00203979_d/fil/t_187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/30_wakayama.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_30_wakayama <- tar_plan(
     format = "file"
   ),
   iotable_30_wakayama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_30_wakayama(
-    file = file_iotable_30_wakayama_187_producer_price
+    file = file_iotable_30_wakayama_187_producer_price_competitive_import_ja
   ),
 )
 read_file_iotable_producer_price_187_30_wakayama <- function(file) {

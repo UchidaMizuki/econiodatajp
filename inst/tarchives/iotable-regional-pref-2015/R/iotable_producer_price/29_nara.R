@@ -1,7 +1,7 @@
 # https://www.pref.nara.lg.jp/n003/16376.html
 target_iotable_producer_price_29_nara <- tar_plan(
   tar_change(
-    file_iotable_29_nara_171_producer_price,
+    file_iotable_29_nara_171_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.nara.lg.jp/documents/12418/2015-171.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/29_nara.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_29_nara <- tar_plan(
     format = "file"
   ),
   iotable_29_nara_171_producer_price_competitive_import_ja = read_file_iotable_producer_price_171_29_nara(
-    file = file_iotable_29_nara_171_producer_price
+    file = file_iotable_29_nara_171_producer_price_competitive_import_ja
   ),
 )
 

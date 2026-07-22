@@ -1,7 +1,7 @@
 # https://www.pref.saitama.lg.jp/a0206/a152/2015io-main.html
 target_iotable_producer_price_11_saitama <- tar_plan(
   tar_change(
-    file_iotable_11_saitama_187_producer_price,
+    file_iotable_11_saitama_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.saitama.lg.jp/documents/173111/h27-seisanhyouka-187.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/11_saitama.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_11_saitama <- tar_plan(
     format = "file"
   ),
   iotable_11_saitama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_11_saitama(
-    file = file_iotable_11_saitama_187_producer_price
+    file = file_iotable_11_saitama_187_producer_price_competitive_import_ja
   ),
 )
 

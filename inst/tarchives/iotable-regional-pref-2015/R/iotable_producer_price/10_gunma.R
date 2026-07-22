@@ -1,7 +1,7 @@
 # https://toukei.pref.gunma.jp/gio/gio2015.htm
 target_iotable_producer_price_10_gunma <- tar_plan(
   tar_change(
-    file_iotable_10_gunma_107_producer_price,
+    file_iotable_10_gunma_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://toukei.pref.gunma.jp/gio/data/2015.107bumon.xls",
       destfile = "_targets/user/iotable/producer_price/medium/10_gunma.xls"
@@ -10,7 +10,7 @@ target_iotable_producer_price_10_gunma <- tar_plan(
     format = "file"
   ),
   iotable_10_gunma_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_10_gunma(
-    file = file_iotable_10_gunma_107_producer_price
+    file = file_iotable_10_gunma_107_producer_price_competitive_import_ja
   ),
 )
 

@@ -1,7 +1,7 @@
 # https://www.pref.toyama.jp/sections/1015/lib/renkan/index.html
 target_iotable_producer_price_16_toyama <- tar_plan(
   tar_change(
-    file_iotable_16_toyama_187_producer_price,
+    file_iotable_16_toyama_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.toyama.jp/sections/1015/lib/renkan/_dat27/27187.xls",
       destfile = "_targets/user/iotable/producer_price/small/16_toyama.xls"
@@ -10,7 +10,7 @@ target_iotable_producer_price_16_toyama <- tar_plan(
     format = "file"
   ),
   iotable_16_toyama_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_16_toyama(
-    file = file_iotable_16_toyama_187_producer_price
+    file = file_iotable_16_toyama_187_producer_price_competitive_import_ja
   ),
 )
 

@@ -1,7 +1,7 @@
 # https://www.pref.miyazaki.lg.jp/tokeichosa/kense/toke/sangyorenkan/27toukeihyou.html
 target_iotable_producer_price_45_miyazaki <- tar_plan(
   tar_change(
-    file_iotable_45_miyazaki_107_producer_price,
+    file_iotable_45_miyazaki_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.miyazaki.lg.jp/documents/52621/52621_20200709154402-1.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/45_miyazaki.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_45_miyazaki <- tar_plan(
     format = "file"
   ),
   iotable_45_miyazaki_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_45_miyazaki(
-    file = file_iotable_45_miyazaki_107_producer_price
+    file = file_iotable_45_miyazaki_107_producer_price_competitive_import_ja
   ),
 )
 

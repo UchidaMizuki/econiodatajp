@@ -1,7 +1,7 @@
 # https://pref.shimane-toukei.jp/index.php?view=21470
 target_iotable_producer_price_32_shimane <- tar_plan(
   tar_change(
-    file_iotable_32_shimane_97_producer_price,
+    file_iotable_32_shimane_97_producer_price_competitive_import_ja,
     download_file(
       url = "https://pref.shimane-toukei.jp/upload/user/00021475-AnYR6c.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/32_shimane.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_32_shimane <- tar_plan(
     format = "file"
   ),
   iotable_32_shimane_97_producer_price_competitive_import_ja = read_file_iotable_producer_price_97_32_shimane(
-    file = file_iotable_32_shimane_97_producer_price
+    file = file_iotable_32_shimane_97_producer_price_competitive_import_ja
   ),
 )
 

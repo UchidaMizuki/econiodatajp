@@ -1,7 +1,7 @@
 # https://data.bodik.jp/dataset/400009_sangyourenkanhyou_h27
 target_iotable_producer_price_40_fukuoka <- tar_plan(
   tar_change(
-    file_iotable_40_fukuoka_106_producer_price,
+    file_iotable_40_fukuoka_106_producer_price_competitive_import_ja,
     download_file(
       url = "https://data.bodik.jp/dataset/e9a2d1be-8bb4-4cf7-a936-dc57823dda2a/resource/209e822d-41ff-49c1-99d9-62fd43c984bc/download",
       destfile = "_targets/user/iotable/producer_price/medium/40_fukuoka.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_40_fukuoka <- tar_plan(
     format = "file"
   ),
   iotable_40_fukuoka_106_producer_price_competitive_import_ja = read_file_iotable_producer_price_106_40_fukuoka(
-    file = file_iotable_40_fukuoka_106_producer_price
+    file = file_iotable_40_fukuoka_106_producer_price_competitive_import_ja
   ),
 )
 

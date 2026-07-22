@@ -1,7 +1,7 @@
 # https://www.pref.shiga.lg.jp/kensei/tokei/sonota/sangyou/317842.html
 target_iotable_producer_price_25_shiga <- tar_plan(
   tar_change(
-    file_iotable_25_shiga_107_producer_price,
+    file_iotable_25_shiga_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.shiga.lg.jp/file/attachment/5596347.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/25_shiga.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_25_shiga <- tar_plan(
     format = "file"
   ),
   iotable_25_shiga_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_25_shiga(
-    file = file_iotable_25_shiga_107_producer_price
+    file = file_iotable_25_shiga_107_producer_price_competitive_import_ja
   ),
 )
 

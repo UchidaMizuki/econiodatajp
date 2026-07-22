@@ -1,7 +1,7 @@
 # https://www.pref.oita.jp/site/toukei/sangyo.html
 target_iotable_producer_price_44_oita <- tar_plan(
   tar_change(
-    file_iotable_44_oita_104_producer_price,
+    file_iotable_44_oita_104_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.oita.jp/uploaded/attachment/2072846.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/44_oita.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_44_oita <- tar_plan(
     format = "file"
   ),
   iotable_44_oita_104_producer_price_competitive_import_ja = read_file_iotable_producer_price_104_44_oita(
-    file = file_iotable_44_oita_104_producer_price
+    file = file_iotable_44_oita_104_producer_price_competitive_import_ja
   ),
 )
 

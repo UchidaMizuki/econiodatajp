@@ -1,7 +1,7 @@
 # https://www.pref.kochi.lg.jp/doc/sanren27/
 target_iotable_producer_price_39_kochi <- tar_plan(
   tar_change(
-    file_iotable_39_kochi_107_producer_price,
+    file_iotable_39_kochi_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.kochi.lg.jp/doc/sanren27/file_contents/file_20213195154754_1.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/39_kochi.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_39_kochi <- tar_plan(
     format = "file"
   ),
   iotable_39_kochi_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_39_kochi(
-    file = file_iotable_39_kochi_107_producer_price
+    file = file_iotable_39_kochi_107_producer_price_competitive_import_ja
   ),
 )
 

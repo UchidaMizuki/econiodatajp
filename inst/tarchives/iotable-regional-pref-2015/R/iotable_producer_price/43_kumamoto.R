@@ -1,7 +1,7 @@
 # https://www.pref.kumamoto.jp/soshiki/20/50333.html
 target_iotable_producer_price_43_kumamoto <- tar_plan(
   tar_change(
-    file_iotable_43_kumamoto_105_producer_price,
+    file_iotable_43_kumamoto_105_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.kumamoto.jp/uploaded/attachment/122447.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/43_kumamoto.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_43_kumamoto <- tar_plan(
     format = "file"
   ),
   iotable_43_kumamoto_105_producer_price_competitive_import_ja = read_file_iotable_producer_price_105_43_kumamoto(
-    file = file_iotable_43_kumamoto_105_producer_price
+    file = file_iotable_43_kumamoto_105_producer_price_competitive_import_ja
   ),
 )
 

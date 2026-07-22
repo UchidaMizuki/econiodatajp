@@ -1,7 +1,7 @@
 # https://www.pref.saga.lg.jp/kiji00373733/index.html
 target_iotable_producer_price_41_saga <- tar_plan(
   tar_change(
-    file_iotable_41_saga_107_producer_price,
+    file_iotable_41_saga_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.saga.lg.jp/kiji00373733/3_73733_164848_up_yudlbzav.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/41_saga.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_41_saga <- tar_plan(
     format = "file"
   ),
   iotable_41_saga_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_41_saga(
-    file = file_iotable_41_saga_107_producer_price
+    file = file_iotable_41_saga_107_producer_price_competitive_import_ja
   ),
 )
 

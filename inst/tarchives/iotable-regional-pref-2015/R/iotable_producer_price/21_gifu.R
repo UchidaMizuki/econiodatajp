@@ -1,7 +1,7 @@
 # https://www.pref.gifu.lg.jp/page/25991.html
 target_iotable_producer_price_21_gifu <- tar_plan(
   tar_change(
-    file_iotable_21_gifu_187_producer_price,
+    file_iotable_21_gifu_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.gifu.lg.jp/uploaded/attachment/211274.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/21_gifu.xlsx"
@@ -10,7 +10,7 @@ target_iotable_producer_price_21_gifu <- tar_plan(
     format = "file"
   ),
   iotable_21_gifu_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_21_gifu(
-    file = file_iotable_21_gifu_187_producer_price
+    file = file_iotable_21_gifu_187_producer_price_competitive_import_ja
   ),
 )
 
