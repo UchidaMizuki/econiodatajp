@@ -1,7 +1,7 @@
 # https://www.pref.yamanashi.jp/toukei_2/HP/27renkan.html
 target_iotable_producer_price_19_yamanashi <- tar_plan(
   tar_change(
-    file_iotable_19_yamanashi_small_producer_price,
+    file_iotable_19_yamanashi_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.yamanashi.jp/toukei_2/HP/DATA/27renkan/27kihon_187bumon.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/19_yamanashi.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_19_yamanashi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_19_yamanashi_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_19_yamanashi(
-    file = file_iotable_19_yamanashi_small_producer_price
+  iotable_19_yamanashi_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_19_yamanashi(
+    file = file_iotable_19_yamanashi_187_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_small_19_yamanashi <- function(file) {
+read_file_iotable_producer_price_187_19_yamanashi <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "基本表（統合小分類187部門）",

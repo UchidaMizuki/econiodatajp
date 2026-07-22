@@ -1,7 +1,7 @@
 # https://www.pref.chiba.lg.jp/toukei/toukeidata/sangyou/h27/27data.html
 target_iotable_producer_price_12_chiba <- tar_plan(
   tar_change(
-    file_iotable_12_chiba_small_producer_price,
+    file_iotable_12_chiba_185_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.chiba.lg.jp/toukei/toukeidata/sangyou/h27/documents/40-h27togo185.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/12_chiba.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_12_chiba <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_12_chiba_185_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_12_chiba(
-    file = file_iotable_12_chiba_small_producer_price
+  iotable_12_chiba_185_producer_price_competitive_import_ja = read_file_iotable_producer_price_185_12_chiba(
+    file = file_iotable_12_chiba_185_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_small_12_chiba <- function(file) {
+read_file_iotable_producer_price_185_12_chiba <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "生産者価格評価表",

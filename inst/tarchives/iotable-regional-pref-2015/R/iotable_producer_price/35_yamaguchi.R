@@ -2,7 +2,7 @@
 
 target_iotable_producer_price_35_yamaguchi <- tar_plan(
   tar_change(
-    file_iotable_35_yamaguchi_medium_producer_price,
+    file_iotable_35_yamaguchi_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.yamaguchi.lg.jp/uploaded/attachment/236088.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/35_yamaguchi.xlsx"
@@ -10,12 +10,12 @@ target_iotable_producer_price_35_yamaguchi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_35_yamaguchi_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_35_yamaguchi(
-    file = file_iotable_35_yamaguchi_medium_producer_price
+  iotable_35_yamaguchi_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_35_yamaguchi(
+    file = file_iotable_35_yamaguchi_107_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_medium_35_yamaguchi <- function(file) {
+read_file_iotable_producer_price_107_35_yamaguchi <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "取引基本表",

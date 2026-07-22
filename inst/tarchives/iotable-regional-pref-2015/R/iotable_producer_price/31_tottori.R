@@ -1,7 +1,7 @@
 # https://www.pref.tottori.lg.jp/2015io_tables/
 target_iotable_producer_price_31_tottori <- tar_plan(
   tar_change(
-    file_iotable_31_tottori_medium_producer_price,
+    file_iotable_31_tottori_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.tottori.lg.jp/secure/1269527/io_H27_107.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/31_tottori.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_31_tottori <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_31_tottori_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_31_tottori(
-    file = file_iotable_31_tottori_medium_producer_price
+  iotable_31_tottori_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_31_tottori(
+    file = file_iotable_31_tottori_107_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_medium_31_tottori <- function(file) {
+read_file_iotable_producer_price_107_31_tottori <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "生産者価格評価表",

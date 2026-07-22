@@ -15,7 +15,7 @@
 # block-table year (see the sibling tarchives).
 target_iotable_producer_price <- tar_plan(
   tar_change(
-    file_iotable_nation_12_producer_price,
+    file_iotable_nation_12_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467390&fileKind=0",
       destfile = "_targets/user/iotable/producer_price/12.xlsx"
@@ -24,11 +24,11 @@ target_iotable_producer_price <- tar_plan(
     format = "file"
   ),
   iotable_nation_12_producer_price_competitive_import_ja = read_file_iotable_producer_price(
-    file = file_iotable_nation_12_producer_price,
+    file = file_iotable_nation_12_producer_price_competitive_import_ja,
     sheet = "取引額(12部門MTX)"
   ),
   tar_change(
-    file_iotable_nation_29_producer_price,
+    file_iotable_nation_29_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467391&fileKind=0",
       destfile = "_targets/user/iotable/producer_price/29.xlsx"
@@ -37,11 +37,11 @@ target_iotable_producer_price <- tar_plan(
     format = "file"
   ),
   iotable_nation_29_producer_price_competitive_import_ja = read_file_iotable_producer_price(
-    file = file_iotable_nation_29_producer_price,
+    file = file_iotable_nation_29_producer_price_competitive_import_ja,
     sheet = "取引額(29部門MTX)"
   ),
   tar_change(
-    file_iotable_nation_53_producer_price,
+    file_iotable_nation_53_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467392&fileKind=0",
       destfile = "_targets/user/iotable/producer_price/53.xlsx"
@@ -50,7 +50,7 @@ target_iotable_producer_price <- tar_plan(
     format = "file"
   ),
   iotable_nation_53_producer_price_competitive_import_ja = read_file_iotable_producer_price(
-    file = file_iotable_nation_53_producer_price,
+    file = file_iotable_nation_53_producer_price_competitive_import_ja,
     sheet = "取引額(53部門MTX)"
   )
 )

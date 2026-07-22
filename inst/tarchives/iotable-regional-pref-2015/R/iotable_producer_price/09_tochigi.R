@@ -1,7 +1,7 @@
 # https://www.pref.tochigi.lg.jp/c04/pref/toukei/toukei/ioh2-.html
 target_iotable_producer_price_09_tochigi <- tar_plan(
   tar_change(
-    file_iotable_09_tochigi_small_producer_price,
+    file_iotable_09_tochigi_102_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.tochigi.lg.jp/c04/pref/toukei/toukei/documents/h27_102bumonhyou2.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/09_tochigi.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_09_tochigi <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_09_tochigi_102_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_09_tochigi(
-    file = file_iotable_09_tochigi_small_producer_price
+  iotable_09_tochigi_102_producer_price_competitive_import_ja = read_file_iotable_producer_price_102_09_tochigi(
+    file = file_iotable_09_tochigi_102_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_small_09_tochigi <- function(file) {
+read_file_iotable_producer_price_102_09_tochigi <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "102(1)取引基本表",

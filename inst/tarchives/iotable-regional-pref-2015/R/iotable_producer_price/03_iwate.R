@@ -1,7 +1,7 @@
 # https://www3.pref.iwate.jp/webdb/view/outside/s14Tokei/bnyaBtKekka.html/B03/B0303/I015
 target_iotable_producer_price_03_iwate <- tar_plan(
   tar_change(
-    file_iotable_03_iwate_small_producer_price,
+    file_iotable_03_iwate_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www3.pref.iwate.jp/webdb/view/outside/s14Tokei/tokei.download?fileId=s14TokeiInfo-1ueP1W.18OYJ.R8hi3",
       destfile = "_targets/user/iotable/producer_price/small/03_iwate.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_03_iwate <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_03_iwate_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_03_iwate(
-    file = file_iotable_03_iwate_small_producer_price
+  iotable_03_iwate_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_03_iwate(
+    file = file_iotable_03_iwate_187_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_small_03_iwate <- function(file) {
+read_file_iotable_producer_price_187_03_iwate <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "①生産者価格評価表",

@@ -1,7 +1,7 @@
 # https://opendata.pref.aomori.lg.jp/dataset/1597.html
 target_iotable_producer_price_02_aomori <- tar_plan(
   tar_change(
-    file_iotable_02_aomori_medium_producer_price,
+    file_iotable_02_aomori_107_producer_price_competitive_import_ja,
     download_file(
       url = "https://opendata.pref.aomori.lg.jp/dataset/1597/resource/14204/%E7%94%A3%E6%A5%AD%E9%80%A3%E9%96%A2%E8%A1%A8107%E9%83%A8%E9%96%80%E8%A1%A8_2015.xlsx",
       destfile = "_targets/user/iotable/producer_price/medium/02_aomori.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_02_aomori <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_02_aomori_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_medium_02_aomori(
-    file = file_iotable_02_aomori_medium_producer_price
+  iotable_02_aomori_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_02_aomori(
+    file = file_iotable_02_aomori_107_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_medium_02_aomori <- function(file) {
+read_file_iotable_producer_price_107_02_aomori <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "第29表",

@@ -1,7 +1,7 @@
 # https://www.pref.niigata.lg.jp/site/tokei/0359813.html
 target_iotable_producer_price_15_niigata <- tar_plan(
   tar_change(
-    file_iotable_15_niigata_small_producer_price,
+    file_iotable_15_niigata_175_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.niigata.lg.jp/uploaded/attachment/385228.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/15_niigata.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_15_niigata <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_15_niigata_175_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_15_niigata(
-    file = file_iotable_15_niigata_small_producer_price
+  iotable_15_niigata_175_producer_price_competitive_import_ja = read_file_iotable_producer_price_175_15_niigata(
+    file = file_iotable_15_niigata_175_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_small_15_niigata <- function(file) {
+read_file_iotable_producer_price_175_15_niigata <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "基本（175部門）",

@@ -1,7 +1,7 @@
 # https://www.pref.ehime.jp/opendata-catalog/dataset/2372.html
 target_iotable_producer_price_38_ehime <- tar_plan(
   tar_change(
-    file_iotable_38_ehime_small_producer_price,
+    file_iotable_38_ehime_187_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.pref.ehime.jp/opendata-catalog/dataset/2372/resource/11659/h27-187bumon.xlsx",
       destfile = "_targets/user/iotable/producer_price/small/38_ehime.xlsx"
@@ -9,12 +9,12 @@ target_iotable_producer_price_38_ehime <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  iotable_38_ehime_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_small_38_ehime(
-    file = file_iotable_38_ehime_small_producer_price
+  iotable_38_ehime_187_producer_price_competitive_import_ja = read_file_iotable_producer_price_187_38_ehime(
+    file = file_iotable_38_ehime_187_producer_price_competitive_import_ja
   ),
 )
 
-read_file_iotable_producer_price_small_38_ehime <- function(file) {
+read_file_iotable_producer_price_187_38_ehime <- function(file) {
   io_table_reader(file) |>
     io_table_read_cells(
       sheets = "187部門",
