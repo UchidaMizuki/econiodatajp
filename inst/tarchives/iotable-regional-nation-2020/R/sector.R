@@ -23,11 +23,11 @@ target_sector <- tar_plan(
     file_ja = file_sector_ja,
     file_en = file_sector_en
   ),
-  sector_conversion_input = get_conversion_sector(
+  sector_conversion_input = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "input"
   ),
-  sector_conversion_output = get_conversion_sector(
+  sector_conversion_output = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "output"
   ),
@@ -398,7 +398,7 @@ read_file_sector <- function(file_ja, file_en) {
   )
 }
 
-get_conversion_sector <- function(sector_raw, axis) {
+get_sector_conversion <- function(sector_raw, axis) {
   sector <- sector_raw[[axis]]
 
   sector_class <- as_factor(c("basic", "small", "medium", "large", "template"))
