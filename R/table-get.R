@@ -87,12 +87,7 @@ io_table_get <- function(
     import_type = import_type,
     language = language
   )
-  tarchives::tar_make_archive(
-    package = "econiodatajp",
-    pipeline = resolved$pipeline,
-    names = tidyselect::all_of(resolved$name)
-  )
-  tarchives::tar_read_archive_raw(
+  tarchives::tar_get_archive_raw(
     name = resolved$name,
     package = "econiodatajp",
     pipeline = resolved$pipeline

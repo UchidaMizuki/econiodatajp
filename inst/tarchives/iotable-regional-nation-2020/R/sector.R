@@ -408,20 +408,30 @@ get_sector_conversion <- function(sector_raw, axis) {
     sector_class_to = sector_class
   ) |>
     mutate(
-      col_name_sector_class_from = str_c(
-        "sector_name_",
-        sector_class_from,
-        "_ja"
-      ),
-      col_name_sector_class_to = str_c("sector_name_", sector_class_to, "_ja")
+      col_name_from_ja = str_c("sector_name_", sector_class_from, "_ja"),
+      col_name_from_en = str_c("sector_name_", sector_class_from, "_en"),
+      col_name_to_ja = str_c("sector_name_", sector_class_to, "_ja"),
+      col_name_to_en = str_c("sector_name_", sector_class_to, "_en")
     ) |>
     mutate(
-      data = list(col_name_sector_class_from, col_name_sector_class_to) |>
-        pmap(\(col_name_sector_class_from, col_name_sector_class_to) {
+      data = list(
+        col_name_from_ja,
+        col_name_from_en,
+        col_name_to_ja,
+        col_name_to_en
+      ) |>
+        pmap(\(
+          col_name_from_ja,
+          col_name_from_en,
+          col_name_to_ja,
+          col_name_to_en
+        ) {
           tibble(
             sector_type = sector$sector_type,
-            sector_name_from = sector[[col_name_sector_class_from]],
-            sector_name_to = sector[[col_name_sector_class_to]]
+            sector_name_from_ja = sector[[col_name_from_ja]],
+            sector_name_from_en = sector[[col_name_from_en]],
+            sector_name_to_ja = sector[[col_name_to_ja]],
+            sector_name_to_en = sector[[col_name_to_en]]
           )
         }),
       .keep = "unused"
