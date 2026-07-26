@@ -72,8 +72,7 @@ convert_sector_import_producer_price_medium <- function(
       sector_class_from == "medium",
       sector_class_to == .env$sector_class
     ) |>
-    select(sector_name_from, sector_name_to) |>
-    rename(from = sector_name_from, to = sector_name_to) |>
+    select(from = sector_name_from_ja, to = sector_name_to_ja) |>
     add_column(weight = 1)
 
   output_sector_data <- sector_conversion_output |>
@@ -82,8 +81,7 @@ convert_sector_import_producer_price_medium <- function(
       sector_class_from == "medium",
       sector_class_to == .env$sector_class
     ) |>
-    select(sector_name_from, sector_name_to) |>
-    rename(from = sector_name_from, to = sector_name_to) |>
+    select(from = sector_name_from_ja, to = sector_name_to_ja) |>
     add_column(weight = 1)
 
   import_producer_price_medium |>

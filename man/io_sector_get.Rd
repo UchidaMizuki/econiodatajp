@@ -8,7 +8,8 @@ io_sector_get(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
-  axis = c("input", "output")
+  axis = c("input", "output"),
+  language = c("ja", "en")
 )
 }
 \arguments{
@@ -28,10 +29,13 @@ omits a handful of industry codes (memo items such as scrap-material
 rows) from the output side, so `axis = "output"` backfills them from the
 input axis, matching how the real IO table labels those sectors
 identically on both axes.}
+
+\item{language}{Language of the sector names, `"ja"` (the default) or
+`"en"`, matching [io_table_get()]'s `language`.}
 }
 \value{
 A tibble with one row per sector, with columns `sector_type`,
-`sector_class`, `sector_name_ja`, and `sector_name_en`.
+`sector_class`, and `sector_name`.
 }
 \description{
 The sector names and classification tiers (`"basic"`, `"small"`,

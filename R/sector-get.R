@@ -18,20 +18,24 @@
 #' rows) from the output side, so `axis = "output"` backfills them from the
 #' input axis, matching how the real IO table labels those sectors
 #' identically on both axes.
+#' @param language Language of the sector names, `"ja"` (the default) or
+#' `"en"`, matching [io_table_get()]'s `language`.
 #'
 #' @return A tibble with one row per sector, with columns `sector_type`,
-#' `sector_class`, `sector_name_ja`, and `sector_name_en`.
+#' `sector_class`, and `sector_name`.
 #'
 #' @export
 io_sector_get <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
-  axis = c("input", "output")
+  axis = c("input", "output"),
+  language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
   axis <- rlang::arg_match(axis)
+  language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
     region_class = region_class,
@@ -39,16 +43,16 @@ io_sector_get <- function(
     axis = axis,
     type = "sector"
   )
-  tarchives::tar_make_archive(
-    package = "econiodatajp",
-    pipeline = resolved$pipeline,
-    names = tidyselect::all_of(resolved$name)
-  )
-  tarchives::tar_read_archive_raw(
+  tarchives::tar_get_archive_raw(
     name = resolved$name,
     package = "econiodatajp",
     pipeline = resolved$pipeline
-  )
+  ) |>
+    dplyr::select(
+      "sector_type",
+      "sector_class",
+      sector_name = tidyselect::all_of(stringr::str_c("sector_name_", language))
+    )
 }
 
 #' Get a sector classification conversion table
@@ -63,18 +67,20 @@ io_sector_get <- function(
 #'
 #' @return A tibble with one row per `sector_class_from`/`sector_class_to`
 #' sector pair, with columns `sector_type`, `sector_class_from`,
-#' `sector_class_to`, `sector_name_from`, and `sector_name_to`.
+#' `sector_name_from`, `sector_class_to`, and `sector_name_to`.
 #'
 #' @export
 io_sector_conversion_get <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
-  axis = c("input", "output")
+  axis = c("input", "output"),
+  language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
   axis <- rlang::arg_match(axis)
+  language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
     region_class = region_class,
@@ -82,14 +88,22 @@ io_sector_conversion_get <- function(
     axis = axis,
     type = "conversion"
   )
-  tarchives::tar_make_archive(
-    package = "econiodatajp",
-    pipeline = resolved$pipeline,
-    names = tidyselect::all_of(resolved$name)
-  )
-  tarchives::tar_read_archive_raw(
+  tarchives::tar_get_archive_raw(
     name = resolved$name,
     package = "econiodatajp",
     pipeline = resolved$pipeline
-  )
+  ) |>
+    dplyr::select(
+      "sector_type",
+      "sector_class_from",
+      sector_name_from = tidyselect::all_of(stringr::str_c(
+        "sector_name_from_",
+        language
+      )),
+      "sector_class_to",
+      sector_name_to = tidyselect::all_of(stringr::str_c(
+        "sector_name_to_",
+        language
+      ))
+    )
 }
