@@ -39,6 +39,24 @@ target_sector <- tar_plan(
     sector_raw = sector_raw,
     axis = "output"
   ),
+  tar_change(
+    # https://www.soumu.go.jp/toukei_toukatsu/data/io/015index.html, part 3
+    # (000680593.pdf), 〔参考10〕, pages 184-203 -- unlike 2020, no
+    # standalone spreadsheet was published for this benchmark year, only
+    # this PDF.
+    file_sector_jsic,
+    download_file_meti(
+      url = "https://www.soumu.go.jp/main_content/000680593.pdf",
+      destfile = "_targets/user/sector_jsic.pdf"
+    ),
+    change = "0.1.0",
+    format = "file"
+  ),
+  sector_jsic_raw = read_sector_jsic_pdf(file_sector_jsic, pages = 184:203),
+  sector_jsic = get_sector_jsic(
+    sector_raw = sector_raw,
+    sector_jsic_raw = sector_jsic_raw
+  ),
 )
 
 read_file_sector <- function(file_ja, file_en) {

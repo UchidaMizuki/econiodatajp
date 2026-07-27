@@ -107,3 +107,63 @@ io_sector_conversion_get <- function(
       ))
     )
 }
+
+#' Get the correspondence between IO sectors and JSIC
+#'
+#' The official crosswalk between a table's basic-classification industry
+#' sectors and the Japan Standard Industrial Classification (JSIC), as
+#' published by e-stat/MIC alongside a benchmark year's sector
+#' classification. The correspondence is many-to-many: some IO sectors map
+#' to several JSIC codes, and some JSIC codes are themselves split across
+#' several IO sectors, in which case `note` carries the source's own
+#' description of the split (e.g. `"うち麦類"`, "of which: wheat"). JSIC
+#' names and notes are Japanese-only in the source and have no English
+#' variant; only `sector_name` is translated by `language`.
+#'
+#' Unlike [io_sector_get()]/[io_sector_conversion_get()], there's no `axis`
+#' argument: the source only ever publishes this correspondence keyed to the
+#' output/industry axis's basic-classification codes (its own header calls
+#' the key a "column code"), and the input axis uses a differently-grained
+#' code for basic industry sectors that this correspondence has no published
+#' equivalent for.
+#'
+#' @inheritParams io_sector_get
+#' @param region_type,region_class Currently only `region_type = "regional"`,
+#' `region_class = "nation"` tables have JSIC correspondence data; see
+#' [io_sector_available] to confirm which `year`s do.
+#'
+#' @return A tibble with one row per IO-sector/JSIC-code pair, with columns
+#' `sector_name`, `jsic_code`, `jsic_name`, and `note` (`NA` except for
+#' sectors split across multiple JSIC codes or vice versa).
+#'
+#' @export
+io_sector_jsic_get <- function(
+  region_type = c("regional", "multiregional"),
+  region_class = c("nation", "pref", "block"),
+  year,
+  language = c("ja", "en")
+) {
+  region_type <- rlang::arg_match(region_type)
+  region_class <- rlang::arg_match(region_class)
+  language <- rlang::arg_match(language)
+  resolved <- io_sector_resolve(
+    region_type = region_type,
+    region_class = region_class,
+    year = year,
+    type = "jsic"
+  )
+  tarchives::tar_get_archive_raw(
+    name = resolved$name,
+    package = "econiodatajp",
+    pipeline = resolved$pipeline
+  ) |>
+    dplyr::select(
+      sector_name = tidyselect::all_of(stringr::str_c(
+        "sector_name_",
+        language
+      )),
+      "jsic_code",
+      "jsic_name",
+      "note"
+    )
+}

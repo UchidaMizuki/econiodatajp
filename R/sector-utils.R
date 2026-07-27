@@ -13,7 +13,13 @@
 # io_sector_conversion_get()/io_sector_target()/io_sector_conversion_target()
 # so the region_type/region_class/axis/type -> pipeline/name dispatch logic
 # lives in exactly one place, mirroring io_table_resolve().
-io_sector_resolve <- function(region_type, region_class, year, axis, type) {
+io_sector_resolve <- function(
+  region_type,
+  region_class,
+  year,
+  axis = NULL,
+  type
+) {
   package <- "econiodatajp"
   pipeline <- io_table_pipeline(
     region_type = region_type,
@@ -35,12 +41,23 @@ io_sector_resolve <- function(region_type, region_class, year, axis, type) {
 # `type = "sector"` is the sector_class classification/name master
 # (`sector_input`/`sector_output`); `type = "conversion"` is the
 # basic -> small/medium/large/template crosswalk (`sector_conversion_input`/
-# `sector_conversion_output`). The tarchive-side target is named
-# `sector_conversion_*` (not `conversion_sector_*`) so its token order
-# matches this function family's own name (io_sector_conversion_get()), the
-# same way io_table_name_archive() leads with `region` to match
-# io_table_get()'s argument order.
+# `sector_conversion_output`). Both come in an `input` and an `output`
+# version, so their archive name is `<prefix>_<axis>` -- the tarchive-side
+# target is named `sector_conversion_*` (not `conversion_sector_*`) so its
+# token order matches this function family's own name
+# (io_sector_conversion_get()), the same way io_table_name_archive() leads
+# with `region` to match io_table_get()'s argument order.
+#
+# `type = "jsic"` is different: the basic-classification -> JSIC (Japan
+# Standard Industrial Classification) crosswalk (see
+# `inst/tarchives/R/sector_jsic.R`'s get_sector_jsic()) is only ever
+# published keyed to the output/industry axis's basic codes, so there's no
+# `axis` to distinguish and its archive name is the bare `sector_jsic` --
+# `axis` is ignored for this `type`.
 io_sector_name_archive <- function(axis, type) {
+  if (type == "jsic") {
+    return("sector_jsic")
+  }
   prefix <- switch(type, sector = "sector", conversion = "sector_conversion")
   stringr::str_glue("{prefix}_{axis}") |>
     as.character()
@@ -51,21 +68,32 @@ io_sector_name_archive <- function(axis, type) {
 # a hardcoded vocabulary. Vectorized: `name` can be a whole manifest's `$name`
 # column. A pipeline's manifest also lists its non-sector targets (the whole
 # `iotable_*` table family, plus `sector_raw`/`file_sector_*`); those don't
-# match this naming scheme at all and are silently dropped rather than
+# match either naming scheme at all and are silently dropped rather than
 # returned as NA rows, mirroring io_table_parse_name_archive().
 io_sector_parse_name_archive <- function(name) {
   matched <- stringr::str_match(
     name,
     "^sector_(conversion_)?(input|output)$"
   )
-  tibble::tibble(
-    # str_match() returns NA (not "") for an optional group that matched
-    # zero-width, so a "sector_input"-style name (no "conversion_" group) is
-    # told apart from a "sector_conversion_input"-style one by NA-ness here,
-    # not by comparing against "".
-    type = dplyr::if_else(is.na(matched[, 2]), "sector", "conversion"),
+  sector_or_conversion <- tibble::tibble(
+    type = dplyr::recode_values(
+      matched[, 2],
+      "conversion_" ~ "conversion",
+      default = "sector"
+    ),
     axis = matched[, 3],
     name = matched[, 1]
   ) |>
     dplyr::filter(!is.na(name))
+
+  # `jsic` has no `axis` (see io_sector_name_archive()), so it can't share
+  # the "<prefix>_<axis>" regex above -- matched separately as the one bare
+  # name it always is.
+  jsic <- tibble::tibble(
+    type = "jsic",
+    axis = NA_character_,
+    name = name[name == "sector_jsic"]
+  )
+
+  dplyr::bind_rows(sector_or_conversion, jsic)
 }

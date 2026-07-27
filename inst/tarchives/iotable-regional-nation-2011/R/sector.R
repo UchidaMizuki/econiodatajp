@@ -39,6 +39,28 @@ target_sector <- tar_plan(
     sector_raw = sector_raw,
     axis = "output"
   ),
+  tar_change(
+    # Unlike 2015/2020, this table isn't in the 2011 benchmark's own
+    # "総合解説編" report -- it's a reference document from a statistics
+    # standards committee meeting ("各種統計で使用されている分類の概要",
+    # 資料２－２別添), found via
+    # https://www.soumu.go.jp/toukei_toukatsu/index/seido/sangyo/ . 〔参考10〕
+    # ("平成23年（2011年）産業連関表基本分類－日本標準産業分類（平成19年改
+    # 定）細分類対応表"), pages 15-34 (ends right before page 35's
+    # "コモディティ・フロー法における商品分類一覧" section).
+    file_sector_jsic,
+    download_file_meti(
+      url = "https://www.soumu.go.jp/main_content/000491295.pdf",
+      destfile = "_targets/user/sector_jsic.pdf"
+    ),
+    change = "0.1.0",
+    format = "file"
+  ),
+  sector_jsic_raw = read_sector_jsic_pdf(file_sector_jsic, pages = 15:34),
+  sector_jsic = get_sector_jsic(
+    sector_raw = sector_raw,
+    sector_jsic_raw = sector_jsic_raw
+  ),
 )
 
 read_file_sector <- function(file_ja, file_en) {

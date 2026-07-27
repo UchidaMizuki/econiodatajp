@@ -40,10 +40,11 @@ io_sector_available_impl <- function() {
 
 #' List available sector classifications
 #'
-#' One row per sector classification or conversion table available via
-#' [io_sector_get()]/[io_sector_conversion_get()]/[io_sector_target()]/
-#' [io_sector_conversion_target()]. Useful for discovering which years have
-#' sector data, since not every `io_table_get()` pipeline does.
+#' One row per sector classification, conversion, or JSIC correspondence
+#' table available via [io_sector_get()]/[io_sector_conversion_get()]/
+#' [io_sector_jsic_get()]/[io_sector_target()]/[io_sector_conversion_target()]/
+#' [io_sector_jsic_target()]. Useful for discovering which years have sector
+#' data, since not every `io_table_get()` pipeline does.
 #' Precomputed and shipped as package data (rather than a function) for the
 #' same reason as [io_table_available]: introspecting every tarchive
 #' pipeline is too slow to redo on every use.
@@ -51,10 +52,11 @@ io_sector_available_impl <- function() {
 #' @format A tibble with one row per available sector table, with columns
 #' `region_type`, `region_class`, `year`, `type` (`"sector"` for
 #' [io_sector_get()]'s tables, `"conversion"` for
-#' [io_sector_conversion_get()]'s), `axis` (`"input"` or `"output"`), and
-#' `name` (the archive target name, for [io_sector_target()]'s /
-#' [io_sector_conversion_target()]'s `...`/
-#' `tarchives::tar_read_archive_raw()`).
+#' [io_sector_conversion_get()]'s, `"jsic"` for [io_sector_jsic_get()]'s),
+#' `axis` (`"input"` or `"output"`; `NA` for `type = "jsic"`, which has no
+#' `axis` argument), and `name` (the archive target name, for
+#' [io_sector_target()]'s / [io_sector_conversion_target()]'s /
+#' [io_sector_jsic_target()]'s `...`/ `tarchives::tar_read_archive_raw()`).
 #'
 #' @source Computed from the tarchive pipelines bundled with this package
 #' by `data-raw/io_sector_available.R`; re-run that script and reinstall

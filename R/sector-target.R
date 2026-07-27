@@ -124,3 +124,63 @@ io_sector_conversion_target_raw <- function(
     ...
   )
 }
+
+#' Declare a target that reads the correspondence between IO sectors and
+#' JSIC
+#'
+#' For use inside a `_targets.R` pipeline, e.g.
+#' `tar_plan(io_sector_jsic_target(...))`. `io_sector_jsic_target()` uses
+#' non-standard evaluation to capture `name`, mirroring
+#' [tarchives::tar_target_archive()]; `io_sector_jsic_target_raw()` takes
+#' `name` as a string instead, for programmatic use such as building several
+#' targets in a loop, mirroring [tarchives::tar_target_archive_raw()].
+#'
+#' @param name Symbol (`io_sector_jsic_target()`) or string
+#' (`io_sector_jsic_target_raw()`), name of the target.
+#' @inheritParams io_sector_jsic_get
+#' @param ... Arguments passed to [tarchives::tar_target_archive_raw()].
+#'
+#' @inherit tarchives::tar_target_archive return
+#'
+#' @export
+io_sector_jsic_target <- function(
+  name,
+  region_type = c("regional", "multiregional"),
+  region_class = c("nation", "pref", "block"),
+  year,
+  ...
+) {
+  io_sector_jsic_target_raw(
+    name = targets::tar_deparse_language(substitute(name)),
+    region_type = region_type,
+    region_class = region_class,
+    year = year,
+    ...
+  )
+}
+
+#' @rdname io_sector_jsic_target
+#' @export
+io_sector_jsic_target_raw <- function(
+  name,
+  region_type = c("regional", "multiregional"),
+  region_class = c("nation", "pref", "block"),
+  year,
+  ...
+) {
+  region_type <- rlang::arg_match(region_type)
+  region_class <- rlang::arg_match(region_class)
+  resolved <- io_sector_resolve(
+    region_type = region_type,
+    region_class = region_class,
+    year = year,
+    type = "jsic"
+  )
+  tarchives::tar_target_archive_raw(
+    name = name,
+    package = "econiodatajp",
+    pipeline = resolved$pipeline,
+    name_archive = resolved$name,
+    ...
+  )
+}

@@ -39,6 +39,21 @@ target_sector <- tar_plan(
     sector_raw = sector_raw,
     axis = "output"
   ),
+  tar_change(
+    # https://www.soumu.go.jp/toukei_toukatsu/data/io/020index.html, 〔参考12〕
+    file_sector_jsic,
+    download_file(
+      url = "https://www.soumu.go.jp/main_content/001029252.xlsx",
+      destfile = "_targets/user/sector_jsic.xlsx"
+    ),
+    change = "0.1.0",
+    format = "file"
+  ),
+  sector_jsic_raw = read_sector_jsic_xlsx(file_sector_jsic),
+  sector_jsic = get_sector_jsic(
+    sector_raw = sector_raw,
+    sector_jsic_raw = sector_jsic_raw
+  ),
 )
 
 read_file_sector <- function(file_ja, file_en) {
