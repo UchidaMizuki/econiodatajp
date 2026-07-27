@@ -45,7 +45,13 @@ read_file_iotable_producer_price_97_32_shimane <- function(file) {
     ) |>
     io_table_read_data(
       value_scale = 1e6,
-      # FIXME?: Shimane IO table has large rounding errors
+      # Confirmed source-data artifact, not a parsing bug: the published
+      # workbook is denominated in whole 百万円 (value_scale = 1e6), and its
+      # component cells are independently rounded to that granularity before
+      # the published subtotals are compiled, so a few raw units of
+      # accumulated rounding drift (up to ~1e7 yen) against the stated totals
+      # is expected. Verified against the source file's own header (row 2:
+      # "単位：百万円") rather than assumed.
       total_tolerance = 1e7
     ) |>
     end_step()

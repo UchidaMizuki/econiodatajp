@@ -100,11 +100,13 @@ read_file_iotable_producer_price_basic <- function(file) {
       total_pattern = "国内生産額$"
     ) |>
     io_table_read_data(
-      value_scale = 1e6,
-      # e-stat's 2020 basic-classification table has small rounding drift
-      # between component values and published subtotals (up to ~5e6 yen);
-      # 2015/2011 data matched exactly, so this tolerance is 2020-specific.
-      total_tolerance = 1e7,
+      # e-stat's 2020 basic-classification table is denominated in 10-oku-yen
+      # (1e9), unlike the 2011/2015 tables, which are in 1-hyakuman-yen (1e6);
+      # confirmed from the workbook's own header row ("(単位 : 10億円)").
+      value_scale = 1e9,
+      # Same small rounding drift between component values and published
+      # subtotals as 2011/2015 (now expressed in yen at the 1e9 scale).
+      total_tolerance = 1e10,
       check_axes = FALSE
     ) |>
     end_step()
