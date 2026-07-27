@@ -1,7 +1,7 @@
 Package: econiodatajp
 Type: Package
 Title: Ready-to-Use Japanese Input-Output Tables
-Version: 0.1.1
+Version: 0.1.2
 Authors@R:
     person("Mizuki", "Uchida", , "uchidamizuki@vivaldi.net", role = c("aut", "cre"))
 Description: Provides ready-to-use input-output (IO) tables for Japan,
