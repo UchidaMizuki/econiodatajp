@@ -50,7 +50,9 @@ io_sector_available_impl <- function() {
 #' pipeline is too slow to redo on every use.
 #'
 #' @format A tibble with one row per available sector table, with columns
-#' `region_type`, `region_class`, `year`, `type` (`"sector"` for
+#' `region_type`, `region_class`, `year`, `region` (matching
+#' [io_table_available]'s; always `"nation"` as of writing, since that's the
+#' only `region_class` with sector data today), `type` (`"sector"` for
 #' [io_sector_get()]'s tables, `"conversion"` for
 #' [io_sector_conversion_get()]'s, `"jsic"` for [io_sector_jsic_get()]'s),
 #' `axis` (`"input"` or `"output"`; `NA` for `type = "jsic"`, which has no

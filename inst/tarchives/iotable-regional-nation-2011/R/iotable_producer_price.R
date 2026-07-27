@@ -14,56 +14,56 @@ target_iotable_producer_price <- tar_plan(
   ),
   iotable_nation_small_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    sector_conversion_input = sector_conversion_input,
-    sector_conversion_output = sector_conversion_output,
+    sector_conversion_input = sector_conversion_nation_input,
+    sector_conversion_output = sector_conversion_nation_output,
     sector_class = "small"
   ),
   iotable_nation_medium_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    sector_conversion_input = sector_conversion_input,
-    sector_conversion_output = sector_conversion_output,
+    sector_conversion_input = sector_conversion_nation_input,
+    sector_conversion_output = sector_conversion_nation_output,
     sector_class = "medium"
   ),
   iotable_nation_large_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    sector_conversion_input = sector_conversion_input,
-    sector_conversion_output = sector_conversion_output,
+    sector_conversion_input = sector_conversion_nation_input,
+    sector_conversion_output = sector_conversion_nation_output,
     sector_class = "large"
   ),
   iotable_nation_template_producer_price_competitive_import_ja = convert_sector_iotable_producer_price_basic(
     iotable_producer_price_basic = iotable_nation_basic_producer_price_competitive_import_ja,
-    sector_conversion_input = sector_conversion_input,
-    sector_conversion_output = sector_conversion_output,
+    sector_conversion_input = sector_conversion_nation_input,
+    sector_conversion_output = sector_conversion_nation_output,
     sector_class = "template"
   ),
   iotable_nation_basic_producer_price_competitive_import_en = translate_iotable_sector(
     table = iotable_nation_basic_producer_price_competitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "basic"
   ),
   iotable_nation_small_producer_price_competitive_import_en = translate_iotable_sector(
     table = iotable_nation_small_producer_price_competitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "small"
   ),
   iotable_nation_medium_producer_price_competitive_import_en = translate_iotable_sector(
     table = iotable_nation_medium_producer_price_competitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "medium"
   ),
   iotable_nation_large_producer_price_competitive_import_en = translate_iotable_sector(
     table = iotable_nation_large_producer_price_competitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "large"
   ),
   iotable_nation_template_producer_price_competitive_import_en = translate_iotable_sector(
     table = iotable_nation_template_producer_price_competitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "template"
   ),
 )

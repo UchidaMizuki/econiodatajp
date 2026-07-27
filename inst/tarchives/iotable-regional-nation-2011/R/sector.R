@@ -23,19 +23,19 @@ target_sector <- tar_plan(
     file_ja = file_sector_ja,
     file_en = file_sector_en
   ),
-  sector_conversion_input = get_sector_conversion(
+  sector_conversion_nation_input = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "input"
   ),
-  sector_conversion_output = get_sector_conversion(
+  sector_conversion_nation_output = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "output"
   ),
-  sector_input = get_sector(
+  sector_nation_input = get_sector(
     sector_raw = sector_raw,
     axis = "input"
   ),
-  sector_output = get_sector(
+  sector_nation_output = get_sector(
     sector_raw = sector_raw,
     axis = "output"
   ),
@@ -56,10 +56,15 @@ target_sector <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  sector_jsic_raw = read_sector_jsic_pdf(file_sector_jsic, pages = 15:34),
-  sector_jsic = get_sector_jsic(
+  # Named `jsic_raw`, not `sector_jsic_raw`: the latter would collide with
+  # io_sector_parse_name_archive()'s `^sector_jsic_(.+)$` regex (it would
+  # parse as a `type = "jsic"` archive with `region = "raw"`), since that
+  # regex has no axis suffix to anchor against, unlike the sector/conversion
+  # one.
+  jsic_raw = read_sector_jsic_pdf(file_sector_jsic, pages = 15:34),
+  sector_jsic_nation = get_sector_jsic(
     sector_raw = sector_raw,
-    sector_jsic_raw = sector_jsic_raw
+    sector_jsic_raw = jsic_raw
   ),
 )
 

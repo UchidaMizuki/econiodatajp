@@ -8,6 +8,7 @@ io_sector_jsic_get(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   language = c("ja", "en")
 )
 }
@@ -17,6 +18,14 @@ io_sector_jsic_get(
 [io_sector_available] to confirm which `year`s do.}
 
 \item{year}{Year of the data.}
+
+\item{region}{Which single region to select within `region_class`,
+matching [io_table_get()]'s `region`. Defaults to `NULL`, which resolves
+to `"nation"` -- as of writing, sector data only exists for `region_class
+= "nation"` pipelines, so there's no other value to pass yet; the
+argument exists so a future `region_class = "pref"`/`"block"` sector
+archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
+tables are) wouldn't need a signature change to support it.}
 
 \item{language}{Language of the sector names, `"ja"` (the default) or
 `"en"`, matching [io_table_get()]'s `language`.}

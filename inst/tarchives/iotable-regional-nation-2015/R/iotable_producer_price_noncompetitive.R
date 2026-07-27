@@ -13,20 +13,20 @@ target_iotable_producer_price_noncompetitive_import <- tar_plan(
   ),
   iotable_nation_medium_producer_price_noncompetitive_import_en = translate_iotable_sector(
     table = iotable_nation_medium_producer_price_noncompetitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "medium"
   ),
   iotable_nation_large_producer_price_noncompetitive_import_en = translate_iotable_sector(
     table = iotable_nation_large_producer_price_noncompetitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "large"
   ),
   iotable_nation_template_producer_price_noncompetitive_import_en = translate_iotable_sector(
     table = iotable_nation_template_producer_price_noncompetitive_import_ja,
-    sector_input = sector_input,
-    sector_output = sector_output,
+    sector_input = sector_nation_input,
+    sector_output = sector_nation_output,
     sector_class = "template"
   ),
 )

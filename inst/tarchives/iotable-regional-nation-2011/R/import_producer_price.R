@@ -14,14 +14,14 @@ target_import_producer_price <- tar_plan(
   ),
   import_producer_price_large = convert_sector_import_producer_price_medium(
     import_producer_price_medium = import_producer_price_medium,
-    sector_conversion_input = sector_conversion_input,
-    sector_conversion_output = sector_conversion_output,
+    sector_conversion_input = sector_conversion_nation_input,
+    sector_conversion_output = sector_conversion_nation_output,
     sector_class = "large"
   ),
   import_producer_price_template = convert_sector_import_producer_price_medium(
     import_producer_price_medium = import_producer_price_medium,
-    sector_conversion_input = sector_conversion_input,
-    sector_conversion_output = sector_conversion_output,
+    sector_conversion_input = sector_conversion_nation_input,
+    sector_conversion_output = sector_conversion_nation_output,
     sector_class = "template"
   ),
 )

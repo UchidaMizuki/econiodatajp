@@ -11,6 +11,7 @@ io_sector_jsic_target(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   ...
 )
 
@@ -19,6 +20,7 @@ io_sector_jsic_target_raw(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   ...
 )
 }
@@ -31,6 +33,14 @@ io_sector_jsic_target_raw(
 [io_sector_available] to confirm which `year`s do.}
 
 \item{year}{Year of the data.}
+
+\item{region}{Which single region to select within `region_class`,
+matching [io_table_get()]'s `region`. Defaults to `NULL`, which resolves
+to `"nation"` -- as of writing, sector data only exists for `region_class
+= "nation"` pipelines, so there's no other value to pass yet; the
+argument exists so a future `region_class = "pref"`/`"block"` sector
+archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
+tables are) wouldn't need a signature change to support it.}
 
 \item{...}{Arguments passed to [tarchives::tar_target_archive_raw()].}
 }

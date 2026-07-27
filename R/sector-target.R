@@ -19,6 +19,7 @@ io_sector_target <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   axis = c("input", "output"),
   ...
 ) {
@@ -27,6 +28,7 @@ io_sector_target <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     axis = axis,
     ...
   )
@@ -39,6 +41,7 @@ io_sector_target_raw <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   axis = c("input", "output"),
   ...
 ) {
@@ -49,6 +52,7 @@ io_sector_target_raw <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     axis = axis,
     type = "sector"
   )
@@ -83,6 +87,7 @@ io_sector_conversion_target <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   axis = c("input", "output"),
   ...
 ) {
@@ -91,6 +96,7 @@ io_sector_conversion_target <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     axis = axis,
     ...
   )
@@ -103,6 +109,7 @@ io_sector_conversion_target_raw <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   axis = c("input", "output"),
   ...
 ) {
@@ -113,6 +120,7 @@ io_sector_conversion_target_raw <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     axis = axis,
     type = "conversion"
   )
@@ -148,6 +156,7 @@ io_sector_jsic_target <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   ...
 ) {
   io_sector_jsic_target_raw(
@@ -155,6 +164,7 @@ io_sector_jsic_target <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     ...
   )
 }
@@ -166,6 +176,7 @@ io_sector_jsic_target_raw <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
@@ -174,6 +185,7 @@ io_sector_jsic_target_raw <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     type = "jsic"
   )
   tarchives::tar_target_archive_raw(

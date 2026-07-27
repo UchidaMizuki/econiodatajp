@@ -12,6 +12,13 @@
 #' [io_table_get()]. Not every `region_type`/`region_class`/`year`
 #' combination has sector data; see [io_sector_available] to list which do.
 #' @param year Year of the data.
+#' @param region Which single region to select within `region_class`,
+#' matching [io_table_get()]'s `region`. Defaults to `NULL`, which resolves
+#' to `"nation"` -- as of writing, sector data only exists for `region_class
+#' = "nation"` pipelines, so there's no other value to pass yet; the
+#' argument exists so a future `region_class = "pref"`/`"block"` sector
+#' archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
+#' tables are) wouldn't need a signature change to support it.
 #' @param axis Which axis of the classification to fetch, `"input"` or
 #' `"output"`. The two aren't identical: e-stat's classification workbook
 #' omits a handful of industry codes (memo items such as scrap-material
@@ -29,6 +36,7 @@ io_sector_get <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   axis = c("input", "output"),
   language = c("ja", "en")
 ) {
@@ -40,6 +48,7 @@ io_sector_get <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     axis = axis,
     type = "sector"
   )
@@ -74,6 +83,7 @@ io_sector_conversion_get <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   axis = c("input", "output"),
   language = c("ja", "en")
 ) {
@@ -85,6 +95,7 @@ io_sector_conversion_get <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     axis = axis,
     type = "conversion"
   )
@@ -141,6 +152,7 @@ io_sector_jsic_get <- function(
   region_type = c("regional", "multiregional"),
   region_class = c("nation", "pref", "block"),
   year,
+  region = NULL,
   language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
@@ -150,6 +162,7 @@ io_sector_jsic_get <- function(
     region_type = region_type,
     region_class = region_class,
     year = year,
+    region = region,
     type = "jsic"
   )
   tarchives::tar_get_archive_raw(
