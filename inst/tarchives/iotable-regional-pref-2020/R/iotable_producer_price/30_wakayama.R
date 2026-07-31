@@ -1,4 +1,8 @@
 # https://www.pref.wakayama.lg.jp/prefg/020300/sangyo/R2/d00220299.html
+# TODO: as of the 2026-07 survey behind issue #26, this was still labeled a
+# preliminary release (速報版), with a finalized version (確定版) expected
+# later in FY2025 -- re-check the source page periodically and update the
+# URL/values once the finalized version replaces it.
 target_iotable_producer_price_30_wakayama <- tar_plan(
   tar_change(
     file_iotable_30_wakayama_108_producer_price_competitive_import_ja,
