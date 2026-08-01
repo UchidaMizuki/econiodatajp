@@ -1,4 +1,4 @@
-tar_source("R/iotable_producer_price")
+tar_source("R/iotable")
 
 target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_01_hokkaido,

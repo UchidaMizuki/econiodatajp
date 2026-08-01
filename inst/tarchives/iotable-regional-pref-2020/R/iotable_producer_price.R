@@ -1,6 +1,15 @@
-tar_source("R/iotable_producer_price")
+tar_source("R/iotable")
 
 target_iotable_producer_price <- tar_plan(
+  target_iotable_producer_price_01_hokkaido,
+  target_iotable_producer_price_02_aomori,
+  target_iotable_producer_price_03_iwate,
+  target_iotable_producer_price_04_miyagi,
+  target_iotable_producer_price_06_yamagata,
+  target_iotable_producer_price_07_fukushima,
+  target_iotable_producer_price_08_ibaraki,
+  target_iotable_producer_price_09_tochigi,
+  target_iotable_producer_price_10_gunma,
   target_iotable_producer_price_11_saitama,
   target_iotable_producer_price_12_chiba,
   target_iotable_producer_price_13_tokyo,
@@ -10,8 +19,10 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_17_ishikawa,
   target_iotable_producer_price_18_fukui,
   target_iotable_producer_price_19_yamanashi,
+  target_iotable_producer_price_20_nagano,
   target_iotable_producer_price_21_gifu,
   target_iotable_producer_price_22_shizuoka,
+  target_iotable_producer_price_23_aichi,
   target_iotable_producer_price_24_mie,
   target_iotable_producer_price_25_shiga,
   target_iotable_producer_price_26_kyoto,
@@ -27,6 +38,7 @@ target_iotable_producer_price <- tar_plan(
   target_iotable_producer_price_40_fukuoka,
   target_iotable_producer_price_41_saga,
   target_iotable_producer_price_42_nagasaki,
+  target_iotable_producer_price_43_kumamoto,
   target_iotable_producer_price_45_miyazaki,
   target_iotable_producer_price_46_kagoshima,
   target_iotable_producer_price_47_okinawa,

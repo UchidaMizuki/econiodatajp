@@ -1,0 +1,44 @@
+# https://www.pref.saga.lg.jp/kiji003117190/index.html
+target_iotable_producer_price_41_saga <- tar_plan(
+  tar_change(
+    file_iotable_41_saga_108_producer_price_competitive_import_ja,
+    download_file(
+      url = "https://www.pref.saga.lg.jp/toukei/kiji003117190/3_117190_380941_up_2u3j3kc7.xlsx",
+      destfile = "_targets/user/iotable_41_saga_108_producer_price_competitive_import_ja.xlsx"
+    ),
+    change = "0.1.0",
+    format = "file"
+  ),
+  iotable_41_saga_108_producer_price_competitive_import_ja = read_file_iotable_producer_price_108_41_saga(
+    file = file_iotable_41_saga_108_producer_price_competitive_import_ja
+  ),
+)
+
+read_file_iotable_producer_price_108_41_saga <- function(file) {
+  io_table_reader(file) |>
+    io_table_read_cells(
+      sheets = "108部門",
+      rows_exclude = 1:2
+    ) |>
+    io_table_read_headers(
+      input_names = c("input_sector_code", "input_sector_name"),
+      output_names = c("output_sector_code", "output_sector_name")
+    ) |>
+    io_table_read_sector_names(
+      input_sector_name_glue = "{input_sector_code}_{input_sector_name}",
+      output_sector_name_glue = "{output_sector_code}_{output_sector_name}"
+    ) |>
+    io_table_read_sector_types(
+      import_type = "competitive_import",
+      industry_total_pattern = industry_total_pattern,
+      value_added_total_pattern = value_added_total_pattern,
+      final_demand_total_pattern = final_demand_total_pattern,
+      export_pattern = "移輸出計$",
+      import_pattern = "（控除）移輸入計$",
+      total_pattern = total_pattern
+    ) |>
+    io_table_read_data(
+      value_scale = 1e3
+    ) |>
+    end_step()
+}
