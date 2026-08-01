@@ -11,7 +11,7 @@ target_iotable_producer_price <- tar_plan(
     file_iotable_nation_46_producer_price_competitive_import_ja,
     download_file_meti(
       url = "https://www.meti.go.jp/statistics/tyo/tiikiio/result/result_3/xlsx/h2rio90a.xlsx",
-      destfile = "_targets/user/iotable/producer_price/46.xlsx"
+      destfile = "_targets/user/iotable_nation_46_producer_price_competitive_import_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"

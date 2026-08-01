@@ -4,7 +4,7 @@ target_iotable_producer_price <- tar_plan(
     file_iotable_nation_basic_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000031839445&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/basic.xlsx"
+      destfile = "_targets/user/iotable_nation_basic_producer_price_competitive_import_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"

@@ -8,7 +8,7 @@ target_iotable_producer_price <- tar_plan(
     file_iotable_nation_26_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.rieti.go.jp/jp/database/R-JIP2005/data/I-preIO2005.xlsx",
-      destfile = "_targets/user/iotable/producer_price/26.xlsx"
+      destfile = "_targets/user/iotable_nation_26_producer_price_competitive_import_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"

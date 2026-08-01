@@ -4,7 +4,7 @@ target_import_producer_price <- tar_plan(
     file_import_producer_price_medium,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000030138093&fileKind=0",
-      destfile = "_targets/user/import/producer_price/medium.xlsx"
+      destfile = "_targets/user/import_producer_price_medium.xlsx"
     ),
     change = "0.1.0",
     format = "file"

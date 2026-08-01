@@ -18,7 +18,7 @@ target_iotable_producer_price <- tar_plan(
     file_iotable_nation_12_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467390&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/12.xlsx"
+      destfile = "_targets/user/iotable_nation_12_producer_price_competitive_import_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"
@@ -31,7 +31,7 @@ target_iotable_producer_price <- tar_plan(
     file_iotable_nation_29_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467391&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/29.xlsx"
+      destfile = "_targets/user/iotable_nation_29_producer_price_competitive_import_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"
@@ -44,7 +44,7 @@ target_iotable_producer_price <- tar_plan(
     file_iotable_nation_53_producer_price_competitive_import_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000020467392&fileKind=0",
-      destfile = "_targets/user/iotable/producer_price/53.xlsx"
+      destfile = "_targets/user/iotable_nation_53_producer_price_competitive_import_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"
