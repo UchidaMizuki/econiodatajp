@@ -7,10 +7,10 @@
 # sector_class/sector_type axis to carry here.
 
 # 2020 onward: a single self-contained Excel sheet, column layout matching
-# the PDF table read_sector_jsic_pdf() parses for 2011/2015 (see below) --
+# the PDF table read_file_sector_jsic_pdf() parses for 2011/2015 (see below) --
 # both funnel into clean_sector_jsic() so the two source formats produce an
 # identical shape.
-read_sector_jsic_xlsx <- function(file, sheet = 1, skip = 5) {
+read_file_sector_jsic_xlsx <- function(file, sheet = 1, skip = 5) {
   readxl::read_excel(
     file,
     sheet = sheet,
@@ -48,7 +48,7 @@ read_sector_jsic_xlsx <- function(file, sheet = 1, skip = 5) {
 # unambiguous by pattern), not from the header row's own label positions --
 # the header labels sit at a different x than where each column's data
 # actually starts, so anchoring to them misclassifies real data.
-read_sector_jsic_pdf <- function(file, pages) {
+read_file_sector_jsic_pdf <- function(file, pages) {
   words <- purrr::map(
     pages,
     \(page) pdftools::pdf_data(file)[[page]] |> dplyr::mutate(page = page)
@@ -141,7 +141,7 @@ read_sector_jsic_pdf <- function(file, pages) {
 }
 
 # Midpoints between consecutive sorted values, e.g. c(10, 20, 30) -> c(15,
-# 25) -- named so read_sector_jsic_pdf()'s cutoffs read as "the boundary
+# 25) -- named so read_file_sector_jsic_pdf()'s cutoffs read as "the boundary
 # between column i and column i+1", without pulling in a package (zoo::
 # rollmean()) for one two-line calculation.
 zoo_free_rollmean <- function(x) {
@@ -190,6 +190,14 @@ clean_sector_jsic <- function(raw) {
 # the real bilingual sector names `io_sector_jsic_get()` returns, the same
 # way get_sector_conversion() attaches them for the tier crosswalk.
 #
+# `jsic_revision_year` is a plain pass-through, not derived from
+# `sector_jsic_raw`: JSIC has been revised multiple times and the source
+# correspondence document states which revision it uses only in its own
+# title text (e.g. "日本標準産業分類（平成25年（2013年）改定）"), not as a
+# parseable column, so each pipeline's sector.R hardcodes the year it
+# confirmed from that title (mirroring how it already hardcodes the source
+# URL/page range as pipeline-specific facts rather than deriving them).
+#
 # Always uses the *output* axis, and there is no `axis` argument to choose
 # otherwise: the source table's own header labels its IO-sector key "列
 # コード" ("column code"), i.e. the output/industry axis's basic-
@@ -207,7 +215,7 @@ clean_sector_jsic <- function(raw) {
 # code isn't in the output axis's basic-classification industry sectors,
 # since that would mean the two sources have drifted apart in a way worth
 # knowing about immediately, not shipping as missing data.
-get_sector_jsic <- function(sector_raw, sector_jsic_raw) {
+get_sector_jsic <- function(sector_raw, sector_jsic_raw, jsic_revision_year) {
   sector <- get_sector(sector_raw, axis = "output") |>
     dplyr::filter(sector_type == "industry") |>
     dplyr::mutate(code = stringr::str_extract(sector_name_ja, "^[0-9]+"))
@@ -221,10 +229,141 @@ get_sector_jsic <- function(sector_raw, sector_jsic_raw) {
     ))
   }
 
+  # `axis = "output"` is stamped as a column here (not just baked into the
+  # archive name via econiodatajp's io_sector_name_archive(), which
+  # hardcodes the same fact independently) so io_sector_jsic_get()'s
+  # returned tibble is self-documenting too -- a permanent, structural fact
+  # about JSIC (see io_sector_name_archive()'s comment), not a current-data
+  # quirk that might need an input-axis equivalent later.
   sector_jsic_raw |>
     dplyr::left_join(
       sector |> dplyr::select(code, sector_name_ja, sector_name_en),
       by = "code"
     ) |>
-    dplyr::select(sector_name_ja, sector_name_en, jsic_code, jsic_name, note)
+    dplyr::mutate(axis = "output", jsic_revision_year = jsic_revision_year) |>
+    dplyr::select(
+      sector_name_ja,
+      sector_name_en,
+      axis,
+      jsic_code,
+      jsic_name,
+      note,
+      jsic_revision_year
+    )
+}
+
+# Reads the flat 大分類/中分類/小分類/細分類 (division/major group/group/
+# detail) hierarchy CSV that 総務省 publishes per JSIC revision (e.g.
+# https://www.soumu.go.jp/main_content/000420038.csv for the 2013
+# revision) -- unlike the IO-sector<->JSIC correspondence above, this is
+# JSIC's *own* internal hierarchy, sourced from a completely separate
+# document, with no reference to any IO table sector at all.
+#
+# One row per classification item, at whatever level it's defined at, with
+# every ancestor level's code already filled in with its real value and
+# every level *below* its own left at that level's all-zero placeholder
+# ("00" for 中分類/major_group, "000" for 小分類/group, "0000" for
+# 細分類/industry) -- e.g. a 中分類-level row has a real
+# `major_group_code` but `group_code == "000"` and `industry_code ==
+# "0000"`. A row's own level is therefore identified by which
+# placeholder-vs-real boundary it sits at (see get_jsic_conversion()),
+# not by a separate "level" column, which the source doesn't provide.
+#
+# `header = FALSE` (not the `read.csv()` default `TRUE`) is required
+# alongside `skip = 1`: with the default, `read.csv()` treats the first
+# row *after* skipping as a header row too and silently discards it before
+# `col.names` is even applied, dropping the file's first real data row
+# (confirmed empirically: without `header = FALSE`, the "A" division's own
+# summary row went missing and every one of its detail rows failed to
+# join to a division name).
+read_file_jsic_class_csv <- function(file) {
+  utils::read.csv(
+    file,
+    header = FALSE,
+    skip = 1,
+    fileEncoding = "CP932",
+    colClasses = "character",
+    col.names = c(
+      "division_code",
+      "major_group_code",
+      "group_code",
+      "industry_code",
+      "name"
+    )
+  ) |>
+    tibble::as_tibble()
+}
+
+# Builds the JSIC-own-hierarchy crosswalk (industry/"detail" -> group ->
+# major_group -> division) from `read_file_jsic_class_csv()`'s flat file, always
+# anchored at the finest ("detail") level going up -- mirroring how
+# get_sector_conversion() always anchors IO's own tier crosswalk at
+# "basic". One name-lookup tibble is extracted per coarser level (keyed by
+# that level's own code path), then joined onto every detail-level row;
+# joining on the full ancestor code path (not just e.g. `major_group_code`
+# alone) matches how the source itself nests codes, even though
+# `major_group_code`/`group_code` happen to be globally unique in practice
+# (confirmed empirically against the 2013-revision file: 99 distinct
+# `major_group_code` values with or without `division_code` in the key).
+#
+# `jsic_revision_year` is a plain pass-through for the same reason as
+# get_sector_jsic()'s: which revision a given file is only stated in
+# soumu's page text, not a parseable column.
+get_jsic_conversion <- function(jsic_class_raw, jsic_revision_year) {
+  is_division <- jsic_class_raw$major_group_code == "00"
+  is_major_group <- !is_division & jsic_class_raw$group_code == "000"
+  is_group <- !is_division &
+    !is_major_group &
+    jsic_class_raw$industry_code == "0000"
+  is_detail <- !is_division & !is_major_group & !is_group
+
+  division <- jsic_class_raw |>
+    dplyr::filter(is_division) |>
+    dplyr::select(division_code, name) |>
+    dplyr::rename(division_name = name)
+  major_group <- jsic_class_raw |>
+    dplyr::filter(is_major_group) |>
+    dplyr::select(division_code, major_group_code, name) |>
+    dplyr::rename(major_group_name = name)
+  group <- jsic_class_raw |>
+    dplyr::filter(is_group) |>
+    dplyr::select(division_code, major_group_code, group_code, name) |>
+    dplyr::rename(group_name = name)
+  detail <- jsic_class_raw |>
+    dplyr::filter(is_detail) |>
+    dplyr::rename(industry_name = name)
+
+  detail_full <- detail |>
+    dplyr::left_join(division, by = "division_code") |>
+    dplyr::left_join(
+      major_group,
+      by = c("division_code", "major_group_code")
+    ) |>
+    dplyr::left_join(
+      group,
+      by = c("division_code", "major_group_code", "group_code")
+    )
+
+  # One row per (`detail`, coarser tier) pair -- looping over the three
+  # coarser tiers' own (code, name) column pairs, rather than writing out
+  # one `transmute()` per tier, keeps the three blocks from drifting out of
+  # sync with each other as they're edited.
+  tier_columns <- list(
+    group = c("group_code", "group_name"),
+    major_group = c("major_group_code", "major_group_name"),
+    division = c("division_code", "division_name")
+  )
+  purrr::imap(tier_columns, \(cols, tier) {
+    detail_full |>
+      dplyr::transmute(
+        jsic_class_from = "detail",
+        jsic_code_from = industry_code,
+        jsic_name_from = industry_name,
+        jsic_class_to = tier,
+        jsic_code_to = .data[[cols[1]]],
+        jsic_name_to = .data[[cols[2]]]
+      )
+  }) |>
+    dplyr::bind_rows() |>
+    dplyr::mutate(jsic_revision_year = jsic_revision_year)
 }

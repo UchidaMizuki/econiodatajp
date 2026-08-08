@@ -43,8 +43,9 @@ target_sector <- tar_plan(
     # https://www.soumu.go.jp/toukei_toukatsu/data/io/015index.html, part 3
     # (000680593.pdf), 〔参考10〕, pages 184-203 -- unlike 2020, no
     # standalone spreadsheet was published for this benchmark year, only
-    # this PDF.
-    file_sector_jsic,
+    # this PDF. Title: "平成27年（2015年）産業連関表基本分類－日本標準産業
+    # 分類（平成25年（2013年）改定）細分類対応表".
+    file_sector_jsic_pdf,
     download_file_meti(
       url = "https://www.soumu.go.jp/main_content/000680593.pdf",
       destfile = "_targets/user/sector_jsic.pdf"
@@ -52,15 +53,37 @@ target_sector <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  # Named `jsic_raw`, not `sector_jsic_raw`: the latter would collide with
-  # io_sector_parse_name_archive()'s `^sector_jsic_(.+)$` regex (it would
-  # parse as a `type = "jsic"` archive with `region = "raw"`), since that
-  # regex has no axis suffix to anchor against, unlike the sector/conversion
-  # one.
-  jsic_raw = read_sector_jsic_pdf(file_sector_jsic, pages = 184:203),
-  sector_jsic_nation = get_sector_jsic(
+  # `*_raw` has no `_pdf`/`_xlsx` suffix -- same parsed shape regardless of
+  # source format (see R/sector-utils.R's io_sector_name_archive() for the
+  # naming scheme this and the `_output`-suffixed target below follow).
+  sector_jsic_raw = read_file_sector_jsic_pdf(
+    file_sector_jsic_pdf,
+    pages = 184:203
+  ),
+  sector_jsic_nation_output = get_sector_jsic(
     sector_raw = sector_raw,
-    sector_jsic_raw = jsic_raw
+    sector_jsic_raw = sector_jsic_raw,
+    jsic_revision_year = 2013
+  ),
+  tar_change(
+    # https://www.soumu.go.jp/toukei_toukatsu/index/seido/sangyo/H25index.htm,
+    # "分類項目名（CSVファイル）" -- JSIC's *own* 大分類/中分類/小分類/
+    # 細分類 hierarchy, unrelated to any IO benchmark year (unlike
+    # file_sector_jsic_pdf above, this doesn't reference IO sectors at
+    # all). Both this and the 2020 pipeline reuse the same file since both
+    # reference the 平成25年（2013年）改定 revision.
+    file_jsic_class_csv,
+    download_file(
+      url = "https://www.soumu.go.jp/main_content/000420038.csv",
+      destfile = "_targets/user/jsic_class.csv"
+    ),
+    change = "0.1.0",
+    format = "file"
+  ),
+  jsic_class_raw = read_file_jsic_class_csv(file_jsic_class_csv),
+  jsic_conversion_nation = get_jsic_conversion(
+    jsic_class_raw = jsic_class_raw,
+    jsic_revision_year = 2013
   ),
 )
 

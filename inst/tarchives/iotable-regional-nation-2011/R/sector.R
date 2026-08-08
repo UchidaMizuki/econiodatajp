@@ -48,7 +48,7 @@ target_sector <- tar_plan(
     # ("平成23年（2011年）産業連関表基本分類－日本標準産業分類（平成19年改
     # 定）細分類対応表"), pages 15-34 (ends right before page 35's
     # "コモディティ・フロー法における商品分類一覧" section).
-    file_sector_jsic,
+    file_sector_jsic_pdf,
     download_file_meti(
       url = "https://www.soumu.go.jp/main_content/000491295.pdf",
       destfile = "_targets/user/sector_jsic.pdf"
@@ -56,16 +56,29 @@ target_sector <- tar_plan(
     change = "0.1.0",
     format = "file"
   ),
-  # Named `jsic_raw`, not `sector_jsic_raw`: the latter would collide with
-  # io_sector_parse_name_archive()'s `^sector_jsic_(.+)$` regex (it would
-  # parse as a `type = "jsic"` archive with `region = "raw"`), since that
-  # regex has no axis suffix to anchor against, unlike the sector/conversion
-  # one.
-  jsic_raw = read_sector_jsic_pdf(file_sector_jsic, pages = 15:34),
-  sector_jsic_nation = get_sector_jsic(
-    sector_raw = sector_raw,
-    sector_jsic_raw = jsic_raw
+  # `*_raw` has no `_pdf`/`_xlsx` suffix -- same parsed shape regardless of
+  # source format (see R/sector-utils.R's io_sector_name_archive() for the
+  # naming scheme this and the `_output`-suffixed target below follow).
+  sector_jsic_raw = read_file_sector_jsic_pdf(
+    file_sector_jsic_pdf,
+    pages = 15:34
   ),
+  # Confirmed from the source document's own title (see the
+  # file_sector_jsic_pdf comment above): 日本標準産業分類（平成19年改定）.
+  sector_jsic_nation_output = get_sector_jsic(
+    sector_raw = sector_raw,
+    sector_jsic_raw = sector_jsic_raw,
+    jsic_revision_year = 2007
+  ),
+  # No `jsic_conversion_nation` target here (unlike 2015/2020): 総務省
+  # publishes JSIC's own 大分類/中分類/小分類/細分類 hierarchy as a flat
+  # CSV for the 平成25年（2013年）改定 revision (soumu.go.jp/.../H25index.htm,
+  # "分類項目名（CSVファイル）"), but no equivalent CSV/structured file was
+  # found for the 平成19年（2007年）改定 revision this pipeline's own
+  # `sector_jsic_nation` uses -- only PDF appendices, one per 大分類 letter
+  # (soumu.go.jp/.../19-3-1.htm), which would need the same PDF
+  # position-based parsing as read_file_sector_jsic_pdf() above. Left as a gap
+  # (#30) rather than guessed at.
 )
 
 read_file_sector <- function(file_ja, file_en) {

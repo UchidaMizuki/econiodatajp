@@ -9,6 +9,7 @@ io_sector_jsic_get(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
+  axis = c("output"),
   language = c("ja", "en")
 )
 }
@@ -27,13 +28,17 @@ argument exists so a future `region_class = "pref"`/`"block"` sector
 archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
 tables are) wouldn't need a signature change to support it.}
 
+\item{axis}{Always `"output"` -- see Details.}
+
 \item{language}{Language of the sector names, `"ja"` (the default) or
 `"en"`, matching [io_table_get()]'s `language`.}
 }
 \value{
 A tibble with one row per IO-sector/JSIC-code pair, with columns
-`sector_name`, `jsic_code`, `jsic_name`, and `note` (`NA` except for
-sectors split across multiple JSIC codes or vice versa).
+`sector_name`, `axis` (always `"output"`), `jsic_code`, `jsic_name`,
+`note` (`NA` except for sectors split across multiple JSIC codes or vice
+versa), and `jsic_revision_year` (the JSIC revision `jsic_code`/
+`jsic_name` are keyed to).
 }
 \description{
 The official crosswalk between a table's basic-classification industry
@@ -47,10 +52,25 @@ names and notes are Japanese-only in the source and have no English
 variant; only `sector_name` is translated by `language`.
 }
 \details{
-Unlike [io_sector_get()]/[io_sector_conversion_get()], there's no `axis`
-argument: the source only ever publishes this correspondence keyed to the
-output/industry axis's basic-classification codes (its own header calls
-the key a "column code"), and the input axis uses a differently-grained
-code for basic industry sectors that this correspondence has no published
-equivalent for.
+JSIC has been revised multiple times, and different benchmark years'
+correspondence tables are keyed to different JSIC revisions (e.g. the
+2011 table uses the 2007 revision, while 2015/2020 use the 2013
+revision); `jsic_revision_year` records which revision `jsic_code`/
+`jsic_name` come from so results from different `year`s aren't compared
+as if they used the same JSIC codes.
+
+Unlike [io_sector_get()]/[io_sector_conversion_get()], `axis` only ever
+accepts `"output"`: the source only ever publishes this correspondence
+keyed to the output/industry axis's basic-classification codes (its own
+header calls the key a "column code"), and the input axis uses a
+differently-grained code for basic industry sectors that this
+correspondence has no published equivalent for. Passing `axis =
+"input"` errors rather than silently ignoring the argument, and the
+result's own `axis` column is always `"output"` too, so joining
+`sector_name` against the wrong axis's [io_sector_get()]/
+[io_sector_conversion_get()] output doesn't silently return zero matches
+(confirmed empirically: every `sector_name` here matches the output
+axis's and none match the input axis's, since the two axes' basic-level
+sector codes -- and therefore `sector_name`, which embeds the code --
+differ).
 }

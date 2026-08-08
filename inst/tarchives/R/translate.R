@@ -8,17 +8,25 @@
 # `io_table_to_noncompetitive_import()` adds, which has no name in Japanese
 # either) are passed through unchanged rather than treated as "unmatched",
 # since there is nothing to translate.
-translate_iotable_sector <- function(table, sector_input, sector_output, sector_class) {
+translate_iotable_sector <- function(
+  table,
+  sector_input,
+  sector_output,
+  sector_class
+) {
   translate <- function(sector, lookup) {
-    lookup <- lookup[lookup$sector_class == sector_class, ]
+    lookup <- vctrs::vec_slice(lookup, lookup$sector_class == sector_class)
     name_ja <- econio::io_sector_name(sector)
     is_named <- !is.na(name_ja)
-    name_en <- name_ja
-    name_en[is_named] <- recode_values(
-      name_ja[is_named],
-      from = lookup$sector_name_ja,
-      to = lookup$sector_name_en,
-      unmatched = "error"
+    name_en <- vctrs::vec_assign(
+      name_ja,
+      is_named,
+      recode_values(
+        vctrs::vec_slice(name_ja, is_named),
+        from = lookup$sector_name_ja,
+        to = lookup$sector_name_en,
+        unmatched = "error"
+      )
     )
     vctrs::field(sector, "name") <- name_en
     sector
