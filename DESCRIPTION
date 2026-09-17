@@ -22,8 +22,7 @@ Imports:
     stringr,
     tarchives (>= 0.2.0.9000),
     targets,
-    tibble,
-    tidyselect
+    tibble
 Suggests:
     adverbial,
     conflicted,

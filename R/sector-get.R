@@ -19,12 +19,12 @@
 #' argument exists so a future `region_class = "pref"`/`"block"` sector
 #' archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
 #' tables are) wouldn't need a signature change to support it.
-#' @param axis Which axis of the classification to fetch, `"input"` or
-#' `"output"`. The two aren't identical: e-stat's classification workbook
-#' omits a handful of industry codes (memo items such as scrap-material
-#' rows) from the output side, so `axis = "output"` backfills them from the
-#' input axis, matching how the real IO table labels those sectors
-#' identically on both axes.
+#' @param axis Which axis of the table's classification to fetch, `"input"`
+#' (rows) or `"output"` (columns). No default -- must be specified: the two
+#' return different sector sets (endogenous plus gross-value-added sectors
+#' on the input axis, endogenous plus final-demand sectors on the output
+#' axis), and even the shared endogenous sectors use different codes at the
+#' `"basic"` tier.
 #' @param language Language of the sector names, `"ja"` (the default) or
 #' `"en"`, matching [io_table_get()]'s `language`.
 #'
@@ -37,12 +37,12 @@ io_sector_get <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
   language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
-  axis <- rlang::arg_match(axis)
+  axis <- rlang::arg_match(axis, c("input", "output"))
   language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
@@ -50,18 +50,14 @@ io_sector_get <- function(
     year = year,
     region = region,
     axis = axis,
+    language = language,
     type = "sector"
   )
   tarchives::tar_get_archive_raw(
     name = resolved$name,
     package = "econiodatajp",
     pipeline = resolved$pipeline
-  ) |>
-    dplyr::select(
-      "sector_type",
-      "sector_class",
-      sector_name = tidyselect::all_of(stringr::str_c("sector_name_", language))
-    )
+  )
 }
 
 #' Get a sector classification conversion table
@@ -84,12 +80,12 @@ io_sector_conversion_get <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
   language = c("ja", "en")
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
-  axis <- rlang::arg_match(axis)
+  axis <- rlang::arg_match(axis, c("input", "output"))
   language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
@@ -97,26 +93,14 @@ io_sector_conversion_get <- function(
     year = year,
     region = region,
     axis = axis,
+    language = language,
     type = "sector_conversion"
   )
   tarchives::tar_get_archive_raw(
     name = resolved$name,
     package = "econiodatajp",
     pipeline = resolved$pipeline
-  ) |>
-    dplyr::select(
-      "sector_type",
-      "sector_class_from",
-      sector_name_from = tidyselect::all_of(stringr::str_c(
-        "sector_name_from_",
-        language
-      )),
-      "sector_class_to",
-      sector_name_to = tidyselect::all_of(stringr::str_c(
-        "sector_name_to_",
-        language
-      ))
-    )
+  )
 }
 
 #' Get the correspondence between IO sectors and JSIC
@@ -143,13 +127,11 @@ io_sector_conversion_get <- function(
 #' keyed to the output/industry axis's basic-classification codes (its own
 #' header calls the key a "column code"), and the input axis uses a
 #' differently-grained code for basic industry sectors that this
-#' correspondence has no published equivalent for. Passing `axis =
-#' "input"` errors rather than silently ignoring the argument, and the
-#' result's own `axis` column is always `"output"` too, so joining
-#' `sector_name` against the wrong axis's [io_sector_get()]/
-#' [io_sector_conversion_get()] output doesn't silently return zero matches
-#' (confirmed empirically: every `sector_name` here matches the output
-#' axis's and none match the input axis's, since the two axes' basic-level
+#' correspondence has no published equivalent for. Passing `axis = "input"`
+#' errors rather than silently ignoring the argument. `sector_name`
+#' therefore only ever matches the output axis's [io_sector_get()]/
+#' [io_sector_conversion_get()] output; joining it against the input axis's
+#' returns zero matches (confirmed empirically: the two axes' basic-level
 #' sector codes -- and therefore `sector_name`, which embeds the code --
 #' differ).
 #'
@@ -160,10 +142,9 @@ io_sector_conversion_get <- function(
 #' @param axis Always `"output"` -- see Details.
 #'
 #' @return A tibble with one row per IO-sector/JSIC-code pair, with columns
-#' `sector_name`, `axis` (always `"output"`), `jsic_code`, `jsic_name`,
-#' `note` (`NA` except for sectors split across multiple JSIC codes or vice
-#' versa), and `jsic_revision_year` (the JSIC revision `jsic_code`/
-#' `jsic_name` are keyed to).
+#' `sector_name`, `jsic_code`, `jsic_name`, `note` (`NA` except for sectors
+#' split across multiple JSIC codes or vice versa), and `jsic_revision_year`
+#' (the JSIC revision `jsic_code`/`jsic_name` are keyed to).
 #'
 #' @export
 io_sector_jsic_get <- function(
@@ -184,24 +165,14 @@ io_sector_jsic_get <- function(
     year = year,
     region = region,
     axis = axis,
+    language = language,
     type = "sector_jsic"
   )
   tarchives::tar_get_archive_raw(
     name = resolved$name,
     package = "econiodatajp",
     pipeline = resolved$pipeline
-  ) |>
-    dplyr::select(
-      sector_name = tidyselect::all_of(stringr::str_c(
-        "sector_name_",
-        language
-      )),
-      "axis",
-      "jsic_code",
-      "jsic_name",
-      "note",
-      "jsic_revision_year"
-    )
+  )
 }
 
 #' Get the JSIC classification's own hierarchy crosswalk

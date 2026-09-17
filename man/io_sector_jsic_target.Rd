@@ -13,6 +13,7 @@ io_sector_jsic_target(
   year,
   region = NULL,
   axis = c("output"),
+  language = c("ja", "en"),
   ...
 )
 
@@ -23,6 +24,7 @@ io_sector_jsic_target_raw(
   year,
   region = NULL,
   axis = c("output"),
+  language = c("ja", "en"),
   ...
 )
 }
@@ -45,6 +47,9 @@ archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
 tables are) wouldn't need a signature change to support it.}
 
 \item{axis}{Always `"output"` -- see Details.}
+
+\item{language}{Language of the sector names, `"ja"` (the default) or
+`"en"`, matching [io_table_get()]'s `language`.}
 
 \item{...}{Arguments passed to [tarchives::tar_target_archive_raw()].}
 }

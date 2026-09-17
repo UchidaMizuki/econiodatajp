@@ -20,7 +20,8 @@ io_sector_target <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
+  language = c("ja", "en"),
   ...
 ) {
   io_sector_target_raw(
@@ -30,6 +31,7 @@ io_sector_target <- function(
     year = year,
     region = region,
     axis = axis,
+    language = language,
     ...
   )
 }
@@ -42,18 +44,21 @@ io_sector_target_raw <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
+  language = c("ja", "en"),
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
-  axis <- rlang::arg_match(axis)
+  axis <- rlang::arg_match(axis, c("input", "output"))
+  language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
     region_class = region_class,
     year = year,
     region = region,
     axis = axis,
+    language = language,
     type = "sector"
   )
   tarchives::tar_target_archive_raw(
@@ -88,7 +93,8 @@ io_sector_conversion_target <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
+  language = c("ja", "en"),
   ...
 ) {
   io_sector_conversion_target_raw(
@@ -98,6 +104,7 @@ io_sector_conversion_target <- function(
     year = year,
     region = region,
     axis = axis,
+    language = language,
     ...
   )
 }
@@ -110,18 +117,21 @@ io_sector_conversion_target_raw <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
+  language = c("ja", "en"),
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
-  axis <- rlang::arg_match(axis)
+  axis <- rlang::arg_match(axis, c("input", "output"))
+  language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
     region_class = region_class,
     year = year,
     region = region,
     axis = axis,
+    language = language,
     type = "sector_conversion"
   )
   tarchives::tar_target_archive_raw(
@@ -158,6 +168,7 @@ io_sector_jsic_target <- function(
   year,
   region = NULL,
   axis = c("output"),
+  language = c("ja", "en"),
   ...
 ) {
   io_sector_jsic_target_raw(
@@ -167,6 +178,7 @@ io_sector_jsic_target <- function(
     year = year,
     region = region,
     axis = axis,
+    language = language,
     ...
   )
 }
@@ -180,17 +192,20 @@ io_sector_jsic_target_raw <- function(
   year,
   region = NULL,
   axis = c("output"),
+  language = c("ja", "en"),
   ...
 ) {
   region_type <- rlang::arg_match(region_type)
   region_class <- rlang::arg_match(region_class)
   axis <- rlang::arg_match(axis)
+  language <- rlang::arg_match(language)
   resolved <- io_sector_resolve(
     region_type = region_type,
     region_class = region_class,
     year = year,
     region = region,
     axis = axis,
+    language = language,
     type = "sector_jsic"
   )
   tarchives::tar_target_archive_raw(

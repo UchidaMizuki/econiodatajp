@@ -23,22 +23,46 @@ target_sector <- tar_plan(
     file_ja = file_sector_ja,
     file_en = file_sector_en
   ),
+  # The bilingual `sector_conversion_nation_*` / `sector_nation_*` /
+  # `sector_jsic_nation_output` targets are intermediates -- each is split
+  # into the `_ja` / `_en` archives io_sector_*_get() actually serves, by
+  # sector_pick_language() & co. (inst/tarchives/R/sector_language.R).
   sector_conversion_nation_input = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "input"
+  ),
+  sector_conversion_nation_input_ja = sector_conversion_pick_language(
+    sector_conversion_nation_input,
+    "ja"
+  ),
+  sector_conversion_nation_input_en = sector_conversion_pick_language(
+    sector_conversion_nation_input,
+    "en"
   ),
   sector_conversion_nation_output = get_sector_conversion(
     sector_raw = sector_raw,
     axis = "output"
   ),
+  sector_conversion_nation_output_ja = sector_conversion_pick_language(
+    sector_conversion_nation_output,
+    "ja"
+  ),
+  sector_conversion_nation_output_en = sector_conversion_pick_language(
+    sector_conversion_nation_output,
+    "en"
+  ),
   sector_nation_input = get_sector(
     sector_raw = sector_raw,
     axis = "input"
   ),
+  sector_nation_input_ja = sector_pick_language(sector_nation_input, "ja"),
+  sector_nation_input_en = sector_pick_language(sector_nation_input, "en"),
   sector_nation_output = get_sector(
     sector_raw = sector_raw,
     axis = "output"
   ),
+  sector_nation_output_ja = sector_pick_language(sector_nation_output, "ja"),
+  sector_nation_output_en = sector_pick_language(sector_nation_output, "en"),
   tar_change(
     # Unlike 2015/2020, this table isn't in the 2011 benchmark's own
     # "総合解説編" report -- it's a reference document from a statistics
@@ -58,7 +82,8 @@ target_sector <- tar_plan(
   ),
   # `*_raw` has no `_pdf`/`_xlsx` suffix -- same parsed shape regardless of
   # source format (see R/sector-utils.R's io_sector_name_archive() for the
-  # naming scheme this and the `_output`-suffixed target below follow).
+  # `sector_<prefix><region>_<axis>_<language>` naming scheme the
+  # `_ja`/`_en` targets below follow).
   sector_jsic_raw = read_file_sector_jsic_pdf(
     file_sector_jsic_pdf,
     pages = 15:34
@@ -69,6 +94,14 @@ target_sector <- tar_plan(
     sector_raw = sector_raw,
     sector_jsic_raw = sector_jsic_raw,
     jsic_revision_year = 2007
+  ),
+  sector_jsic_nation_output_ja = sector_jsic_pick_language(
+    sector_jsic_nation_output,
+    "ja"
+  ),
+  sector_jsic_nation_output_en = sector_jsic_pick_language(
+    sector_jsic_nation_output,
+    "en"
   ),
   # No `jsic_conversion_nation` target here (unlike 2015/2020): 総務省
   # publishes JSIC's own 大分類/中分類/小分類/細分類 hierarchy as a flat

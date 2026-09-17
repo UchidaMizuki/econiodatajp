@@ -187,8 +187,11 @@ clean_sector_jsic <- function(raw) {
 
 # Joins the raw code-keyed correspondence onto that pipeline's own sector
 # classification (see sector.R's get_sector()/get_sector_long()) to attach
-# the real bilingual sector names `io_sector_jsic_get()` returns, the same
-# way get_sector_conversion() attaches them for the tier crosswalk.
+# the bilingual sector names, the same way get_sector_conversion() attaches
+# them for the tier crosswalk. This is the bilingual `sector_jsic_nation_output`
+# intermediate; `sector_jsic_pick_language()`
+# (inst/tarchives/R/sector_language.R) then splits it into the `_ja`/`_en`
+# archives `io_sector_jsic_get()` serves.
 #
 # `jsic_revision_year` is a plain pass-through, not derived from
 # `sector_jsic_raw`: JSIC has been revised multiple times and the source
@@ -229,22 +232,22 @@ get_sector_jsic <- function(sector_raw, sector_jsic_raw, jsic_revision_year) {
     ))
   }
 
-  # `axis = "output"` is stamped as a column here (not just baked into the
-  # archive name via econiodatajp's io_sector_name_archive(), which
-  # hardcodes the same fact independently) so io_sector_jsic_get()'s
-  # returned tibble is self-documenting too -- a permanent, structural fact
-  # about JSIC (see io_sector_name_archive()'s comment), not a current-data
-  # quirk that might need an input-axis equivalent later.
+  # The output axis is baked into the archive name via econiodatajp's
+  # io_sector_name_archive() (`sector_jsic_nation_output_<language>`), so it
+  # isn't also carried as a column here: io_sector_jsic_get() takes `axis`
+  # only to reject `axis = "input"`, and echoing a constant would break step
+  # with io_sector_get()/io_sector_conversion_get(), which don't echo their
+  # (real) `axis` choice either. `language` likewise stays out of the data
+  # (this is the bilingual intermediate the `_ja`/`_en` split reads from).
   sector_jsic_raw |>
     dplyr::left_join(
       sector |> dplyr::select(code, sector_name_ja, sector_name_en),
       by = "code"
     ) |>
-    dplyr::mutate(axis = "output", jsic_revision_year = jsic_revision_year) |>
+    dplyr::mutate(jsic_revision_year = jsic_revision_year) |>
     dplyr::select(
       sector_name_ja,
       sector_name_en,
-      axis,
       jsic_code,
       jsic_name,
       note,

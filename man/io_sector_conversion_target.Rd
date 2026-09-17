@@ -11,7 +11,8 @@ io_sector_conversion_target(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
+  language = c("ja", "en"),
   ...
 )
 
@@ -21,7 +22,8 @@ io_sector_conversion_target_raw(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  axis = c("input", "output"),
+  axis,
+  language = c("ja", "en"),
   ...
 )
 }
@@ -47,12 +49,15 @@ argument exists so a future `region_class = "pref"`/`"block"` sector
 archive (keyed per-prefecture/per-block the same way [io_table_get()]'s
 tables are) wouldn't need a signature change to support it.}
 
-\item{axis}{Which axis of the classification to fetch, `"input"` or
-`"output"`. The two aren't identical: e-stat's classification workbook
-omits a handful of industry codes (memo items such as scrap-material
-rows) from the output side, so `axis = "output"` backfills them from the
-input axis, matching how the real IO table labels those sectors
-identically on both axes.}
+\item{axis}{Which axis of the table's classification to fetch, `"input"`
+(rows) or `"output"` (columns). No default -- must be specified: the two
+return different sector sets (endogenous plus gross-value-added sectors
+on the input axis, endogenous plus final-demand sectors on the output
+axis), and even the shared endogenous sectors use different codes at the
+`"basic"` tier.}
+
+\item{language}{Language of the sector names, `"ja"` (the default) or
+`"en"`, matching [io_table_get()]'s `language`.}
 
 \item{...}{Arguments passed to [tarchives::tar_target_archive_raw()].}
 }
