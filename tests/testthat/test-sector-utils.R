@@ -56,21 +56,6 @@ test_that("io_sector_name_archive() builds the sector_jsic target name from what
   )
 })
 
-test_that("io_sector_name_archive() builds the jsic_conversion target name without a sector_ prefix, axis, or language, region defaulting to nation", {
-  expect_equal(
-    io_sector_name_archive(
-      axis = "input",
-      language = "ja",
-      type = "jsic_conversion"
-    ),
-    "jsic_conversion_nation"
-  )
-  expect_equal(
-    io_sector_name_archive(type = "jsic_conversion"),
-    "jsic_conversion_nation"
-  )
-})
-
 test_that("io_sector_parse_name_archive() round-trips a sector name", {
   parsed <- io_sector_parse_name_archive("sector_nation_input_ja")
   expect_equal(parsed$type, "sector")
@@ -93,14 +78,6 @@ test_that("io_sector_parse_name_archive() round-trips a sector_jsic name with ax
   expect_equal(parsed$region, "nation")
   expect_equal(parsed$axis, "output")
   expect_equal(parsed$language, "ja")
-})
-
-test_that("io_sector_parse_name_archive() round-trips a jsic_conversion name with no axis or language", {
-  parsed <- io_sector_parse_name_archive("jsic_conversion_nation")
-  expect_equal(parsed$type, "jsic_conversion")
-  expect_equal(parsed$region, "nation")
-  expect_equal(parsed$axis, NA_character_)
-  expect_equal(parsed$language, NA_character_)
 })
 
 test_that("io_sector_parse_name_archive() round-trips a region other than nation", {
@@ -137,28 +114,15 @@ test_that("io_sector_resolve() resolves type = \"sector_jsic\" the same way as s
   expect_equal(resolved$name, "sector_jsic_nation_output_en")
 })
 
-test_that("io_sector_resolve() doesn't require axis or language for type = \"jsic_conversion\"", {
-  resolved <- io_sector_resolve(
-    region_type = "regional",
-    region_class = "nation",
-    year = 2020,
-    type = "jsic_conversion"
-  )
-  expect_equal(resolved$pipeline, "iotable-regional-nation-2020")
-  expect_equal(resolved$name, "jsic_conversion_nation")
-})
-
 test_that("io_sector_parse_name_archive() drops non-matching names, including the bilingual intermediates each _ja/_en pair is split from", {
   parsed <- io_sector_parse_name_archive(c(
     "sector_nation_input_ja",
     "sector_jsic_nation_output_en",
-    "jsic_conversion_nation",
     "sector_nation_input",
     "sector_conversion_nation_output",
     "sector_jsic_nation_output",
     "sector_raw",
     "sector_jsic_raw",
-    "jsic_class_raw",
     "file_sector_ja",
     "iotable_nation_basic_producer_price_competitive_import_ja"
   ))
@@ -166,8 +130,7 @@ test_that("io_sector_parse_name_archive() drops non-matching names, including th
     parsed$name,
     c(
       "sector_nation_input_ja",
-      "sector_jsic_nation_output_en",
-      "jsic_conversion_nation"
+      "sector_jsic_nation_output_en"
     )
   )
 })

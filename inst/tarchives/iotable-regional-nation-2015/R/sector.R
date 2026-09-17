@@ -98,26 +98,6 @@ target_sector <- tar_plan(
     sector_jsic_nation_output,
     "en"
   ),
-  tar_change(
-    # https://www.soumu.go.jp/toukei_toukatsu/index/seido/sangyo/H25index.htm,
-    # "分類項目名（CSVファイル）" -- JSIC's *own* 大分類/中分類/小分類/
-    # 細分類 hierarchy, unrelated to any IO benchmark year (unlike
-    # file_sector_jsic_pdf above, this doesn't reference IO sectors at
-    # all). Both this and the 2020 pipeline reuse the same file since both
-    # reference the 平成25年（2013年）改定 revision.
-    file_jsic_class_csv,
-    download_file(
-      url = "https://www.soumu.go.jp/main_content/000420038.csv",
-      destfile = "_targets/user/jsic_class.csv"
-    ),
-    change = "0.1.0",
-    format = "file"
-  ),
-  jsic_class_raw = read_file_jsic_class_csv(file_jsic_class_csv),
-  jsic_conversion_nation = get_jsic_conversion(
-    jsic_class_raw = jsic_class_raw,
-    jsic_revision_year = 2013
-  ),
 )
 
 read_file_sector <- function(file_ja, file_en) {

@@ -10,19 +10,15 @@ A tibble with one row per available sector table, with columns
 [io_table_available]'s; always `"nation"` as of writing, since that's the
 only `region_class` with sector data today), `type` (the accessor
 function it backs, `"sector"` for [io_sector_get()], `"sector_conversion"`
-for [io_sector_conversion_get()], `"sector_jsic"` for
-[io_sector_jsic_get()], or `"jsic_conversion"` for
-[io_jsic_conversion_get()] -- always exactly `io_<type>_get()`'s
-`<type>`), `axis` (`"input"` or `"output"`; always `"output"` for
+for [io_sector_conversion_get()], or `"sector_jsic"` for
+[io_sector_jsic_get()] -- always exactly `io_<type>_get()`'s `<type>`),
+`axis` (`"input"` or `"output"`; always `"output"` for
 `type = "sector_jsic"`, since [io_sector_jsic_get()]'s own `axis`
 argument only ever accepts `"output"` -- a known, fixed fact about the
-data, not a real choice; `NA` for `type = "jsic_conversion"`, which has
-no connection to an IO table's axis at all), `language` (`"ja"` or
-`"en"`, matching [io_table_available]'s -- `NA` for
-`type = "jsic_conversion"`, which has no English source yet, see issue
-#31), and `name` (the archive target name, for [io_sector_target()]'s
-/ [io_sector_conversion_target()]'s / [io_sector_jsic_target()]'s /
-[io_jsic_conversion_target()]'s
+data, not a real choice), `language` (`"ja"` or `"en"`, matching
+[io_table_available]'s), and `name` (the archive target name, for
+[io_sector_target()]'s / [io_sector_conversion_target()]'s /
+[io_sector_jsic_target()]'s
 `...`/ `tarchives::tar_read_archive_raw()` -- derivable from `region`/
 `type`/`axis`/`language` via the same logic [io_sector_get()]'s family
 uses internally, see `io_sector_name_archive()`).
@@ -36,15 +32,13 @@ whenever `inst/tarchives/` changes.
 io_sector_available
 }
 \description{
-One row per sector classification, conversion, JSIC correspondence, or
-JSIC-own-hierarchy table available via [io_sector_get()]/
-[io_sector_conversion_get()]/[io_sector_jsic_get()]/
-[io_jsic_conversion_get()]/[io_sector_target()]/
-[io_sector_conversion_target()]/[io_sector_jsic_target()]/
-[io_jsic_conversion_target()]. Useful for discovering which years
-have sector data, since not every `io_table_get()` pipeline does.
-Precomputed and shipped as package data (rather than a function) for the
-same reason as [io_table_available]: introspecting every tarchive
-pipeline is too slow to redo on every use.
+One row per sector classification, conversion, or JSIC correspondence
+table available via [io_sector_get()]/[io_sector_conversion_get()]/
+[io_sector_jsic_get()]/[io_sector_target()]/
+[io_sector_conversion_target()]/[io_sector_jsic_target()]. Useful for
+discovering which years have sector data, since not every
+`io_table_get()` pipeline does. Precomputed and shipped as package data
+(rather than a function) for the same reason as [io_table_available]:
+introspecting every tarchive pipeline is too slow to redo on every use.
 }
 \keyword{datasets}

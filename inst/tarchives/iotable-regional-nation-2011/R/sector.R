@@ -103,15 +103,6 @@ target_sector <- tar_plan(
     sector_jsic_nation_output,
     "en"
   ),
-  # No `jsic_conversion_nation` target here (unlike 2015/2020): 総務省
-  # publishes JSIC's own 大分類/中分類/小分類/細分類 hierarchy as a flat
-  # CSV for the 平成25年（2013年）改定 revision (soumu.go.jp/.../H25index.htm,
-  # "分類項目名（CSVファイル）"), but no equivalent CSV/structured file was
-  # found for the 平成19年（2007年）改定 revision this pipeline's own
-  # `sector_jsic_nation` uses -- only PDF appendices, one per 大分類 letter
-  # (soumu.go.jp/.../19-3-1.htm), which would need the same PDF
-  # position-based parsing as read_file_sector_jsic_pdf() above. Left as a gap
-  # (#30) rather than guessed at.
 )
 
 read_file_sector <- function(file_ja, file_en) {
