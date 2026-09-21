@@ -35,7 +35,7 @@ io_margin_available_impl <- function() {
     dplyr::arrange(dplyr::pick(!"name"))
 }
 
-#' List available trade margin/domestic freight tables
+#' List available trade margin/transport margin tables
 #'
 #' One row per table available via [io_margin_get()]/[io_margin_target()].
 #' Useful for discovering which `year`s have margin data at all (only
@@ -48,7 +48,7 @@ io_margin_available_impl <- function() {
 #' `region_type`, `region_class`, `year`, `region` (matching
 #' [io_table_available]'s; always `"nation"` as of writing, since that's the
 #' only `region_class` with margin data today), `sector_class`,
-#' `margin_type` (`"trade_margin"` or `"domestic_freight"`, matching
+#' `margin_type` (`"trade_margin"` or `"transport_margin"`, matching
 #' [io_margin_get()]'s `margin_type`), `language`, and `name` (the archive
 #' target name, for [io_margin_target()]'s `...`/
 #' `tarchives::tar_read_archive_raw()`).

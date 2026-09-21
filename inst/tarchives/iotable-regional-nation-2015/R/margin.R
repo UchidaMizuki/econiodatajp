@@ -11,10 +11,10 @@ target_margin <- tar_plan(
   ),
   tar_change(
     # https://www.e-stat.go.jp/stat-search/files?layout=dataset&toukei=00200603&stat_infid=000031839513
-    file_margin_nation_medium_domestic_freight_ja,
+    file_margin_nation_medium_transport_margin_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000031839513&fileKind=0",
-      destfile = "_targets/user/margin_nation_medium_domestic_freight_ja.xlsx"
+      destfile = "_targets/user/margin_nation_medium_transport_margin_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"
@@ -22,8 +22,8 @@ target_margin <- tar_plan(
   margin_nation_medium_trade_margin_ja = read_file_margin(
     file = file_margin_nation_medium_trade_margin_ja
   ),
-  margin_nation_medium_domestic_freight_ja = read_file_margin(
-    file = file_margin_nation_medium_domestic_freight_ja
+  margin_nation_medium_transport_margin_ja = read_file_margin(
+    file = file_margin_nation_medium_transport_margin_ja
   ),
   margin_nation_medium_trade_margin_en = translate_iotable_sector(
     table = margin_nation_medium_trade_margin_ja,
@@ -31,16 +31,16 @@ target_margin <- tar_plan(
     sector_output = sector_nation_output,
     sector_class = "medium"
   ),
-  margin_nation_medium_domestic_freight_en = translate_iotable_sector(
-    table = margin_nation_medium_domestic_freight_ja,
+  margin_nation_medium_transport_margin_en = translate_iotable_sector(
+    table = margin_nation_medium_transport_margin_ja,
     sector_input = sector_nation_input,
     sector_output = sector_nation_output,
     sector_class = "medium"
   ),
 )
 
-# Both the trade margin ("商業マージン表") and domestic freight ("国内貨物運
-# 賃表") tables share the exact same layout as each other -- same header
+# Both the trade margin ("商業マージン表") and transport margin ("国内貨物運賃
+# 表") tables share the exact same layout as each other -- same header
 # shape, same sector set, same missing value_added/import/total rows and
 # columns (only ever published at "統合中分類" granularity, unlike the basic-
 # classification `iotable_producer_price*` tables) -- confirmed by

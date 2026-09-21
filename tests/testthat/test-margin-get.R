@@ -9,7 +9,7 @@ test_that("io_margin_get() requires sector_class", {
   )
 })
 
-test_that("io_margin_get() rejects a margin_type outside trade_margin/domestic_freight", {
+test_that("io_margin_get() rejects a margin_type outside trade_margin/transport_margin", {
   expect_snapshot(
     io_margin_get(
       region_type = "regional",

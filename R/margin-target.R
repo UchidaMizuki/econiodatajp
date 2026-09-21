@@ -1,4 +1,4 @@
-#' Declare a target that reads a trade margin or domestic freight table
+#' Declare a target that reads a trade margin or transport margin table
 #'
 #' For use inside a `_targets.R` pipeline, e.g. `tar_plan(io_margin_target(...))`.
 #' `io_margin_target()` uses non-standard evaluation to capture `name`, mirroring
@@ -20,7 +20,7 @@ io_margin_target <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  margin_type = c("trade_margin", "domestic_freight"),
+  margin_type = c("trade_margin", "transport_margin"),
   sector_class,
   language = c("ja", "en"),
   ...
@@ -46,7 +46,7 @@ io_margin_target_raw <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  margin_type = c("trade_margin", "domestic_freight"),
+  margin_type = c("trade_margin", "transport_margin"),
   sector_class,
   language = c("ja", "en"),
   ...

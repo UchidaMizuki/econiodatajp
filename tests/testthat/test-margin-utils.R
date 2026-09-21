@@ -11,11 +11,11 @@ test_that("io_margin_name_archive() defaults region to \"nation\"", {
 test_that("io_margin_name_archive() takes an explicit region", {
   with_region <- io_margin_name_archive(
     region = "01_hokkaido",
-    margin_type = "domestic_freight",
+    margin_type = "transport_margin",
     sector_class = "medium",
     language = "en"
   )
-  expect_equal(with_region, "margin_01_hokkaido_medium_domestic_freight_en")
+  expect_equal(with_region, "margin_01_hokkaido_medium_transport_margin_en")
 })
 
 test_that("io_margin_parse_name_archive() round-trips a trade_margin name", {
@@ -28,13 +28,13 @@ test_that("io_margin_parse_name_archive() round-trips a trade_margin name", {
   expect_equal(parsed$language, "ja")
 })
 
-test_that("io_margin_parse_name_archive() round-trips a domestic_freight name", {
+test_that("io_margin_parse_name_archive() round-trips a transport_margin name", {
   parsed <- io_margin_parse_name_archive(
-    "margin_nation_medium_domestic_freight_en"
+    "margin_nation_medium_transport_margin_en"
   )
   expect_equal(parsed$region, "nation")
   expect_equal(parsed$sector_class, "medium")
-  expect_equal(parsed$margin_type, "domestic_freight")
+  expect_equal(parsed$margin_type, "transport_margin")
   expect_equal(parsed$language, "en")
 })
 

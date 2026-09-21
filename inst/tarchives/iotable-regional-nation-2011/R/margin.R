@@ -11,10 +11,10 @@ target_margin <- tar_plan(
   ),
   tar_change(
     # https://www.e-stat.go.jp/stat-search/files?stat_infid=000030138091
-    file_margin_nation_medium_domestic_freight_ja,
+    file_margin_nation_medium_transport_margin_ja,
     download_file(
       url = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000030138091&fileKind=0",
-      destfile = "_targets/user/margin_nation_medium_domestic_freight_ja.xlsx"
+      destfile = "_targets/user/margin_nation_medium_transport_margin_ja.xlsx"
     ),
     change = "0.1.0",
     format = "file"
@@ -22,8 +22,8 @@ target_margin <- tar_plan(
   margin_nation_medium_trade_margin_ja = read_file_margin(
     file = file_margin_nation_medium_trade_margin_ja
   ),
-  margin_nation_medium_domestic_freight_ja = read_file_margin(
-    file = file_margin_nation_medium_domestic_freight_ja
+  margin_nation_medium_transport_margin_ja = read_file_margin(
+    file = file_margin_nation_medium_transport_margin_ja
   ),
   margin_nation_medium_trade_margin_en = translate_iotable_sector(
     table = margin_nation_medium_trade_margin_ja,
@@ -31,8 +31,8 @@ target_margin <- tar_plan(
     sector_output = sector_nation_output,
     sector_class = "medium"
   ),
-  margin_nation_medium_domestic_freight_en = translate_iotable_sector(
-    table = margin_nation_medium_domestic_freight_ja,
+  margin_nation_medium_transport_margin_en = translate_iotable_sector(
+    table = margin_nation_medium_transport_margin_ja,
     sector_input = sector_nation_input,
     sector_output = sector_nation_output,
     sector_class = "medium"

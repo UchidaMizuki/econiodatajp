@@ -3,13 +3,13 @@
 \docType{data}
 \name{io_margin_available}
 \alias{io_margin_available}
-\title{List available trade margin/domestic freight tables}
+\title{List available trade margin/transport margin tables}
 \format{
 A tibble with one row per available table, with columns
 `region_type`, `region_class`, `year`, `region` (matching
 [io_table_available]'s; always `"nation"` as of writing, since that's the
 only `region_class` with margin data today), `sector_class`,
-`margin_type` (`"trade_margin"` or `"domestic_freight"`, matching
+`margin_type` (`"trade_margin"` or `"transport_margin"`, matching
 [io_margin_get()]'s `margin_type`), `language`, and `name` (the archive
 target name, for [io_margin_target()]'s `...`/
 `tarchives::tar_read_archive_raw()`).

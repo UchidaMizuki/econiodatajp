@@ -1,11 +1,12 @@
-#' Get a trade margin or domestic freight table
+#' Get a trade margin or transport margin table
 #'
-#' The trade margin ("商業マージン表") and domestic freight ("国内貨物運賃
-#' 表") tables published alongside an [io_table_get()] benchmark year. Both
-#' record, for each commodity, how much of its buyer-price markup over the
-#' producer price is trade margin (wholesale/retail) versus domestic freight
-#' -- the two components that, combined with a producer-price table, yield a
-#' buyer-price one. Only published as standalone tables for benchmark years
+#' The trade margin ("商業マージン表") and transport margin ("国内貨物運賃
+#' 表", i.e. domestic freight) tables published alongside an [io_table_get()]
+#' benchmark year. Both record, for each commodity, how much of its
+#' buyer-price markup over the producer price is trade margin
+#' (wholesale/retail) versus transport margin -- the two components that,
+#' combined with a producer-price table, yield a buyer-price one. Only
+#' published as standalone tables for benchmark years
 #' up to 2015; from 2020 on, e-stat folds this information into the
 #' "input-output table" ("投入産出表") instead and no longer publishes these
 #' as separate tables (see [io_margin_available] for which `year`s have
@@ -13,7 +14,7 @@
 #'
 #' @inheritParams io_table_get
 #' @param margin_type Which table to get, `"trade_margin"` or
-#' `"domestic_freight"`.
+#' `"transport_margin"`.
 #' @param sector_class Sector classification granularity. No default --
 #' must be specified. As of writing, every available table uses `"medium"`
 #' (a direct translation of the official "統合中分類" tier name) -- e-stat
@@ -29,7 +30,7 @@ io_margin_get <- function(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  margin_type = c("trade_margin", "domestic_freight"),
+  margin_type = c("trade_margin", "transport_margin"),
   sector_class,
   language = c("ja", "en")
 ) {

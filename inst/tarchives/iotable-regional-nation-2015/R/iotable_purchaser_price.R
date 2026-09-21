@@ -50,9 +50,9 @@ target_iotable_purchaser_price <- tar_plan(
 # `total_pattern` is deliberately not passed. This workbook's trailing
 # "891_商業マージン"/"901_貨物運賃" output columns reconcile each row's
 # purchaser-price sum back to its "970_国内生産額" (crediting the economy-wide
-# margin/freight to the commerce/transport rows), and have no sector_type of
-# their own, so they are dropped along with "880_最終需要部門計". Without them
-# the row sums no longer equal the 国内生産額 column, and
+# trade/transport margins to the commerce/transport rows), and have no
+# sector_type of their own, so they are dropped along with "880_最終需要部門計".
+# Without them the row sums no longer equal the 国内生産額 column, and
 # `econio::io_check_totals()` errors. Leaving `total` empty makes it skip that
 # check instead; the transaction cells themselves are e-stat's own values.
 read_file_iotable_purchaser_price_medium <- function(file) {

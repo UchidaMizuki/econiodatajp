@@ -1,4 +1,4 @@
-# Margin/freight data lives inside the same tarchive pipeline as the
+# Margin data lives inside the same tarchive pipeline as the
 # corresponding IO table (see e.g.
 # `inst/tarchives/iotable-regional-nation-{year}/R/margin.R`) -- there's no
 # separate "margin" pipeline directory, so this reuses io_table_pipeline()
@@ -69,7 +69,7 @@ io_margin_name_archive <- function(
 # list what a pipeline actually defines instead of a hardcoded vocabulary.
 # Vectorized: `name` can be a whole manifest's `$name` column. `margin_type`
 # is matched against a fixed alternation (unlike `sector_class`, its
-# vocabulary -- "trade_margin"/"domestic_freight" -- is a stable, closed set
+# vocabulary -- "trade_margin"/"transport_margin" -- is a stable, closed set
 # the same way `price_type`/`import_type` are in
 # io_table_parse_name_archive(), not something that varies by year/region),
 # which is also what lets `sector_class` (`[^_]+`) stay a single
@@ -79,7 +79,7 @@ io_margin_name_archive <- function(
 io_margin_parse_name_archive <- function(name) {
   matched <- stringr::str_match(
     name,
-    "^margin_(.+)_([^_]+)_(trade_margin|domestic_freight)_(ja|en)$"
+    "^margin_(.+)_([^_]+)_(trade_margin|transport_margin)_(ja|en)$"
   )
   tibble::tibble(
     region = matched[, 2],

@@ -3,7 +3,7 @@
 \name{io_margin_target}
 \alias{io_margin_target}
 \alias{io_margin_target_raw}
-\title{Declare a target that reads a trade margin or domestic freight table}
+\title{Declare a target that reads a trade margin or transport margin table}
 \usage{
 io_margin_target(
   name,
@@ -11,7 +11,7 @@ io_margin_target(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  margin_type = c("trade_margin", "domestic_freight"),
+  margin_type = c("trade_margin", "transport_margin"),
   sector_class,
   language = c("ja", "en"),
   ...
@@ -23,7 +23,7 @@ io_margin_target_raw(
   region_class = c("nation", "pref", "block"),
   year,
   region = NULL,
-  margin_type = c("trade_margin", "domestic_freight"),
+  margin_type = c("trade_margin", "transport_margin"),
   sector_class,
   language = c("ja", "en"),
   ...
@@ -64,7 +64,7 @@ available" error as an invalid `region` rather than a dedicated
 missing-argument error.}
 
 \item{margin_type}{Which table to get, `"trade_margin"` or
-`"domestic_freight"`.}
+`"transport_margin"`.}
 
 \item{sector_class}{Sector classification granularity. No default --
 must be specified. As of writing, every available table uses `"medium"`
