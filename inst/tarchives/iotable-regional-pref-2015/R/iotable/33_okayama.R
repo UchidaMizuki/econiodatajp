@@ -38,8 +38,7 @@ read_file_iotable_producer_price_187_33_okayama <- function(file) {
       total_pattern = total_pattern
     ) |>
     io_table_read_data(
-      value_scale = 1e5,
-      total_tolerance = 1e-3
+      value_scale = 1e5
     ) |>
     end_step()
 }

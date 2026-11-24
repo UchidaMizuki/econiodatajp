@@ -52,7 +52,9 @@ read_file_iotable_producer_price_187_13_tokyo <- function(file) {
     ) |>
     io_table_read_data(
       value_scale = 1e6,
-      total_tolerance = 2e7
+      # The published totals are off by a few raw units (百万円) from the sum
+      # of their components, up to about 6e-8 of total output.
+      total_tolerance = 1e-5
     ) |>
     end_step()
 }
