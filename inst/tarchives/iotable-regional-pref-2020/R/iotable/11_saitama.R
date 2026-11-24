@@ -46,8 +46,7 @@ read_file_iotable_producer_price_183_11_saitama <- function(file) {
       total_pattern = total_pattern
     ) |>
     io_table_read_data(
-      value_scale = 1e6,
-      total_tolerance = 1e-3
+      value_scale = 1e6
     ) |>
     end_step()
 }

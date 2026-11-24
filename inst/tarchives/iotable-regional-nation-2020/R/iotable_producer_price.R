@@ -104,9 +104,10 @@ read_file_iotable_producer_price_basic <- function(file) {
       # (1e9), unlike the 2011/2015 tables, which are in 1-hyakuman-yen (1e6);
       # confirmed from the workbook's own header row ("(単位 : 10億円)").
       value_scale = 1e9,
-      # Same small rounding drift between component values and published
-      # subtotals as 2011/2015 (now expressed in yen at the 1e9 scale).
-      total_tolerance = 1e10,
+      # The published values are rounded to 10-oku-yen, so some totals are off
+      # by a few raw units from the sum of their components, up to about 3e-6
+      # of total output.
+      total_tolerance = 1e-5,
       check_axes = FALSE
     ) |>
     end_step()

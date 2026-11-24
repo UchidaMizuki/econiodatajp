@@ -44,8 +44,7 @@ read_file_iotable_producer_price_106_26_kyoto <- function(file) {
       total_pattern = total_pattern
     ) |>
     io_table_read_data(
-      value_scale = 1e4,
-      total_tolerance = 1e-3
+      value_scale = 1e4
     ) |>
     end_step()
 }
