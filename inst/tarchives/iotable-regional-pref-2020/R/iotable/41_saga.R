@@ -1,12 +1,12 @@
-# https://www.pref.saga.lg.jp/kiji003117190/index.html
+# https://www.pref.saga.lg.jp/toukei/kiji003117190/index.html
 target_iotable_producer_price_41_saga <- tar_plan(
   tar_change(
     file_iotable_41_saga_108_producer_price_competitive_import_ja,
     download_file(
-      url = "https://www.pref.saga.lg.jp/toukei/kiji003117190/3_117190_380941_up_2u3j3kc7.xlsx",
+      url = "https://www.pref.saga.lg.jp/toukei/kiji003117190/3_117190_402614_up_ug2gwnoo.xlsx",
       destfile = "_targets/user/iotable_41_saga_108_producer_price_competitive_import_ja.xlsx"
     ),
-    change = "0.1.0",
+    change = "0.2.0",
     format = "file"
   ),
   iotable_41_saga_108_producer_price_competitive_import_ja = read_file_iotable_producer_price_108_41_saga(
