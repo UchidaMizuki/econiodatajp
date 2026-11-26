@@ -1,12 +1,12 @@
-# https://www.pref.tottori.lg.jp/2015io_tables/
+# https://www.pref.tottori.lg.jp/329783.htm
 target_iotable_producer_price_31_tottori <- tar_plan(
   tar_change(
     file_iotable_31_tottori_107_producer_price_competitive_import_ja,
     download_file(
-      url = "https://www.pref.tottori.lg.jp/secure/1269527/io_H27_107.xlsx",
+      url = "https://www.pref.tottori.lg.jp/secure/1433662/io_H27_107.xlsx",
       destfile = "_targets/user/iotable_31_tottori_107_producer_price_competitive_import_ja.xlsx"
     ),
-    change = "0.1.0",
+    change = "0.2.0",
     format = "file"
   ),
   iotable_31_tottori_107_producer_price_competitive_import_ja = read_file_iotable_producer_price_107_31_tottori(
